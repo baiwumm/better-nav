@@ -6,8 +6,9 @@ minimumReleaseAgeExclude:
   - '@supabase/realtime-js@2.115.0'
   - '@supabase/storage-js@2.115.0'
   - '@supabase/supabase-js@2.115.0'
+  - semver@6.3.1
 
-trustPolicy: no-downgrade
+trustPolicy: warn-downgrade
 shellEmulator: true
 
 packages:

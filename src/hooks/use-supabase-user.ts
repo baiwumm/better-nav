@@ -5,47 +5,51 @@
  * @LastEditTime: 2026-01-22 18:28:46
  * @Description: 获取用户登录信息
  */
-'use client'
-import { useEffect, useState } from 'react'
+"use client";
+import type { User } from "@supabase/supabase-js";
 
-import { getSupabaseBrowserClient } from '@/lib/supabase/client'
+import { useEffect, useState } from "react";
 
-import type { User } from '@supabase/supabase-js'
+import { getSupabaseBrowserClient } from "@/lib/supabase/client";
 
 export function useSupabaseUser() {
-  const supabase = getSupabaseBrowserClient()
-  const [user, setUser] = useState<User | null>(null)
-  const [loading, setLoading] = useState(true)
+  const supabase = getSupabaseBrowserClient();
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    let mounted = true
+    let mounted = true;
 
     const initUser = async () => {
-      const { data: { user }, error } = await supabase.auth.getUser()
+      const {
+        data: { user },
+        error,
+      } = await supabase.auth.getUser();
+
       if (mounted) {
         if (error) {
-          setUser(null)
+          setUser(null);
+        } else {
+          setUser(user);
         }
-        else {
-          setUser(user)
-        }
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    initUser()
+    initUser();
 
-    const { data: subscription } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (!mounted)
-        return
-      setUser(session?.user ?? null)
-    })
+    const { data: subscription } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        if (!mounted) return;
+        setUser(session?.user ?? null);
+      },
+    );
 
     return () => {
-      mounted = false
-      subscription.subscription.unsubscribe()
-    }
-  }, [supabase])
+      mounted = false;
+      subscription.subscription.unsubscribe();
+    };
+  }, [supabase]);
 
-  return { user, loading }
+  return { user, loading };
 }

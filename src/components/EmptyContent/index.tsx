@@ -5,10 +5,10 @@
  * @LastEditTime: 2026-01-27 14:47:09
  * @Description: 空数据
  */
-import { Tray } from '@gravity-ui/icons'
-import { Description } from '@heroui/react'
+import type { FC } from "react";
 
-import type { FC } from 'react'
+import { Tray } from "@gravity-ui/icons";
+import { Description } from "@heroui/react";
 
 const EmptyContent: FC = () => {
   return (
@@ -16,6 +16,7 @@ const EmptyContent: FC = () => {
       <Tray className="size-10" />
       <Description>暂无数据</Description>
     </div>
-  )
-}
-export default EmptyContent
+  );
+};
+
+export default EmptyContent;

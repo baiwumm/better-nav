@@ -3,114 +3,124 @@
  * @Date: 2026-08-10 10:00:00
  * @Description: 页面右侧分类锚点指示器（hover 浮出分类名，点击平滑滚动，scroll-spy 高亮）
  */
-'use client'
-import { cn, Tooltip } from '@heroui/react'
-import { useEffect, useRef, useState } from 'react'
+"use client";
+import type { Category } from "@/types";
 
-import type { Category } from '@/types'
+import { cn, Tooltip } from "@heroui/react";
+import { useEffect, useRef, useState } from "react";
 
 interface CategoryIndicatorProps {
-  categories: Category[]
+  categories: Category[];
 }
 
 /** hover 离开后恢复横线状态的延迟（与 Tooltip closeDelay 保持一致） */
-const CLOSE_DELAY = 150
+const CLOSE_DELAY = 150;
 
-export default function CategoryIndicator({ categories }: CategoryIndicatorProps) {
-  const [activeId, setActiveId] = useState('')
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
-  const tickingRef = useRef(false)
-  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+export default function CategoryIndicator({
+  categories,
+}: CategoryIndicatorProps) {
+  const [activeId, setActiveId] = useState("");
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const tickingRef = useRef(false);
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(
+    undefined,
+  );
 
   // scroll-spy：以视口 30% 高度线为基准，高亮距离该线最近的分类
   useEffect(() => {
     const getActiveId = () => {
-      const threshold = window.innerHeight * 0.3
-      let current = ''
-      let minDist = Number.POSITIVE_INFINITY
+      const threshold = window.innerHeight * 0.3;
+      let current = "";
+      let minDist = Number.POSITIVE_INFINITY;
+
       categories.forEach(({ id }) => {
-        const el = document.getElementById(`cat-${id}`)
-        if (!el)
-          return
-        const dist = Math.abs(el.getBoundingClientRect().top - threshold)
+        const el = document.getElementById(`cat-${id}`);
+
+        if (!el) return;
+        const dist = Math.abs(el.getBoundingClientRect().top - threshold);
+
         if (dist < minDist) {
-          minDist = dist
-          current = id
+          minDist = dist;
+          current = id;
         }
-      })
-      return current
-    }
+      });
+
+      return current;
+    };
 
     const update = () => {
-      if (tickingRef.current)
-        return
-      tickingRef.current = true
+      if (tickingRef.current) return;
+      tickingRef.current = true;
       requestAnimationFrame(() => {
-        const current = getActiveId()
-        setActiveId(prev => (prev === current ? prev : current))
-        tickingRef.current = false
-      })
-    }
+        const current = getActiveId();
 
-    update()
-    window.addEventListener('scroll', update, { passive: true })
-    window.addEventListener('resize', update)
+        setActiveId((prev) => (prev === current ? prev : current));
+        tickingRef.current = false;
+      });
+    };
+
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+
     return () => {
-      window.removeEventListener('scroll', update)
-      window.removeEventListener('resize', update)
-    }
-  }, [categories])
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, [categories]);
 
   // 卸载时清理关闭定时器
-  useEffect(() => () => clearTimeout(closeTimerRef.current), [])
+  useEffect(() => () => clearTimeout(closeTimerRef.current), []);
 
   // active 分类更新时，将对应横线滚动到指示器可视区内（分类过多时保证高亮可见）
   useEffect(() => {
-    if (!activeId)
-      return
-    const barEl = document.getElementById(`cat-bar-${activeId}`)
-    barEl?.scrollIntoView({ block: 'nearest' })
-  }, [activeId])
+    if (!activeId) return;
+    const barEl = document.getElementById(`cat-bar-${activeId}`);
+
+    barEl?.scrollIntoView({ block: "nearest" });
+  }, [activeId]);
 
   // 刷新 / 带 hash 访问时定位到对应分类：
   // FullLoading 首屏遮罩导致浏览器原生锚点定位失效（解析时锚点不存在），水合后需手动滚动
   useEffect(() => {
-    const hash = window.location.hash
-    if (!hash.startsWith('#cat-'))
-      return
-    const el = document.getElementById(`cat-${hash.slice('#cat-'.length)}`)
-    if (!el)
-      return
+    const hash = window.location.hash;
+
+    if (!hash.startsWith("#cat-")) return;
+    const el = document.getElementById(`cat-${hash.slice("#cat-".length)}`);
+
+    if (!el) return;
     // 等一帧，确保分类区块布局稳定后再定位
-    requestAnimationFrame(() => el.scrollIntoView({ block: 'start' }))
-  }, [])
+    requestAnimationFrame(() => el.scrollIntoView({ block: "start" }));
+  }, []);
 
   const handleMouseEnter = (index: number) => {
-    clearTimeout(closeTimerRef.current)
-    setHoveredIndex(index)
-  }
+    clearTimeout(closeTimerRef.current);
+    setHoveredIndex(index);
+  };
 
   const handleMouseLeave = () => {
-    clearTimeout(closeTimerRef.current)
-    closeTimerRef.current = setTimeout(setHoveredIndex, CLOSE_DELAY, null)
-  }
+    clearTimeout(closeTimerRef.current);
+    closeTimerRef.current = setTimeout(setHoveredIndex, CLOSE_DELAY, null);
+  };
 
   const scrollToCategory = (id: string) => {
-    const el = document.getElementById(`cat-${id}`)
-    if (!el)
-      return
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const el = document.getElementById(`cat-${id}`);
+
+    if (!el) return;
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
     el.scrollIntoView({
-      behavior: prefersReducedMotion ? 'auto' : 'smooth',
-      block: 'start',
-    })
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+      block: "start",
+    });
     // 同步 URL hash（replaceState 不产生历史噪音）：刷新/分享可定位，返回键可回退
-    history.replaceState(null, '', `#cat-${id}`)
-  }
+    history.replaceState(null, "", `#cat-${id}`);
+  };
 
   // 分类过少时指示器无意义，直接隐藏
-  if (categories.length < 3)
-    return null
+  if (categories.length < 3) return null;
 
   return (
     <nav
@@ -119,23 +129,22 @@ export default function CategoryIndicator({ categories }: CategoryIndicatorProps
     >
       {categories.map(({ id, name }, index) => {
         // 以 hover 项为中心向上下扩散的阶梯距离（音谱效果），无 hover 时为无穷远
-        const distance = hoveredIndex === null ? Number.POSITIVE_INFINITY : Math.abs(hoveredIndex - index)
-        const isActive = id === activeId
+        const distance =
+          hoveredIndex === null
+            ? Number.POSITIVE_INFINITY
+            : Math.abs(hoveredIndex - index);
+        const isActive = id === activeId;
 
         // 阶梯样式：hover 最亮最宽，逐层向上下衰减；active 项若在阶梯外（或无 hover）才显示独立 active 样式
-        let barClass: string
+        let barClass: string;
+
         if (hoveredIndex !== null) {
-          if (distance === 0)
-            barClass = 'w-7 bg-accent'
-          else if (distance === 1)
-            barClass = 'w-6 bg-accent/70'
-          else if (distance === 2)
-            barClass = 'w-5 bg-accent/45'
-          else
-            barClass = isActive ? 'w-5 bg-accent' : 'w-4 bg-accent/10'
-        }
-        else {
-          barClass = isActive ? 'w-5 bg-accent' : 'w-4 bg-accent/10'
+          if (distance === 0) barClass = "w-7 bg-accent";
+          else if (distance === 1) barClass = "w-6 bg-accent/70";
+          else if (distance === 2) barClass = "w-5 bg-accent/45";
+          else barClass = isActive ? "w-5 bg-accent" : "w-4 bg-accent/10";
+        } else {
+          barClass = isActive ? "w-5 bg-accent" : "w-4 bg-accent/10";
         }
 
         return (
@@ -144,29 +153,29 @@ export default function CategoryIndicator({ categories }: CategoryIndicatorProps
               {/* 整个槽位是 hover 热区，也是点击跳转区 */}
               <button
                 aria-label={`跳转到分类：${name}`}
+                className="flex h-4 w-7 cursor-pointer items-center justify-end"
                 id={`cat-bar-${id}`}
                 type="button"
                 onClick={() => scrollToCategory(id)}
                 onMouseEnter={() => handleMouseEnter(index)}
                 onMouseLeave={handleMouseLeave}
-                className="flex h-4 w-7 cursor-pointer items-center justify-end"
               >
                 <span
                   className={cn(
                     // 右端对齐：变长时从右向左延伸
-                    'h-1 rounded-full transition-all duration-300',
+                    "h-1 rounded-full transition-all duration-300",
                     barClass,
                   )}
                 />
               </button>
             </Tooltip.Trigger>
-            <Tooltip.Content offset={8} placement="left" showArrow>
+            <Tooltip.Content showArrow offset={8} placement="left">
               <Tooltip.Arrow />
               {name}
             </Tooltip.Content>
           </Tooltip>
-        )
+        );
       })}
     </nav>
-  )
+  );
 }

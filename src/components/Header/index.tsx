@@ -5,34 +5,34 @@
  * @LastEditTime: 2026-08-05 15:04:06
  * @Description: 顶部导航
  */
-'use client'
-import { HouseFill, LogoGithub } from '@gravity-ui/icons'
-import { Button, Tooltip } from '@heroui/react'
-import Image from 'next/image'
-import Link from 'next/link'
-import { memo } from 'react'
+"use client";
+import type { FC, ReactNode } from "react";
 
-import { ShimmeringText } from '@/components/ShimmeringText'
-import ThemeSwitcher from '@/components/ThemeSwitcher'
-import TimeAndLunar from '@/components/TimeAndLunar'
-import UserAvatar from '@/components/UserAvatar'
-import pkg from '#/package.json'
+import { HouseFill, LogoGithub } from "@gravity-ui/icons";
+import { Button, Tooltip } from "@heroui/react";
+import Image from "next/image";
+import Link from "next/link";
+import { memo } from "react";
 
-import type { FC, ReactNode } from 'react'
+import { ShimmeringText } from "@/components/ShimmeringText";
+import ThemeSwitcher from "@/components/ThemeSwitcher";
+import TimeAndLunar from "@/components/TimeAndLunar";
+import UserAvatar from "@/components/UserAvatar";
+import pkg from "#/package.json";
 
 interface Social {
-  name: string
-  url: string
-  icon: ReactNode
+  name: string;
+  url: string;
+  icon: ReactNode;
 }
 
 const socials: Social[] = [
   {
-    name: 'GitHub',
+    name: "GitHub",
     url: pkg.git.url,
     icon: <LogoGithub />,
   },
-]
+];
 
 const Header: FC = () => {
   return (
@@ -41,16 +41,26 @@ const Header: FC = () => {
       <Link href="/">
         <div className="flex gap-2 items-center justify-self-start">
           <div className="size-8 relative">
-            <Image alt="Logo" fill src="/logo.svg" className="object-contain dark:hidden" />
-            <Image alt="Logo" fill src="/logo-dark.svg" className="hidden object-contain dark:block" />
+            <Image
+              fill
+              alt="Logo"
+              className="object-contain dark:hidden"
+              src="/logo.svg"
+            />
+            <Image
+              fill
+              alt="Logo"
+              className="hidden object-contain dark:block"
+              src="/logo-dark.svg"
+            />
           </div>
           <ShimmeringText
+            className="text-xl font-black"
             color="var(--foreground)"
             duration={1.5}
             repeatDelay={1}
             shimmerColor="var(--background)"
             text={process.env.NEXT_PUBLIC_APP_NAME!}
-            className="text-xl font-black"
           />
         </div>
       </Link>
@@ -62,12 +72,12 @@ const Header: FC = () => {
           <Tooltip key={name} delay={0}>
             <Tooltip.Trigger>
               <Link aria-label={name} href={url} target="_blank">
-                <Button size="sm" variant="ghost" isIconOnly>
+                <Button isIconOnly size="sm" variant="ghost">
                   {icon}
                 </Button>
               </Link>
             </Tooltip.Trigger>
-            <Tooltip.Content offset={8} placement="bottom" showArrow>
+            <Tooltip.Content showArrow offset={8} placement="bottom">
               <Tooltip.Arrow />
               {name}
             </Tooltip.Content>
@@ -76,12 +86,12 @@ const Header: FC = () => {
         <Tooltip delay={0}>
           <Tooltip.Trigger>
             <Link aria-label="主页" href={pkg.author.url} target="_blank">
-              <Button size="sm" variant="ghost" isIconOnly>
+              <Button isIconOnly size="sm" variant="ghost">
                 <HouseFill />
               </Button>
             </Link>
           </Tooltip.Trigger>
-          <Tooltip.Content offset={8} placement="bottom" showArrow>
+          <Tooltip.Content showArrow offset={8} placement="bottom">
             <Tooltip.Arrow />
             个人主页
           </Tooltip.Content>
@@ -90,6 +100,7 @@ const Header: FC = () => {
         <UserAvatar />
       </div>
     </header>
-  )
-}
-export default memo(Header)
+  );
+};
+
+export default memo(Header);

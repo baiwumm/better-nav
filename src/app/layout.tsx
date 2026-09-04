@@ -1,25 +1,25 @@
-import './globals.css'
+import "./globals.css";
 
-import { Toast } from '@heroui/react'
-import { Analytics } from '@vercel/analytics/next'
-import { MotionConfig } from 'motion/react'
-import { ThemeProvider } from 'next-themes'
+import type { Metadata } from "next";
 
-import { GoogleUtilities, MicrosoftClarity } from '@/components/Analytics'
-import FullLoading from '@/components/FullLoading'
-import pkg from '#/package.json'
+import { Toast } from "@heroui/react";
+import { Analytics } from "@vercel/analytics/next";
+import { MotionConfig } from "motion/react";
+import { ThemeProvider } from "next-themes";
 
-import Provider from './Provider'
+import Provider from "./Provider";
 
-import type { Metadata } from 'next'
+import { GoogleUtilities, MicrosoftClarity } from "@/components/Analytics";
+import FullLoading from "@/components/FullLoading";
+import pkg from "#/package.json";
 
-const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME
-const APP_TITLE = process.env.NEXT_PUBLIC_APP_TITLE
-const APP_DESC = process.env.NEXT_PUBLIC_APP_DESC
-const APP_KEYWORDS = process.env.NEXT_PUBLIC_APP_KEYWORDS
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://nav.baiwumm.com'
-const OG_IMAGE_URL = `${APP_URL}/opengraph-image`
-const AUTHOR_NAME = process.env.NEXT_PUBLIC_AUTHOR_NAME
+const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME;
+const APP_TITLE = process.env.NEXT_PUBLIC_APP_TITLE;
+const APP_DESC = process.env.NEXT_PUBLIC_APP_DESC;
+const APP_KEYWORDS = process.env.NEXT_PUBLIC_APP_KEYWORDS;
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://nav.baiwumm.com";
+const OG_IMAGE_URL = `${APP_URL}/opengraph-image`;
+const AUTHOR_NAME = process.env.NEXT_PUBLIC_AUTHOR_NAME;
 
 export const metadata: Metadata = {
   metadataBase: new URL(APP_URL),
@@ -30,8 +30,8 @@ export const metadata: Metadata = {
   creator: AUTHOR_NAME,
   publisher: AUTHOR_NAME,
   icons: {
-    icon: '/favicon.ico',
-    apple: '/apple-icon.png',
+    icon: "/favicon.ico",
+    apple: "/apple-icon.png",
   },
   openGraph: {
     title: APP_NAME,
@@ -45,29 +45,29 @@ export const metadata: Metadata = {
         height: 630,
       },
     ],
-    locale: 'zh_CN',
-    type: 'website',
+    locale: "zh_CN",
+    type: "website",
   },
   twitter: {
-    card: 'summary_large_image',
+    card: "summary_large_image",
     title: APP_NAME,
     description: APP_DESC,
-    creator: 'baiwumm',
+    creator: "baiwumm",
     images: [OG_IMAGE_URL],
   },
   manifest: `${APP_URL}/manifest.json`,
-}
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh-CN" suppressHydrationWarning>
+    <html suppressHydrationWarning lang="zh-CN">
       <head>
-        <meta name="version" content={pkg.version} />
-        <meta name="apple-mobile-web-app-title" content={APP_NAME} />
+        <meta content={pkg.version} name="version" />
+        <meta content={APP_NAME} name="apple-mobile-web-app-title" />
         {/* Google 统计 */}
         <GoogleUtilities />
         {/* 微软统计 */}
@@ -79,14 +79,12 @@ export default function RootLayout({
         <ThemeProvider attribute="class" enableSystem={false}>
           <MotionConfig reducedMotion="user">
             <FullLoading>
-              <Provider>
-                {children}
-              </Provider>
+              <Provider>{children}</Provider>
             </FullLoading>
             <Toast.Provider placement="top" />
           </MotionConfig>
         </ThemeProvider>
       </body>
     </html>
-  )
+  );
 }

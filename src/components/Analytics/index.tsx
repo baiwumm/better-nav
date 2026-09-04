@@ -5,35 +5,30 @@
  * @LastEditTime: 2026-07-01 15:41:04
  * @Description: 统计代码
  */
-import { GoogleAnalytics } from '@next/third-parties/google'
-import Script from 'next/script'
+import { GoogleAnalytics } from "@next/third-parties/google";
+import Script from "next/script";
 
 /**
  * @description: 谷歌统计
  */
 export function GoogleUtilities() {
-  const gaId = process.env.NEXT_PUBLIC_GOOGLE_ID
+  const gaId = process.env.NEXT_PUBLIC_GOOGLE_ID;
 
-  if (process.env.NODE_ENV !== 'production' || !gaId)
-    return null
+  if (process.env.NODE_ENV !== "production" || !gaId) return null;
 
-  return <GoogleAnalytics gaId={gaId} />
+  return <GoogleAnalytics gaId={gaId} />;
 }
 
 /**
  * @description: 微软统计
  */
 export function MicrosoftClarity() {
-  const clarityId = process.env.NEXT_PUBLIC_CLARITY_ID
+  const clarityId = process.env.NEXT_PUBLIC_CLARITY_ID;
 
-  if (process.env.NODE_ENV !== 'production' || !clarityId)
-    return null
+  if (process.env.NODE_ENV !== "production" || !clarityId) return null;
 
   return (
-    <Script
-      id="microsoft-clarity"
-      strategy="afterInteractive"
-    >
+    <Script id="microsoft-clarity" strategy="afterInteractive">
       {`
         (function(c,l,a,r,i,t,y){
           c[a]=c[a]||function(){
@@ -47,5 +42,5 @@ export function MicrosoftClarity() {
         })(window,document,"clarity","script","${clarityId}");
       `}
     </Script>
-  )
+  );
 }

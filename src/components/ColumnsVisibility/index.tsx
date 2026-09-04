@@ -5,26 +5,29 @@
  * @LastEditTime: 2026-03-11 13:57:44
  * @Description: 表格列设置
  */
-import { Sliders } from '@gravity-ui/icons'
-import { Button, Dropdown, Label } from '@heroui/react'
+import type { AppTable } from "@/types/table-types";
+import type { Selection } from "@heroui/react";
 
-import type { AppTable } from '@/types/table-types'
-import type { Selection } from '@heroui/react'
+import { Sliders } from "@gravity-ui/icons";
+import { Button, Dropdown, Label } from "@heroui/react";
 
 function ColumnsVisibility<TData>({ table }: { table: AppTable<TData> }) {
-  const columns = table.getAllLeafColumns().filter(column => column.getCanHide())
+  const columns = table
+    .getAllLeafColumns()
+    .filter((column) => column.getCanHide());
 
   const selectedKeys = new Set(
-    columns.filter(c => c.getIsVisible()).map(c => c.id),
-  )
+    columns.filter((c) => c.getIsVisible()).map((c) => c.id),
+  );
 
   const handleSelectionChange = (keys: Selection) => {
-    const visibleIds = new Set(Array.from(keys))
+    const visibleIds = new Set(Array.from(keys));
 
     columns.forEach((column) => {
-      column.toggleVisibility(visibleIds.has(column.id))
-    })
-  }
+      column.toggleVisibility(visibleIds.has(column.id));
+    });
+  };
+
   return (
     <Dropdown>
       <Button size="sm" variant="outline">
@@ -32,12 +35,16 @@ function ColumnsVisibility<TData>({ table }: { table: AppTable<TData> }) {
         列设置
       </Button>
       <Dropdown.Popover className="min-w-37.5">
-        <Dropdown.Menu selectedKeys={selectedKeys} selectionMode="multiple" onSelectionChange={handleSelectionChange}>
-          {columns.map(column => (
+        <Dropdown.Menu
+          selectedKeys={selectedKeys}
+          selectionMode="multiple"
+          onSelectionChange={handleSelectionChange}
+        >
+          {columns.map((column) => (
             <Dropdown.Item
               key={column.id}
-              id={column.id}
               className="capitalize"
+              id={column.id}
             >
               <Dropdown.ItemIndicator />
               <Label>{column.columnDef?.header as string}</Label>
@@ -46,7 +53,7 @@ function ColumnsVisibility<TData>({ table }: { table: AppTable<TData> }) {
         </Dropdown.Menu>
       </Dropdown.Popover>
     </Dropdown>
-  )
+  );
 }
 
-export default ColumnsVisibility
+export default ColumnsVisibility;

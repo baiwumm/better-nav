@@ -5,18 +5,18 @@
  * @LastEditTime: 2026-07-15 16:33:15
  * @Description: 错误页面
  */
-import { Alert, Button } from '@heroui/react'
+import type { FC } from "react";
 
-import type { FC } from 'react'
+import { Alert, Button } from "@heroui/react";
 
 interface ErrorContentProps {
-  refresh: VoidFunction
+  refresh: VoidFunction;
 }
 
 const ErrorContent: FC<ErrorContentProps> = ({ refresh }) => {
   return (
     <div className="flex-1 flex items-center justify-center">
-      <Alert status="danger" className="max-w-xl">
+      <Alert className="max-w-xl" status="danger">
         <Alert.Indicator />
         <Alert.Content>
           <Alert.Title>获取站点数据失败，请稍后重试</Alert.Title>
@@ -28,15 +28,26 @@ const ErrorContent: FC<ErrorContentProps> = ({ refresh }) => {
               <li>请稍后重试</li>
             </ul>
           </Alert.Description>
-          <Button size="sm" variant="danger" onPress={refresh} className="mt-2 sm:hidden">
+          <Button
+            className="mt-2 sm:hidden"
+            size="sm"
+            variant="danger"
+            onPress={refresh}
+          >
             重试
           </Button>
         </Alert.Content>
-        <Button size="sm" variant="danger" onPress={refresh} className="hidden sm:block">
+        <Button
+          className="hidden sm:block"
+          size="sm"
+          variant="danger"
+          onPress={refresh}
+        >
           重试
         </Button>
       </Alert>
     </div>
-  )
-}
-export default ErrorContent
+  );
+};
+
+export default ErrorContent;

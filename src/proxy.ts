@@ -1,9 +1,9 @@
-import { updateSession } from '@/lib/supabase/proxy'
+import type { NextRequest } from "next/server";
 
-import type { NextRequest } from 'next/server'
+import { updateSession } from "@/lib/supabase/proxy";
 
 export default async function proxy(request: NextRequest) {
-  return await updateSession(request)
+  return await updateSession(request);
 }
 
 // 配置匹配的路由
@@ -14,6 +14,6 @@ export const config = {
      * - _next (Next.js 内部文件)
      * - 静态资源 (如 .css, .png)
      */
-    '/((?!_next|[^?]*\\.(?:html?|css|js|json|xml|txt|md|png|jpg|jpeg|gif|webp|avif|ico|bmp|svg|tiff|tif|mp4|webm|ogg|mp3|wav|flac|aac|woff|woff2|eot|ttf|otf|webmanifest)$).*)',
+    "/((?!_next|[^?]*\\.(?:html?|css|js|json|xml|txt|md|png|jpg|jpeg|gif|webp|avif|ico|bmp|svg|tiff|tif|mp4|webm|ogg|mp3|wav|flac|aac|woff|woff2|eot|ttf|otf|webmanifest)$).*)",
   ],
-}
+};

@@ -1,20 +1,20 @@
-'use client'
-import { PencilToSquare, TrashBin } from '@gravity-ui/icons'
-import { Button, Chip, Description } from '@heroui/react'
-import { createColumnHelper } from '@tanstack/react-table'
+"use client";
+import type { Category } from "@/types";
+import type { AppTableFeatures } from "@/types/table-types";
 
-import { formatDate } from '@/lib/utils'
+import { PencilToSquare, TrashBin } from "@gravity-ui/icons";
+import { Button, Chip, Description } from "@heroui/react";
+import { createColumnHelper } from "@tanstack/react-table";
 
-import type { Category } from '@/types'
-import type { AppTableFeatures } from '@/types/table-types'
+import { formatDate } from "@/lib/utils";
 
-const columnHelper = createColumnHelper<AppTableFeatures, Category>()
+const columnHelper = createColumnHelper<AppTableFeatures, Category>();
 
 interface ColumnsProps {
-  handleEdit: (row: Category) => void
-  handleDel: (row: Category) => void
-  page: number
-  pageSize: number
+  handleEdit: (row: Category) => void;
+  handleDel: (row: Category) => void;
+  page: number;
+  pageSize: number;
 }
 
 export function getColumns({
@@ -25,17 +25,13 @@ export function getColumns({
 }: ColumnsProps) {
   return [
     columnHelper.display({
-      id: 'index',
-      header: '序号',
-      cell: ({ row }) => (
-        <Chip>
-          {(page - 1) * pageSize + row.index + 1}
-        </Chip>
-      ),
+      id: "index",
+      header: "序号",
+      cell: ({ row }) => <Chip>{(page - 1) * pageSize + row.index + 1}</Chip>,
     }),
 
-    columnHelper.accessor('name', {
-      header: '分类名称',
+    columnHelper.accessor("name", {
+      header: "分类名称",
       cell: ({ getValue }) => (
         <Chip color="accent" variant="primary">
           {getValue()}
@@ -44,8 +40,8 @@ export function getColumns({
     }),
 
     columnHelper.display({
-      id: 'websites',
-      header: '站点个数',
+      id: "websites",
+      header: "站点个数",
       cell: ({ row }) => (
         <Chip color="success" variant="soft">
           {row.original.websites?.length || 0}
@@ -53,8 +49,8 @@ export function getColumns({
       ),
     }),
 
-    columnHelper.accessor('sort', {
-      header: '排序',
+    columnHelper.accessor("sort", {
+      header: "排序",
       cell: ({ getValue }) => (
         <Chip color="warning" variant="soft">
           {getValue()}
@@ -62,44 +58,40 @@ export function getColumns({
       ),
     }),
 
-    columnHelper.accessor('created_at', {
-      header: '创建时间',
+    columnHelper.accessor("created_at", {
+      header: "创建时间",
       cell: ({ getValue }) => (
-        <Description>
-          {formatDate(getValue(), 'datetime')}
-        </Description>
+        <Description>{formatDate(getValue(), "datetime")}</Description>
       ),
     }),
 
-    columnHelper.accessor('updated_at', {
-      header: '更新时间',
+    columnHelper.accessor("updated_at", {
+      header: "更新时间",
       cell: ({ getValue }) => (
-        <Description>
-          {formatDate(getValue(), 'datetime')}
-        </Description>
+        <Description>{formatDate(getValue(), "datetime")}</Description>
       ),
     }),
 
     columnHelper.display({
-      id: 'actions',
-      header: '操作',
+      id: "actions",
+      header: "操作",
       cell: ({ row }) => (
         <div className="flex items-center justify-center min-w-25">
           <Button
+            className="text-xs"
             size="sm"
             variant="ghost"
             onPress={() => handleEdit(row.original)}
-            className="text-xs"
           >
             <PencilToSquare />
             修改
           </Button>
 
           <Button
+            className="text-xs text-danger hover:bg-danger-soft"
             size="sm"
             variant="ghost"
             onPress={() => handleDel(row.original)}
-            className="text-xs text-danger hover:bg-danger-soft"
           >
             <TrashBin />
             删除
@@ -107,5 +99,5 @@ export function getColumns({
         </div>
       ),
     }),
-  ]
+  ];
 }

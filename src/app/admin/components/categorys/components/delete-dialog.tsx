@@ -5,29 +5,35 @@
  * @LastEditTime: 2026-08-04 17:01:38
  * @Description: 删除弹窗
  */
-'use client'
-import { AlertDialog, Button, Spinner } from '@heroui/react'
-import { useEffect, useRef } from 'react'
+"use client";
+import type { UseOverlayStateReturn } from "@heroui/react";
+import type { FC } from "react";
 
-import type { UseOverlayStateReturn } from '@heroui/react'
-import type { FC } from 'react'
+import { AlertDialog, Button, Spinner } from "@heroui/react";
+import { useEffect, useRef } from "react";
 
 interface DeleteDialogProps {
-  state: UseOverlayStateReturn
-  loading: boolean
-  handleDelConfirm: VoidFunction
-  onClose?: VoidFunction
+  state: UseOverlayStateReturn;
+  loading: boolean;
+  handleDelConfirm: VoidFunction;
+  onClose?: VoidFunction;
 }
 
-const DeleteDialog: FC<DeleteDialogProps> = ({ state, loading = false, handleDelConfirm, onClose }) => {
-  const wasOpenRef = useRef(false)
+const DeleteDialog: FC<DeleteDialogProps> = ({
+  state,
+  loading = false,
+  handleDelConfirm,
+  onClose,
+}) => {
+  const wasOpenRef = useRef(false);
 
   useEffect(() => {
     if (wasOpenRef.current && !state.isOpen) {
-      onClose?.()
+      onClose?.();
     }
-    wasOpenRef.current = state.isOpen
-  }, [state.isOpen, onClose])
+    wasOpenRef.current = state.isOpen;
+  }, [state.isOpen, onClose]);
+
   return (
     <AlertDialog.Backdrop isOpen={state.isOpen} onOpenChange={state.setOpen}>
       <AlertDialog.Container>
@@ -41,17 +47,22 @@ const DeleteDialog: FC<DeleteDialogProps> = ({ state, loading = false, handleDel
             <p>
               删除后，该分类及其关联的数据将被
               <strong>永久移除</strong>
-              ，且无法恢复。
-              请确认当前操作不会影响正在使用的业务或历史数据。
+              ，且无法恢复。 请确认当前操作不会影响正在使用的业务或历史数据。
             </p>
           </AlertDialog.Body>
           <AlertDialog.Footer>
-            <Button variant="tertiary" isDisabled={loading} slot="close">取消</Button>
-            <Button variant="danger" isPending={loading} onPress={handleDelConfirm}>
+            <Button isDisabled={loading} slot="close" variant="tertiary">
+              取消
+            </Button>
+            <Button
+              isPending={loading}
+              variant="danger"
+              onPress={handleDelConfirm}
+            >
               {({ isPending }) => (
                 <>
                   {isPending ? <Spinner color="current" size="sm" /> : null}
-                  {isPending ? '正在删除...' : '确认删除'}
+                  {isPending ? "正在删除..." : "确认删除"}
                 </>
               )}
             </Button>
@@ -59,6 +70,7 @@ const DeleteDialog: FC<DeleteDialogProps> = ({ state, loading = false, handleDel
         </AlertDialog.Dialog>
       </AlertDialog.Container>
     </AlertDialog.Backdrop>
-  )
-}
-export default DeleteDialog
+  );
+};
+
+export default DeleteDialog;

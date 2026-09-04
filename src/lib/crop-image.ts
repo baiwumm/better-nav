@@ -1,32 +1,32 @@
 export async function getCroppedImg(
   imageSrc: string,
   pixelCrop: {
-    x: number
-    y: number
-    width: number
-    height: number
+    x: number;
+    y: number;
+    width: number;
+    height: number;
   },
-  fileName = 'logo.png',
+  fileName = "logo.png",
 ): Promise<File> {
   const image = await new Promise<HTMLImageElement>((resolve, reject) => {
-    const img = new Image()
+    const img = new Image();
 
-    img.onload = () => resolve(img)
-    img.onerror = reject
+    img.onload = () => resolve(img);
+    img.onerror = reject;
 
-    img.src = imageSrc
-  })
+    img.src = imageSrc;
+  });
 
-  const canvas = document.createElement('canvas')
+  const canvas = document.createElement("canvas");
 
-  const ctx = canvas.getContext('2d')
+  const ctx = canvas.getContext("2d");
 
   if (!ctx) {
-    throw new Error('Canvas not supported')
+    throw new Error("Canvas not supported");
   }
 
-  canvas.width = pixelCrop.width
-  canvas.height = pixelCrop.height
+  canvas.width = pixelCrop.width;
+  canvas.height = pixelCrop.height;
 
   ctx.drawImage(
     image,
@@ -38,23 +38,19 @@ export async function getCroppedImg(
     0,
     pixelCrop.width,
     pixelCrop.height,
-  )
+  );
 
   return new Promise((resolve) => {
     canvas.toBlob((blob) => {
       if (!blob) {
-        throw new Error('Canvas is empty')
+        throw new Error("Canvas is empty");
       }
 
       resolve(
-        new File(
-          [blob],
-          fileName,
-          {
-            type: 'image/png',
-          },
-        ),
-      )
-    }, 'image/png')
-  })
+        new File([blob], fileName, {
+          type: "image/png",
+        }),
+      );
+    }, "image/png");
+  });
 }
