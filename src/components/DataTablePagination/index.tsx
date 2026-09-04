@@ -7,10 +7,10 @@
  */
 import { Description, ListBox, Pagination, Select } from '@heroui/react'
 
-import type { Table } from '@tanstack/react-table'
+import type { AppTable } from '@/types/table-types'
 
 interface DataTablePaginationProps<TData> {
-  table: Table<TData>
+  table: AppTable<TData>
   total: number
 }
 
@@ -22,7 +22,7 @@ interface PaginationToken {
 
 function DataTablePagination<TData>({ table, total = 0 }: DataTablePaginationProps<TData>) {
   // 渲染中间分页
-  const { pageIndex } = table.getState().pagination
+  const { pageIndex } = table.state.pagination
   const pageCount = table.getPageCount()
 
   function getPageNumbers(pageIndex: number, pageCount: number, delta = 2) {
@@ -61,7 +61,7 @@ function DataTablePagination<TData>({ table, total = 0 }: DataTablePaginationPro
           aria-label="分页选择框"
           variant="secondary"
           placeholder="请选择"
-          value={table.getState().pagination.pageSize}
+          value={table.state.pagination.pageSize}
           onChange={key => table.setPageSize(Number(key))}
           className="w-30"
         >

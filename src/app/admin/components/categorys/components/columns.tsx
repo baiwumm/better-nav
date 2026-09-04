@@ -6,8 +6,9 @@ import { createColumnHelper } from '@tanstack/react-table'
 import { formatDate } from '@/lib/utils'
 
 import type { Category } from '@/types'
+import type { AppTableFeatures } from '@/types/table-types'
 
-const columnHelper = createColumnHelper<Category>()
+const columnHelper = createColumnHelper<AppTableFeatures, Category>()
 
 interface ColumnsProps {
   handleEdit: (row: Category) => void

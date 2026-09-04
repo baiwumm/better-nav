@@ -15,8 +15,9 @@ import Image from 'next/image'
 import { formatDate, generateLogoUrl } from '@/lib/utils'
 
 import type { Website } from '@/types'
+import type { AppTableFeatures } from '@/types/table-types'
 
-const columnHelper = createColumnHelper<Website>()
+const columnHelper = createColumnHelper<AppTableFeatures, Website>()
 
 interface ColumnsProps {
   handleEdit: (row: Website) => void

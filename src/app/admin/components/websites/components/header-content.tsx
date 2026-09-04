@@ -19,12 +19,12 @@ import {
 import ColumnsVisibility from '@/components/ColumnsVisibility'
 
 import type { Category, Website } from '@/types'
+import type { AppTable } from '@/types/table-types'
 import type { useOverlayState } from '@heroui/react'
-import type { Table } from '@tanstack/react-table'
 import type { Dispatch, FC, KeyboardEvent, SetStateAction } from 'react'
 
 interface HeaderContentProps {
-  table: Table<Website>
+  table: AppTable<Website>
   categorysList: Category[]
   name: string
   setName: Dispatch<SetStateAction<string>>

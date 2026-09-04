@@ -1,9 +1,18 @@
-shellEmulator: true
+minimumReleaseAgeExcludePrune: true
+minimumReleaseAgeExclude:
+  - '@supabase/auth-js@2.115.0'
+  - '@supabase/functions-js@2.115.0'
+  - '@supabase/postgrest-js@2.115.0'
+  - '@supabase/realtime-js@2.115.0'
+  - '@supabase/storage-js@2.115.0'
+  - '@supabase/supabase-js@2.115.0'
 
 trustPolicy: no-downgrade
+shellEmulator: true
 
 packages:
   - .
+
 ignoredBuiltDependencies:
   - sharp
   - unrs-resolver

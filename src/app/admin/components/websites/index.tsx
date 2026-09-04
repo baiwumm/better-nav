@@ -8,18 +8,13 @@
 'use client'
 import { CircleCheckFill } from '@gravity-ui/icons'
 import { Card, toast, useOverlayState } from '@heroui/react'
-import {
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from '@tanstack/react-table'
+import { useTable } from '@tanstack/react-table'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import DataTablePagination from '@/components/DataTablePagination'
 import { useSwrMutation, useSwrQuery } from '@/hooks/use-swr'
 import { get, RESPONSE } from '@/lib/utils'
+import { appTableFeatures } from '@/types/table-types'
 
 import { getColumns } from './components/columns'
 import DataTable from './components/data-table'
@@ -153,9 +148,10 @@ const Websites: FC = () => {
   )
 
   // 表格实例
-  const table = useReactTable({
+  const table = useTable({
     data: list,
     columns,
+    features: appTableFeatures,
     pageCount: Math.ceil((total || 0) / searchParams.pageSize),
     getRowId: (row: Website) => row.id,
     state: {
@@ -166,10 +162,6 @@ const Websites: FC = () => {
     onPaginationChange: setPagination,
     manualPagination: true,
     onSortingChange: setSorting,
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
   })
 
