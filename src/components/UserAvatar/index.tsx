@@ -10,6 +10,7 @@ import type { FC } from "react";
 import { useRouter } from "@bprogress/next/app";
 import { Person } from "@gravity-ui/icons";
 import { Button, Spinner, Tooltip } from "@heroui/react";
+import { useCallback } from "react";
 
 import UserMenu from "@/components/UserMenu";
 import { useSupabaseUser } from "@/hooks/use-supabase-user";
@@ -19,18 +20,17 @@ const UserAvatar: FC = () => {
   // 获取登录用户信息
   const { user, loading } = useSupabaseUser();
 
+  const handleLogin = useCallback(() => {
+    router.push("/login");
+  }, [router]);
+
   return loading ? (
     <Spinner size="sm" />
   ) : user ? (
     <UserMenu user={user} />
   ) : (
     <Tooltip>
-      <Button
-        isIconOnly
-        size="sm"
-        variant="ghost"
-        onClick={() => router.push("/login")}
-      >
+      <Button isIconOnly size="sm" variant="ghost" onClick={handleLogin}>
         <Person />
       </Button>
       <Tooltip.Content showArrow>

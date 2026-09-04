@@ -4,7 +4,7 @@ import type { FC, KeyboardEvent } from "react";
 import { CircleXmarkFill } from "@gravity-ui/icons";
 import { Chip, Input, Label } from "@heroui/react";
 import { AnimatePresence, motion } from "motion/react";
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 interface TagInputsProps {
   value: string[];
@@ -16,28 +16,38 @@ const MotionChip = motion.create(Chip);
 const TagInputs: FC<TagInputsProps> = ({ value = [], onChange }) => {
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
-  const addTag = (text: string) => {
-    const val = text.trim();
 
-    if (val && !value.includes(val)) {
-      onChange?.([...value, val]);
-    }
-    setInputValue("");
-  };
+  const addTag = useCallback(
+    (text: string) => {
+      const val = text.trim();
 
-  const removeTag = (text: string) => {
-    onChange?.(value.filter((tag) => tag !== text));
-  };
+      if (val && !value.includes(val)) {
+        onChange?.([...value, val]);
+      }
+      setInputValue("");
+    },
+    [value, onChange],
+  );
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      addTag(inputValue);
-    } else if (e.key === "Backspace" && inputValue === "" && value.length) {
-      e.preventDefault();
-      onChange?.(value.slice(0, -1));
-    }
-  };
+  const removeTag = useCallback(
+    (text: string) => {
+      onChange?.(value.filter((tag) => tag !== text));
+    },
+    [value, onChange],
+  );
+
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        addTag(inputValue);
+      } else if (e.key === "Backspace" && inputValue === "" && value.length) {
+        e.preventDefault();
+        onChange?.(value.slice(0, -1));
+      }
+    },
+    [addTag, inputValue, value, onChange],
+  );
 
   return (
     <div className="flex flex-col gap-1">

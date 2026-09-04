@@ -7,7 +7,7 @@
 import type { Category } from "@/types";
 
 import { cn, Tooltip } from "@heroui/react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 interface CategoryIndicatorProps {
   categories: Category[];
@@ -93,17 +93,17 @@ export default function CategoryIndicator({
     requestAnimationFrame(() => el.scrollIntoView({ block: "start" }));
   }, []);
 
-  const handleMouseEnter = (index: number) => {
+  const handleMouseEnter = useCallback((index: number) => {
     clearTimeout(closeTimerRef.current);
     setHoveredIndex(index);
-  };
+  }, []);
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave = useCallback(() => {
     clearTimeout(closeTimerRef.current);
     closeTimerRef.current = setTimeout(setHoveredIndex, CLOSE_DELAY, null);
-  };
+  }, []);
 
-  const scrollToCategory = (id: string) => {
+  const scrollToCategory = useCallback((id: string) => {
     const el = document.getElementById(`cat-${id}`);
 
     if (!el) return;
@@ -117,7 +117,7 @@ export default function CategoryIndicator({
     });
     // 同步 URL hash（replaceState 不产生历史噪音）：刷新/分享可定位，返回键可回退
     history.replaceState(null, "", `#cat-${id}`);
-  };
+  }, []);
 
   // 分类过少时指示器无意义，直接隐藏
   if (categories.length < 3) return null;

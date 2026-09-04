@@ -173,6 +173,7 @@ pnpm release
 2. **组件优先**：所有 UI 元素必须基于 HeroUI 组件构建，严禁使用纯 div+CSS 模拟 HeroUI 已有功能（如 Modal、Dropdown）
 3. **自检机制**：生成代码后，AI 必须主动检查是否违反上述两条规则，如有违反需重写
 4. **异常处理**：若规则库之间存在冲突（例如 HeroUI 某个组件用法与 Vercel 建议相悖），AI 需主动提问并等待人工裁决，不得擅自决定
+5. **代码生成与重构必须遵循 `vercel-react-best-practices` Skill**：该 Skill 已安装于 `.agents/skills/vercel-react-best-practices`，是所有代码产出（新建组件/页面、数据获取、重构、性能优化）的硬性性能与正确性规范
 
 ### 推荐使用的工具库
 
