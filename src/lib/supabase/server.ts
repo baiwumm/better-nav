@@ -12,9 +12,15 @@ export async function getSupabaseServerClient() {
           return cookieStore.getAll()
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => {
-            cookieStore.set(name, value, options)
-          })
+          try {
+            cookiesToSet.forEach(({ name, value, options }) => {
+              cookieStore.set(name, value, options)
+            })
+          }
+          catch {
+            // setAll 在 Server Component 中调用时会抛错（仅 Server Action / Route Handler 可写 cookie），
+            // 此处静默忽略即可，cookie 会在客户端 auth 刷新时自动设置。
+          }
         },
       },
     },
