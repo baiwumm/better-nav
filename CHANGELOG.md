@@ -1,5 +1,22 @@
 # Changelog
 
+## [3.9.0](https://github.com/baiwumm/better-nav/compare/3.8.5...3.9.0) (2026-09-04)
+
+### 🐛 Bug Fixes | Bug 修复
+
+* 修复 Server Component 中修改 cookie 报错 ([ebc2f25](https://github.com/baiwumm/better-nav/commit/ebc2f25b90608be93df5011d1a1bb7dadf24ba9a))
+
+### 🎫 Chores | 其他更新
+
+* 升级所有依赖包到最新版本 ([9ee2d7e](https://github.com/baiwumm/better-nav/commit/9ee2d7eb85106f4fac080a20c0d8200d087d0f50))
+* add vercel-react-best-practices skill and update AGENTS.md ([2172628](https://github.com/baiwumm/better-nav/commit/2172628c24f378482a1286e898352d5247f6d929))
+* replace eslint config with better-admin's and fix lint issues ([6b6da79](https://github.com/baiwumm/better-nav/commit/6b6da79c76988d73a0fd1d3f9239556dd2d99cd0))
+
+### ♻ Code Refactoring | 代码重构
+
+* 将远程 Maple Mono CN 字体改为自托管方式 ([c292a4b](https://github.com/baiwumm/better-nav/commit/c292a4b4cb1139c827cd2ff7d813afa0e02d5da9))
+* apply vercel-react-best-practices - extract useCallback for event handlers ([e0100f7](https://github.com/baiwumm/better-nav/commit/e0100f73bb674070264141bafa7f351e41c02c15))
+
 ## [3.8.5](https://github.com/baiwumm/better-nav/compare/3.8.4...3.8.5) (2026-08-12)
 
 ### ✨ Features | 新功能
