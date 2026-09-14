@@ -56,8 +56,10 @@ export type Website = Columns & {
 /** @description: 网站列表表单 */
 export type WebsiteSaveParams = Omit<
   Website,
-  keyof Columns | "visitCount" | "category"
+  keyof Columns | "visitCount" | "category" | "logo"
 > &
   Pick<Website, "sort"> & {
     id?: string;
+    /** 存储路径由服务端根据上传文件自动写入，客户端无需传递 */
+    logo?: string | null;
   };

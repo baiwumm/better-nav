@@ -1,8 +1,10 @@
 import type { NextRequest } from "next/server";
+import type { WebsiteSaveParams } from "@/types";
 
 import { NextResponse } from "next/server";
 
 import { getSupabaseServerClient, requireAdmin } from "@/lib/supabase/server";
+import { buildLogoPath, validateLogoFile } from "@/lib/server/logo";
 import { RESPONSE, responseMessage } from "@/lib/utils";
 
 // 可更新字段白名单：防止客户端篡改 id / user_id / visitCount 等受保护字段
@@ -107,7 +109,9 @@ export async function DELETE(
 }
 
 /**
- * @description: 修改网站
+ * @description: 修改网站（表单数据与新 Logo 一次性提交）
+ * 执行顺序：先上传新 Logo → 再 UPDATE 落库（单条语句天然原子）
+ * 换 Logo 失败不会影响站点现有数据；成功后清理被替换的旧 Logo 文件
  * @param {Request} request
  */
 export async function PUT(
@@ -128,34 +132,91 @@ export async function PUT(
 
     // 获取动态参数
     const { id } = await params;
-    // 解析请求体（仅保留白名单字段）
-    const body = pickUpdateFields(
-      (await request.json()) as Record<string, unknown>,
-    );
+    // 解析请求体：data 为 JSON 字符串，file 为新 Logo 文件（可选）
+    const formData = await request.formData();
+    const file = formData.get("file");
 
-    // 更新分类
-    const { data, error } = await supabase
+    let body: Partial<WebsiteSaveParams> | null = null;
+
+    try {
+      body = JSON.parse(String(formData.get("data") ?? "null"));
+    } catch {
+      return NextResponse.json(responseMessage(null, "参数错误", -1));
+    }
+
+    // 仅保留白名单字段
+    const data = pickUpdateFields(body as Record<string, unknown>);
+
+    let logoPath: string | null = null;
+    let oldLogo: string | null = null;
+
+    // 1. 校验并上传新 Logo（可选）
+    if (file instanceof File) {
+      const invalidReason = validateLogoFile(file);
+
+      if (invalidReason) {
+        return NextResponse.json(responseMessage(null, invalidReason, -1));
+      }
+
+      // 先查出旧 Logo 路径，更新成功后用于清理
+      const { data: existing } = await supabase
+        .from("ds_websites")
+        .select("logo")
+        .eq("id", id)
+        .single();
+
+      oldLogo = existing?.logo ?? null;
+
+      logoPath = buildLogoPath(user.id, id, file);
+      const { error: uploadError } = await supabase.storage
+        .from(process.env.NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET!)
+        .upload(logoPath, file);
+
+      // 上传失败直接终止，DB 现有数据（含旧 Logo）零影响，表单未关闭可原地重试
+      if (uploadError) {
+        return NextResponse.json(
+          responseMessage(null, `Logo 上传失败: ${uploadError.message}`, -1),
+        );
+      }
+
+      data.logo = logoPath;
+    }
+
+    // 2. 单条 UPDATE 原子落库
+    const { data: website, error } = await supabase
       .from("ds_websites")
-      .update(body)
+      .update(data)
       .eq("id", id)
       .select()
       .single();
 
-    // 如果插入失败
     if (error) {
+      // 补偿：落库失败删除已上传的新文件
+      if (logoPath) {
+        await supabase.storage
+          .from(process.env.NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET!)
+          .remove([logoPath]);
+      }
+
       // 判断是否违反唯一性约束（PostgreSQL 错误代码 23505）
       if (error.code === "23505") {
         return NextResponse.json(responseMessage(null, "网站名称已存在！", -1));
       }
 
-      // 其他错误
       return NextResponse.json(
         responseMessage(null, error.message, RESPONSE.ERROR),
       );
     }
 
-    // 返回更新后的菜单数据
-    return NextResponse.json(responseMessage(data));
+    // 3. 更新成功后清理被替换的旧 Logo 文件（清理失败不影响主流程，删站时会兜底清理）
+    if (logoPath && oldLogo && oldLogo !== logoPath) {
+      await supabase.storage
+        .from(process.env.NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET!)
+        .remove([oldLogo]);
+    }
+
+    // 返回更新后的网站数据
+    return NextResponse.json(responseMessage(website));
   } catch (err) {
     return NextResponse.json(responseMessage(null, (err as Error).message, -1));
   }
@@ -168,5 +229,5 @@ function pickUpdateFields(body: Record<string, unknown>) {
       key,
       body[key],
     ]),
-  );
+  ) as Partial<WebsiteSaveParams>;
 }

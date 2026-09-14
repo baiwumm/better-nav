@@ -84,7 +84,7 @@ const SaveModal: FC<SaveModalProps> = ({
     wasOpenRef.current = state.isOpen;
   }, [state.isOpen, onClose, setTags]);
 
-  // 上传成功回调
+  // 提交成功回调
   const onSuccess = () => {
     state.close();
     toast.success("提交成功", {
@@ -94,34 +94,14 @@ const SaveModal: FC<SaveModalProps> = ({
     handleRefresh?.();
   };
 
-  // 上传 Logo
-  const { loading: uploadLoading, trigger: fetchUploadLogo } = useSwrMutation(
-    "/websites/:id/logo",
-    "PUT",
-    {
-      onSuccess: ({ code }) => {
-        if (code === RESPONSE.SUCCESS) {
-          onSuccess();
-        }
-      },
-    },
-  );
-
-  // 保存表单
+  // 保存表单（表单数据与 Logo 一次性提交，服务端保证原子性）
   const { loading, trigger } = useSwrMutation<Website>(
     "/websites",
     initialValues?.id ? "PUT" : "POST",
     {
-      onSuccess: ({ code, data }) => {
+      onSuccess: ({ code }) => {
         if (code === RESPONSE.SUCCESS) {
-          if (data?.id && logoFile) {
-            const formData = new FormData();
-
-            formData.append("file", logoFile as File);
-            fetchUploadLogo({ id: data.id, data: formData });
-          } else {
-            onSuccess();
-          }
+          onSuccess();
         }
       },
     },
@@ -173,7 +153,6 @@ const SaveModal: FC<SaveModalProps> = ({
       name: formData.get("name") as string,
       desc: (formData.get("desc") as string) ?? "",
       url: formData.get("url") as string,
-      logo: (logoFile ? null : initialValues?.logo) ?? null,
 
       // number
       sort: Number(formData.get("sort")),
@@ -196,7 +175,17 @@ const SaveModal: FC<SaveModalProps> = ({
 
       return;
     }
-    await trigger({ id: initialValues?.id, data });
+
+    // 表单数据与新 Logo（如有）一次性提交
+    const payload = new FormData();
+
+    payload.append("data", JSON.stringify(data));
+
+    if (logoFile) {
+      payload.append("file", logoFile as File);
+    }
+
+    await trigger({ id: initialValues?.id, data: payload });
   };
 
   return (
@@ -370,26 +359,14 @@ const SaveModal: FC<SaveModalProps> = ({
             </Surface>
           </Modal.Body>
           <Modal.Footer>
-            <Button
-              isDisabled={loading || uploadLoading}
-              slot="close"
-              variant="outline"
-            >
+            <Button isDisabled={loading} slot="close" variant="outline">
               取消
             </Button>
-            <Button
-              form="category-form"
-              isPending={loading || uploadLoading}
-              type="submit"
-            >
+            <Button form="category-form" isPending={loading} type="submit">
               {({ isPending }) => (
                 <>
                   {isPending ? <Spinner color="current" size="sm" /> : null}
-                  {loading
-                    ? "正在提交..."
-                    : uploadLoading
-                      ? "正在上传 Logo..."
-                      : "确定"}
+                  {loading ? "正在提交..." : "确定"}
                 </>
               )}
             </Button>

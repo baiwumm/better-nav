@@ -18,6 +18,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import CropLogoModal from "./crop-logo-modal";
 
 import { formatBytes, useFileUpload } from "@/hooks/use-file-upload";
+import { MAX_LOGO_SIZE } from "@/lib/server/logo";
 
 interface LogoUploadProps {
   maxSize?: number;
@@ -27,7 +28,7 @@ interface LogoUploadProps {
 }
 
 const LogoUpload: FC<LogoUploadProps> = ({
-  maxSize = 1 * 1024 * 1024, // 1MB
+  maxSize = MAX_LOGO_SIZE, // 2MB，与服务端校验保持一致
   className,
   onFileChange,
   defaultAvatar,

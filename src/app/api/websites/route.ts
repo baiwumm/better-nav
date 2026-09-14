@@ -1,8 +1,10 @@
 import type { NextRequest } from "next/server";
+import type { WebsiteSaveParams } from "@/types";
 
 import { NextResponse } from "next/server";
 
 import { getSupabaseServerClient, requireAdmin } from "@/lib/supabase/server";
+import { buildLogoPath, validateLogoFile } from "@/lib/server/logo";
 import { RESPONSE, responseMessage } from "@/lib/utils";
 
 /**
@@ -85,7 +87,9 @@ export async function GET(request: NextRequest) {
 }
 
 /**
- * @description: 新增网站
+ * @description: 新增网站（表单数据与 Logo 一次性提交）
+ * 执行顺序：先上传 Logo → 再 INSERT 落库（单条语句天然原子）
+ * 任一步失败都不会留下半成品数据：上传失败 DB 零影响；落库失败补偿删除已传文件
  * @param {Request} request
  */
 export async function POST(request: NextRequest) {
@@ -101,30 +105,73 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 解析请求体
-    const body = await request.json(); // 如果是 JSON 数据
+    // 解析请求体：data 为 JSON 字符串，file 为 Logo 文件
+    const formData = await request.formData();
+    const file = formData.get("file");
 
-    // 插入数据
-    const { data, error } = await supabase
+    let data: Partial<WebsiteSaveParams> | null = null;
+
+    try {
+      data = JSON.parse(String(formData.get("data") ?? "null"));
+    } catch {
+      return NextResponse.json(responseMessage(null, "参数错误", -1));
+    }
+
+    if (!data?.name || !data?.url || !data?.category_id) {
+      return NextResponse.json(responseMessage(null, "参数错误", -1));
+    }
+
+    // 服务端生成站点 id，Logo 路径依赖它，避免落库后还要回写
+    const siteId = crypto.randomUUID();
+    let logoPath: string | null = null;
+
+    // 1. 校验并上传 Logo（新增必传）
+    if (file instanceof File) {
+      const invalidReason = validateLogoFile(file);
+
+      if (invalidReason) {
+        return NextResponse.json(responseMessage(null, invalidReason, -1));
+      }
+
+      logoPath = buildLogoPath(user.id, siteId, file);
+      const { error: uploadError } = await supabase.storage
+        .from(process.env.NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET!)
+        .upload(logoPath, file);
+
+      // 上传失败直接终止，DB 零影响，表单未关闭可原地重试
+      if (uploadError) {
+        return NextResponse.json(
+          responseMessage(null, `Logo 上传失败: ${uploadError.message}`, -1),
+        );
+      }
+    }
+
+    // 2. 单条 INSERT 原子落库（含 id 与 logo 路径）
+    const { data: website, error } = await supabase
       .from("ds_websites")
-      .insert(body)
+      .insert({ ...data, id: siteId, logo: logoPath })
       .select()
       .single();
 
-    // 如果插入失败
     if (error) {
+      // 补偿：落库失败删除已上传的孤儿文件
+      if (logoPath) {
+        await supabase.storage
+          .from(process.env.NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET!)
+          .remove([logoPath]);
+      }
+
       // 判断是否违反唯一性约束（PostgreSQL 错误代码 23505）
       if (error.code === "23505") {
         return NextResponse.json(responseMessage(null, "网站名称已存在！", -1));
       }
 
-      // 其他错误
       return NextResponse.json(
         responseMessage(null, error.message, RESPONSE.ERROR),
       );
     }
 
-    return NextResponse.json(responseMessage(data));
+    return NextResponse.json(responseMessage(website));
   } catch (err) {
     return NextResponse.json(responseMessage(null, (err as Error).message, -1));
   }
