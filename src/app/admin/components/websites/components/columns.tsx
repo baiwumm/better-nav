@@ -39,7 +39,7 @@ export function getColumns({
     { key: "commonlyUsed", header: "常用" },
   ] as const;
 
-  return [
+  return columnHelper.columns([
     columnHelper.display({
       id: "index",
       header: "序号",
@@ -217,5 +217,5 @@ export function getColumns({
         </div>
       ),
     }),
-  ];
+  ]);
 }

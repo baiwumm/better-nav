@@ -8,9 +8,9 @@
 "use client";
 import type { Category, PaginatingResponse, Website } from "@/types";
 import type {
+  ColumnVisibilityState,
   PaginationState,
   SortingState,
-  VisibilityState,
 } from "@tanstack/react-table";
 import type { FC } from "react";
 
@@ -45,12 +45,13 @@ const Websites: FC = () => {
   // 排序
   const [sorting, setSorting] = useState<SortingState>([]);
   // 受控列
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
-    desc: false,
-    vpn: false,
-    commonlyUsed: false,
-    updated_at: false,
-  });
+  const [columnVisibility, setColumnVisibility] =
+    useState<ColumnVisibilityState>({
+      desc: false,
+      vpn: false,
+      commonlyUsed: false,
+      updated_at: false,
+    });
 
   // 保存弹窗
   const saveModalState = useOverlayState();

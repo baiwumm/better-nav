@@ -5,13 +5,18 @@
  * @LastEditTime: 2026-03-11 13:57:44
  * @Description: 表格列设置
  */
+import type { RowData } from "@tanstack/react-table";
 import type { AppTable } from "@/types/table-types";
 import type { Selection } from "@heroui/react";
 
 import { Sliders } from "@gravity-ui/icons";
 import { Button, Dropdown, Label } from "@heroui/react";
 
-function ColumnsVisibility<TData>({ table }: { table: AppTable<TData> }) {
+function ColumnsVisibility<TData extends RowData>({
+  table,
+}: {
+  table: AppTable<TData>;
+}) {
   const columns = table
     .getAllLeafColumns()
     .filter((column) => column.getCanHide());

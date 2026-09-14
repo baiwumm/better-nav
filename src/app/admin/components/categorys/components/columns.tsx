@@ -23,7 +23,7 @@ export function getColumns({
   page = 1,
   pageSize = 10,
 }: ColumnsProps) {
-  return [
+  return columnHelper.columns([
     columnHelper.display({
       id: "index",
       header: "序号",
@@ -99,5 +99,5 @@ export function getColumns({
         </div>
       ),
     }),
-  ];
+  ]);
 }

@@ -5,11 +5,12 @@
  * @LastEditTime: 2026-09-04 15:21:46
  * @Description: 渲染分页
  */
+import type { RowData } from "@tanstack/react-table";
 import type { AppTable } from "@/types/table-types";
 
 import { Description, ListBox, Pagination, Select } from "@heroui/react";
 
-interface DataTablePaginationProps<TData> {
+interface DataTablePaginationProps<TData extends RowData> {
   table: AppTable<TData>;
   total: number;
 }
@@ -20,7 +21,7 @@ interface PaginationToken {
   value?: number;
 }
 
-function DataTablePagination<TData>({
+function DataTablePagination<TData extends RowData>({
   table,
   total = 0,
 }: DataTablePaginationProps<TData>) {
