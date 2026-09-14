@@ -1,5 +1,23 @@
 # Changelog
 
+## [3.10.0](https://github.com/baiwumm/better-nav/compare/3.9.0...3.10.0) (2026-09-14)
+
+### ✨ Features | 新功能
+
+* **websites:** 添加选择器清空按钮功能 ([1d1cfe1](https://github.com/baiwumm/better-nav/commit/1d1cfe1eb27f972ed88dd4cd90a515f187eaeb04))
+
+### 🐛 Bug Fixes | Bug 修复
+
+* **table:** 修复 TanStack Table v9 升级遗留的类型错误 ([4999b8c](https://github.com/baiwumm/better-nav/commit/4999b8c4b21f197cce45e95d56b63577dfd98ddd))
+
+### 🎫 Chores | 其他更新
+
+* **deps:** 更新 @heroui/react 和相关依赖包版本 ([ac81781](https://github.com/baiwumm/better-nav/commit/ac817811380de2e41bb75c263d9466d62ec99a70))
+
+### ♻ Code Refactoring | 代码重构
+
+* 合并网站保存与 Logo 上传为单接口 ([553bd25](https://github.com/baiwumm/better-nav/commit/553bd25526034f2abbc46d65897d0d16d842ab9d))
+
 ## [3.9.0](https://github.com/baiwumm/better-nav/compare/3.8.5...3.9.0) (2026-09-04)
 
 ### 🐛 Bug Fixes | Bug 修复
