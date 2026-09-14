@@ -224,6 +224,7 @@ const SaveModal: FC<SaveModalProps> = ({
                   <Label>所属分类</Label>
                   <Select.Trigger>
                     <Select.Value />
+                    <Select.ClearButton />
                     <Select.Indicator />
                   </Select.Trigger>
                   <Select.Popover>
