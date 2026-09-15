@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.10.1](https://github.com/baiwumm/better-nav/compare/3.10.0...3.10.1) (2026-09-15)
+
+### ✨ Features | 新功能
+
+* 添加 theme-switch-animation 依赖包 ([3642dab](https://github.com/baiwumm/better-nav/commit/3642dab74dbdb10f7ff9422ad2085e29a4446910))
+* **ThemeSwitcher:** 使用新的主题动画库替换自定义钩子 ([d95e3f1](https://github.com/baiwumm/better-nav/commit/d95e3f1cde4df462e58808570e5db9413903a26f))
+
 ## [3.10.0](https://github.com/baiwumm/better-nav/compare/3.9.0...3.10.0) (2026-09-14)
 
 ### ✨ Features | 新功能
