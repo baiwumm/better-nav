@@ -1,31 +1,27 @@
 "use client";
 import type { FC } from "react";
 
+import {
+  ThemeAnimationType,
+  useThemeAnimation,
+} from "theme-switch-animation/react";
 import { Moon, Sun } from "@gravity-ui/icons";
 import { Button, Tooltip, useIsHydrated } from "@heroui/react";
 import { AnimatePresence, motion } from "motion/react";
 import { useTheme } from "next-themes";
 import { useEffect, useRef } from "react";
 
-import { useBlurCircleTheme } from "@/hooks/use-blur-circle-theme";
-
 const MotionMoon = motion.create(Moon);
 const MotionSun = motion.create(Sun);
 
 const ThemeSwitcher: FC = () => {
   const hydrated = useIsHydrated();
-  const { theme, setTheme, resolvedTheme } = useTheme();
+  const { setTheme, resolvedTheme } = useTheme();
 
-  // 使用 next-themes 控制主题
-  const isDarkMode = theme === "dark" || resolvedTheme === "dark";
-
-  const { ref, toggleTheme, isAnimating } = useBlurCircleTheme({
-    isDarkMode,
-    onDarkModeChange: (nextIsDark) => {
-      setTheme(nextIsDark ? "dark" : "light");
-    },
-    duration: 750,
-    blurAmount: 2,
+  const { ref, toggleTheme, isDark } = useThemeAnimation({
+    animationType: ThemeAnimationType.CIRCLE_BLUR,
+    isDark: resolvedTheme === "dark",
+    onChange: (next) => setTheme(next ? "dark" : "light"),
   });
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -49,14 +45,10 @@ const ThemeSwitcher: FC = () => {
       audioRef.current = new Audio("/sounds/theme-toggle.mp3");
     }
     audioRef.current.currentTime = 0;
-    audioRef.current.play().catch((error) => {
-      // eslint-disable-next-line no-console
-      console.warn("Failed to play audio:", error);
-    });
+    audioRef.current.play().catch(() => {});
   };
 
   const handleToggle = () => {
-    if (isAnimating) return; // 防止动画期间重复点击
     playSound();
     toggleTheme();
   };
@@ -72,13 +64,12 @@ const ThemeSwitcher: FC = () => {
         ref={ref}
         isIconOnly
         aria-label="ThemeSwitcher"
-        isDisabled={isAnimating}
         size="sm"
         variant="ghost"
         onPress={handleToggle}
       >
         <AnimatePresence initial={false} mode="wait">
-          {isDarkMode ? (
+          {isDark ? (
             <MotionMoon
               key="moon"
               animate={{ opacity: 1, scale: 1 }}
