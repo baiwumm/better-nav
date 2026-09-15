@@ -39,7 +39,8 @@
     "react-aria-components": "1.21.0",
     "react-dom": "19.2.8",
     "react-easy-crop": "^6.2.3",
-    "swr": "^2.5.1"
+    "swr": "^2.5.1",
+    "theme-switch-animation": "^0.1.0"
   },
   "devDependencies": {
     "@eslint/compat": "^2.1.0",

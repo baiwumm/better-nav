@@ -7,6 +7,7 @@ minimumReleaseAgeExclude:
   - '@supabase/storage-js@2.115.0'
   - '@supabase/supabase-js@2.115.0'
   - semver@6.3.1
+  - theme-switch-animation@0.1.0
 
 trustPolicy: warn-downgrade
 shellEmulator: true

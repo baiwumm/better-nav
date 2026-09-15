@@ -65,6 +65,9 @@ importers:
       swr:
         specifier: ^2.5.1
         version: 2.5.1(react@19.2.8)
+      theme-switch-animation:
+        specifier: ^0.1.0
+        version: 0.1.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
     devDependencies:
       '@eslint/compat':
         specifier: ^2.1.0
@@ -3052,6 +3055,24 @@ packages:
   tapable@2.3.3:
     resolution: {integrity: sha512-uxc/zpqFg6x7C8vOE7lh6Lbda8eEL9zmVm/PLeTPBRhh1xCgdWaQ+J1CUieGpIfm2HdtsUpRv+HshiasBMcc6A==}
     engines: {node: '>=6'}
+
+  theme-switch-animation@0.1.0:
+    resolution: {integrity: sha512-Yq3oKm2mLVsAoQuSxbA9rt57XfKJOInyNanvraRQo65uo3wuzsueRE36Cg9XUAuGDKlGTYpZuBejvmWbSOwOew==}
+    engines: {node: '>=18', pnpm: '>=9'}
+    peerDependencies:
+      '@nuxt/kit': '>=3'
+      react: '>=18'
+      react-dom: '>=18'
+      vue: '>=3'
+    peerDependenciesMeta:
+      '@nuxt/kit':
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
+      vue:
+        optional: true
 
   third-party-capital@1.0.20:
     resolution: {integrity: sha512-oB7yIimd8SuGptespDAZnNkzIz+NWaJCu2RMsbs4Wmp9zSDUM8Nhi3s2OOcqYuv3mN4hitXc8DVx+LyUmbUDiA==}
@@ -6359,6 +6380,11 @@ snapshots:
   tailwindcss@4.3.3: {}
 
   tapable@2.3.3: {}
+
+  theme-switch-animation@0.1.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8):
+    optionalDependencies:
+      react: 19.2.8
+      react-dom: 19.2.8(react@19.2.8)
 
   third-party-capital@1.0.20: {}
 
