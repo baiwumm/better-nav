@@ -216,7 +216,7 @@ const SaveModal: FC<SaveModalProps> = ({
                 <Select
                   isRequired
                   aria-label="所属分类"
-                  defaultValue={initialValues?.category_id ?? ""}
+                  defaultValue={initialValues?.category_id || null}
                   name="category_id"
                   placeholder="请选择所属分类"
                   variant="secondary"
