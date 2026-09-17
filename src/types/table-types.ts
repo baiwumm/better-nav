@@ -13,19 +13,21 @@ import {
   createPaginatedRowModel,
   createSortedRowModel,
   rowPaginationFeature,
+  rowSelectionFeature,
   rowSortingFeature,
   tableFeatures,
 } from "@tanstack/react-table";
 
 /**
  * 项目统一的 TanStack Table v9 feature 集（模块级静态注册，tree-shaking 友好）：
- * 列可见性/列排序 + 行排序 + 分页。
+ * 列可见性/列排序 + 行排序 + 分页 + 行选择（页面不传 enableRowSelection 时无行为变化）。
  */
 export const appTableFeatures = tableFeatures({
   columnOrderingFeature,
   columnVisibilityFeature,
   rowSortingFeature,
   rowPaginationFeature,
+  rowSelectionFeature,
   sortedRowModel: createSortedRowModel(),
   paginatedRowModel: createPaginatedRowModel(),
 });

@@ -16,6 +16,8 @@ interface DeleteDialogProps {
   state: UseOverlayStateReturn;
   loading: boolean;
   handleDelConfirm: VoidFunction;
+  /** 批量删除的数量：传入时切换为批量文案，不传保持单条删除文案 */
+  count?: number;
   onClose?: VoidFunction;
 }
 
@@ -23,8 +25,10 @@ const DeleteDialog: FC<DeleteDialogProps> = ({
   state,
   loading = false,
   handleDelConfirm,
+  count,
   onClose,
 }) => {
+  const isBatch = count != null;
   const wasOpenRef = useRef(false);
 
   useEffect(() => {
@@ -41,11 +45,15 @@ const DeleteDialog: FC<DeleteDialogProps> = ({
           <AlertDialog.CloseTrigger />
           <AlertDialog.Header>
             <AlertDialog.Icon status="danger" />
-            <AlertDialog.Heading>确认删除该网站？</AlertDialog.Heading>
+            <AlertDialog.Heading>
+              {isBatch
+                ? `确认删除选中的 ${count} 个网站？`
+                : "确认删除该网站？"}
+            </AlertDialog.Heading>
           </AlertDialog.Header>
           <AlertDialog.Body>
             <p>
-              删除后，该网站及其关联的数据将被
+              删除后，{isBatch ? "选中的网站" : "该网站"}及其关联的数据将被
               <strong>永久移除</strong>
               ，且无法恢复。 请确认当前操作不会影响正在使用的业务或历史数据。
             </p>

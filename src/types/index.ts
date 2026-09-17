@@ -63,3 +63,13 @@ export type WebsiteSaveParams = Omit<
     /** 存储路径由服务端根据上传文件自动写入，客户端无需传递 */
     logo?: string | null;
   };
+
+/** @description: 网站批量操作参数（批量删除 / 批量移动分类） */
+export type WebsiteBatchParams =
+  | { action: "delete"; ids: string[] }
+  | { action: "moveCategory"; ids: string[]; category_id: string };
+
+/** @description: 网站批量操作响应 */
+export interface WebsiteBatchResult {
+  count: number; // 实际影响的条数
+}

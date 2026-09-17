@@ -16,6 +16,10 @@ import { createColumnHelper } from "@tanstack/react-table";
 import Image from "next/image";
 
 import { formatDate, generateLogoUrl } from "@/lib/utils";
+import {
+  DataTableSelectAll,
+  DataTableSelectRow,
+} from "@/components/DataTableSelect";
 
 const columnHelper = createColumnHelper<AppTableFeatures, Website>();
 
@@ -40,6 +44,15 @@ export function getColumns({
   ] as const;
 
   return columnHelper.columns([
+    // 行选择列：不可排序、不可隐藏（不会出现在「列设置」中）
+    columnHelper.display({
+      id: "select",
+      enableSorting: false,
+      enableHiding: false,
+      header: ({ table }) => <DataTableSelectAll table={table} />,
+      cell: ({ row }) => <DataTableSelectRow row={row} />,
+    }),
+
     columnHelper.display({
       id: "index",
       header: "序号",
