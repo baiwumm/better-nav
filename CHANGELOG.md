@@ -1,5 +1,15 @@
 # Changelog
 
+## [3.10.2](https://github.com/baiwumm/better-nav/compare/3.10.1...3.10.2) (2026-09-17)
+
+### ✨ Features | 新功能
+
+* **websites:** 网站列表支持多选与批量移动分类、批量删除 ([8914179](https://github.com/baiwumm/better-nav/commit/8914179e20f2f0d2d9a7d56b684c2ad3fb83b3ea))
+
+### 🐛 Bug Fixes | Bug 修复
+
+* **websites:** 修复网站管理中分类选择器的值处理问题 ([986f09f](https://github.com/baiwumm/better-nav/commit/986f09f358ae4dcfba18dffc8f113d047dc5bb47))
+
 ## [3.10.1](https://github.com/baiwumm/better-nav/compare/3.10.0...3.10.1) (2026-09-15)
 
 ### ✨ Features | 新功能
