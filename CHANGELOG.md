@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.10.3](https://github.com/baiwumm/better-nav/compare/3.10.2...3.10.3) (2026-09-20)
+
+### ✨ Features | 新功能
+
+* **supabase:** 新增数据库初始化脚本，开箱即可建表 ([c0a367d](https://github.com/baiwumm/better-nav/commit/c0a367de96fd40f9f1c43df600630b684ada2f96))
+
 ## [3.10.2](https://github.com/baiwumm/better-nav/compare/3.10.1...3.10.2) (2026-09-17)
 
 ### ✨ Features | 新功能
