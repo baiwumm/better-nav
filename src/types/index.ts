@@ -15,7 +15,7 @@ export type CategorySaveParams = Pick<Category, "name" | "sort"> & {
 export interface Columns {
   id: string; // 主键
   user_id: string; // 登录用户 id
-  emial: string; // 邮箱
+  email: string; // 邮箱
   sort: number; // 排序
   created_at: string; // 创建时间
   updated_at: string; // 更新时间

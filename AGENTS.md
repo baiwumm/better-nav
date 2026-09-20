@@ -34,8 +34,9 @@ better-nav/
 │   ├── types/             # TypeScript 类型定义
 │   └── proxy.ts           # 代理配置
 ├── supabase/              # Supabase SQL 脚本
-│   ├── rls.sql            # Row Level Security 策略
-│   └── rls.sql.example    # RLS 示例
+│   ├── schema.sql         # 数据库初始化脚本（建表 / 函数 / 触发器 / RLS / 存储桶）
+│   ├── seed.sql            # 可选演示数据
+│   └── 登录鉴权移植指南.md  # 三层白名单鉴权改动记录
 ├── .env.example           # 环境变量示例
 ├── package.json           # 项目配置
 ├── next.config.ts         # Next.js 配置
@@ -189,13 +190,20 @@ pnpm release
 
 ## 数据库表结构（参考）
 
-项目依赖以下 Supabase 表：
+项目依赖以下 Supabase 对象：
 
 - `ds_categorys`：分类表
 - `ds_websites`：网站表
-- `increment_visit_count`：访问计数函数
+- `increment_visit_count(row_id uuid)`：访问计数函数，`security definer`（表开启 RLS 后匿名访客靠它才能写入计数）
+- `is_admin()`：管理员邮箱白名单判定，RLS 写权限的唯一入口
+- `logos`：Logo 存储桶，公开读、仅管理员写
 
-详细 SQL 见 `supabase/rls.sql`。
+完整初始化 SQL 见 `supabase/schema.sql`（幂等，可重复执行），演示数据见 `supabase/seed.sql`。
+
+注意两处易踩坑的细节：
+
+1. `visitCount`、`commonlyUsed` 是带引号的驼峰列名，前端类型与 PostgREST 返回字段直接使用它们，不要在没牵动类型和列定义的情况下改名
+2. `ds_websites.category_id` 外键故意不加 `on delete cascade`，分类下仍有站点时删除分类会被拒绝，避免连带删站点数据
 
 ---
 
