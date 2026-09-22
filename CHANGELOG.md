@@ -1,5 +1,15 @@
 # Changelog
 
+## [3.10.4](https://github.com/baiwumm/better-nav/compare/3.10.3...3.10.4) (2026-09-22)
+
+### 🐛 Bug Fixes | Bug 修复
+
+* **CategoryIndicator:** 调整悬停状态下的颜色样式 ([d553096](https://github.com/baiwumm/better-nav/commit/d5530963ead084970b48964ec66befd37652e6ad))
+
+### 🎫 Chores | 其他更新
+
+* **deps:** 升级 theme-switch-animation 依赖包到 v0.2.0 版本 ([ca16de3](https://github.com/baiwumm/better-nav/commit/ca16de34a0e5ca54d6e89f7b50cb246008bcaa42))
+
 ## [3.10.3](https://github.com/baiwumm/better-nav/compare/3.10.2...3.10.3) (2026-09-20)
 
 ### ✨ Features | 新功能
