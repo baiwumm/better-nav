@@ -66,8 +66,8 @@ importers:
         specifier: ^2.5.1
         version: 2.5.1(react@19.2.8)
       theme-switch-animation:
-        specifier: ^0.1.0
-        version: 0.1.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        specifier: ^0.2.0
+        version: 0.2.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
     devDependencies:
       '@eslint/compat':
         specifier: ^2.1.0
@@ -3056,8 +3056,8 @@ packages:
     resolution: {integrity: sha512-uxc/zpqFg6x7C8vOE7lh6Lbda8eEL9zmVm/PLeTPBRhh1xCgdWaQ+J1CUieGpIfm2HdtsUpRv+HshiasBMcc6A==}
     engines: {node: '>=6'}
 
-  theme-switch-animation@0.1.0:
-    resolution: {integrity: sha512-Yq3oKm2mLVsAoQuSxbA9rt57XfKJOInyNanvraRQo65uo3wuzsueRE36Cg9XUAuGDKlGTYpZuBejvmWbSOwOew==}
+  theme-switch-animation@0.2.0:
+    resolution: {integrity: sha512-GK6pHtSLHWZ+JbtLEigp3d6zYBaAXLxyUKYyCkPATve7PdVkxp94KNzM9OrxmWZJ6xgSByP+BjlNSy7lCYkJPQ==}
     engines: {node: '>=18', pnpm: '>=9'}
     peerDependencies:
       '@nuxt/kit': '>=3'
@@ -6381,7 +6381,7 @@ snapshots:
 
   tapable@2.3.3: {}
 
-  theme-switch-animation@0.1.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8):
+  theme-switch-animation@0.2.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8):
     optionalDependencies:
       react: 19.2.8
       react-dom: 19.2.8(react@19.2.8)
