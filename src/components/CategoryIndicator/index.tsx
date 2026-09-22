@@ -139,12 +139,13 @@ export default function CategoryIndicator({
         let barClass: string;
 
         if (hoveredIndex !== null) {
-          if (distance === 0) barClass = "w-7 bg-accent";
-          else if (distance === 1) barClass = "w-6 bg-accent/70";
-          else if (distance === 2) barClass = "w-5 bg-accent/45";
-          else barClass = isActive ? "w-5 bg-accent" : "w-4 bg-accent/10";
+          if (distance === 0) barClass = "w-7 bg-foreground";
+          else if (distance === 1) barClass = "w-6 bg-foreground/70";
+          else if (distance === 2) barClass = "w-5 bg-foreground/45";
+          else
+            barClass = isActive ? "w-5 bg-foreground" : "w-4 bg-foreground/10";
         } else {
-          barClass = isActive ? "w-5 bg-accent" : "w-4 bg-accent/10";
+          barClass = isActive ? "w-5 bg-foreground" : "w-4 bg-foreground/10";
         }
 
         return (
