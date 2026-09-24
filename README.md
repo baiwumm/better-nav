@@ -22,6 +22,10 @@
   </a>
 </div>
 
+<div align="center">
+  <img alt="Better Nav —— 把常用网址收拾得干干净净" src="./public/cover.webp" width="1200" />
+</div>
+
 ## 🌱 简介
 
 `Better Nav` 是一个基于 Next.js 与 Supabase 的个人导航站。

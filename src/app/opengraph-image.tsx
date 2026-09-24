@@ -32,7 +32,7 @@ const ASSET_MIME_TYPES: Record<string, string> = {
 
 // Vercel 最佳实践：静态 I/O 提升到模块级，只读一次，避免每次请求重复 readFile
 const logoAsset = publicAssetToDataUrl("logo.png");
-const previewAsset = publicAssetToDataUrl("light.png");
+const previewAsset = publicAssetToDataUrl("og-preview.png");
 const avatarAsset = publicAssetToDataUrl("avatar.jpg");
 
 export default async function OpenGraphImage() {
