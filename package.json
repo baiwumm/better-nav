@@ -40,7 +40,7 @@
     "react-dom": "19.2.8",
     "react-easy-crop": "^6.2.3",
     "swr": "^2.5.1",
-    "theme-switch-animation": "^0.2.0"
+    "theme-switch-animation": "^0.4.0"
   },
   "devDependencies": {
     "@eslint/compat": "^2.1.0",
