@@ -1,6 +1,6 @@
 # Changelog
 
-## [3.10.4](https://github.com/baiwumm/better-nav/compare/3.10.3...3.10.4) (2026-09-22)
+## [3.10.4](https://github.com/baiwumm/better-nav/compare/v3.10.3...v3.10.4) (2026-09-22)
 
 ### 🐛 Bug Fixes | Bug 修复
 
@@ -10,13 +10,13 @@
 
 * **deps:** 升级 theme-switch-animation 依赖包到 v0.2.0 版本 ([ca16de3](https://github.com/baiwumm/better-nav/commit/ca16de34a0e5ca54d6e89f7b50cb246008bcaa42))
 
-## [3.10.3](https://github.com/baiwumm/better-nav/compare/3.10.2...3.10.3) (2026-09-20)
+## [3.10.3](https://github.com/baiwumm/better-nav/compare/v3.10.2...v3.10.3) (2026-09-20)
 
 ### ✨ Features | 新功能
 
 * **supabase:** 新增数据库初始化脚本，开箱即可建表 ([c0a367d](https://github.com/baiwumm/better-nav/commit/c0a367de96fd40f9f1c43df600630b684ada2f96))
 
-## [3.10.2](https://github.com/baiwumm/better-nav/compare/3.10.1...3.10.2) (2026-09-17)
+## [3.10.2](https://github.com/baiwumm/better-nav/compare/v3.10.1...v3.10.2) (2026-09-17)
 
 ### ✨ Features | 新功能
 
@@ -26,14 +26,14 @@
 
 * **websites:** 修复网站管理中分类选择器的值处理问题 ([986f09f](https://github.com/baiwumm/better-nav/commit/986f09f358ae4dcfba18dffc8f113d047dc5bb47))
 
-## [3.10.1](https://github.com/baiwumm/better-nav/compare/3.10.0...3.10.1) (2026-09-15)
+## [3.10.1](https://github.com/baiwumm/better-nav/compare/v3.10.0...v3.10.1) (2026-09-15)
 
 ### ✨ Features | 新功能
 
 * 添加 theme-switch-animation 依赖包 ([3642dab](https://github.com/baiwumm/better-nav/commit/3642dab74dbdb10f7ff9422ad2085e29a4446910))
 * **ThemeSwitcher:** 使用新的主题动画库替换自定义钩子 ([d95e3f1](https://github.com/baiwumm/better-nav/commit/d95e3f1cde4df462e58808570e5db9413903a26f))
 
-## [3.10.0](https://github.com/baiwumm/better-nav/compare/3.9.0...3.10.0) (2026-09-14)
+## [3.10.0](https://github.com/baiwumm/better-nav/compare/v3.9.0...v3.10.0) (2026-09-14)
 
 ### ✨ Features | 新功能
 
@@ -51,7 +51,7 @@
 
 * 合并网站保存与 Logo 上传为单接口 ([553bd25](https://github.com/baiwumm/better-nav/commit/553bd25526034f2abbc46d65897d0d16d842ab9d))
 
-## [3.9.0](https://github.com/baiwumm/better-nav/compare/3.8.5...3.9.0) (2026-09-04)
+## [3.9.0](https://github.com/baiwumm/better-nav/compare/v3.8.5...v3.9.0) (2026-09-04)
 
 ### 🐛 Bug Fixes | Bug 修复
 
@@ -68,7 +68,7 @@
 * 将远程 Maple Mono CN 字体改为自托管方式 ([c292a4b](https://github.com/baiwumm/better-nav/commit/c292a4b4cb1139c827cd2ff7d813afa0e02d5da9))
 * apply vercel-react-best-practices - extract useCallback for event handlers ([e0100f7](https://github.com/baiwumm/better-nav/commit/e0100f73bb674070264141bafa7f351e41c02c15))
 
-## [3.8.5](https://github.com/baiwumm/better-nav/compare/3.8.4...3.8.5) (2026-08-12)
+## [3.8.5](https://github.com/baiwumm/better-nav/compare/v3.8.4...v3.8.5) (2026-08-12)
 
 ### ✨ Features | 新功能
 
@@ -78,7 +78,7 @@
 
 * **request:** 以 SWR 替换手写 useRequest 保持行为一致 ([4ce723c](https://github.com/baiwumm/better-nav/commit/4ce723c275bcf75b17719cf05df475a36a8e5a43))
 
-## [3.8.4](https://github.com/baiwumm/better-nav/compare/3.8.3...3.8.4) (2026-08-12)
+## [3.8.4](https://github.com/baiwumm/better-nav/compare/v3.8.3...v3.8.4) (2026-08-12)
 
 ### 🎫 Chores | 其他更新
 
@@ -88,7 +88,7 @@
 
 * **backtop:** 移除回到顶部按钮 hover 阴影 ([cd5ebdc](https://github.com/baiwumm/better-nav/commit/cd5ebdc83c0e39ea892412de8228c38a76b96889))
 
-## [3.8.3](https://github.com/baiwumm/better-nav/compare/3.8.2...3.8.3) (2026-08-11)
+## [3.8.3](https://github.com/baiwumm/better-nav/compare/v3.8.2...v3.8.3) (2026-08-11)
 
 ### 🎫 Chores | 其他更新
 
@@ -98,7 +98,7 @@
 
 * 优化首屏与运行时性能并加固 API 鉴权 ([e94f60b](https://github.com/baiwumm/better-nav/commit/e94f60bea8dba87c0682fcb58f7d8311a2e3ba22))
 
-## [3.8.2](https://github.com/baiwumm/better-nav/compare/3.8.1...3.8.2) (2026-08-11)
+## [3.8.2](https://github.com/baiwumm/better-nav/compare/v3.8.1...v3.8.2) (2026-08-11)
 
 ### 🐛 Bug Fixes | Bug 修复
 
@@ -109,13 +109,13 @@
 
 * **deps:** 升级 Next.js 至 16.3.0 及配套依赖 ([9fc4ea4](https://github.com/baiwumm/better-nav/commit/9fc4ea43bf1d27d5a228139c55567fb308737640))
 
-## [3.8.1](https://github.com/baiwumm/better-nav/compare/3.8.0...3.8.1) (2026-08-11)
+## [3.8.1](https://github.com/baiwumm/better-nav/compare/v3.8.0...v3.8.1) (2026-08-11)
 
 ### 🎫 Chores | 其他更新
 
 * **deps:** 升级 HeroUI 至 3.2.4 并更新 Agent 文档索引 ([ba42748](https://github.com/baiwumm/better-nav/commit/ba427488ee386295ecb1a578189dfad940afc2e4))
 
-## [3.8.0](https://github.com/baiwumm/better-nav/compare/3.7.1...3.8.0) (2026-08-11)
+## [3.8.0](https://github.com/baiwumm/better-nav/compare/v3.7.1...v3.8.0) (2026-08-11)
 
 ### ✨ Features | 新功能
 
@@ -144,14 +144,14 @@
 
 * **home:** 修复首页卡片出场动画并优化加载性能 ([cea463b](https://github.com/baiwumm/better-nav/commit/cea463bf3e51db043894cc1bfa3952989607332e))
 
-## [3.7.1](https://github.com/baiwumm/better-nav/compare/3.7.0...3.7.1) (2026-08-05)
+## [3.7.1](https://github.com/baiwumm/better-nav/compare/v3.7.0...v3.7.1) (2026-08-05)
 
 ### 🐛 Bug Fixes | Bug 修复
 
 * **globals.css:** 修正全局主题的OKLCH色彩配置 ([df637c0](https://github.com/baiwumm/better-nav/commit/df637c0dbae5df50de5685e9d3eea26da842daac))
 * **layout, og-image:** 修复站点URL配置并优化OpenGraph图片生成 ([5ad223a](https://github.com/baiwumm/better-nav/commit/5ad223a358fc235f2d909afc7d62c9b86e93428d))
 
-## [3.7.0](https://github.com/baiwumm/better-nav/compare/3.6.6...3.7.0) (2026-08-05)
+## [3.7.0](https://github.com/baiwumm/better-nav/compare/v3.6.6...v3.7.0) (2026-08-05)
 
 ### ⚠ BREAKING CHANGES
 
@@ -191,13 +191,13 @@
 
 * **next-config:** 移除baiwumm图片远程域名配置 ([2a39223](https://github.com/baiwumm/better-nav/commit/2a392239597c761c974009f7f44eb659d7413f6b))
 
-## [3.6.6](https://github.com/baiwumm/better-nav/compare/3.6.5...3.6.6) (2026-07-22)
+## [3.6.6](https://github.com/baiwumm/better-nav/compare/v3.6.5...v3.6.6) (2026-07-22)
 
 ### ⚡ Performance Improvements | 性能优化
 
 * **layout:** 优化布局结构 ([5f6cae1](https://github.com/baiwumm/better-nav/commit/5f6cae181b86a84919e4e33d3def3ef73f465512))
 
-## [3.6.5](https://github.com/baiwumm/better-nav/compare/3.6.4...3.6.5) (2026-07-15)
+## [3.6.5](https://github.com/baiwumm/better-nav/compare/v3.6.4...v3.6.5) (2026-07-15)
 
 ### 💄 Styles | 风格
 
@@ -207,25 +207,25 @@
 
 * 删除 LoadingContent 组件 ([d3ad5f8](https://github.com/baiwumm/better-nav/commit/d3ad5f87d636718615c8402d5c93b7ae74f2bd41))
 
-## [3.6.4](https://github.com/baiwumm/better-nav/compare/3.6.3...3.6.4) (2026-07-07)
+## [3.6.4](https://github.com/baiwumm/better-nav/compare/v3.6.3...v3.6.4) (2026-07-07)
 
 ### 💄 Styles | 风格
 
 * UI 调整 ([81ef0d0](https://github.com/baiwumm/better-nav/commit/81ef0d0185ec4cda66c0012ee60aa8b25cf15b3b))
 
-## [3.6.3](https://github.com/baiwumm/better-nav/compare/3.6.2...3.6.3) (2026-07-07)
+## [3.6.3](https://github.com/baiwumm/better-nav/compare/v3.6.2...v3.6.3) (2026-07-07)
 
 ### ✨ Features | 新功能
 
 * 安装 react-easy-crop 包，新增 Logo 裁剪功能 ([779c476](https://github.com/baiwumm/better-nav/commit/779c476d26e6e6bb7587dafa12131293c1d54e2a))
 
-## [3.6.2](https://github.com/baiwumm/better-nav/compare/3.6.1...3.6.2) (2026-07-07)
+## [3.6.2](https://github.com/baiwumm/better-nav/compare/v3.6.1...v3.6.2) (2026-07-07)
 
 ### ⚡ Performance Improvements | 性能优化
 
 * 样式调整，细节优化 ([3c32837](https://github.com/baiwumm/better-nav/commit/3c328376d252e338487fe4c7f08bb929fd9878e4))
 
-## [3.6.1](https://github.com/baiwumm/better-nav/compare/3.6.0...3.6.1) (2026-07-07)
+## [3.6.1](https://github.com/baiwumm/better-nav/compare/v3.6.0...v3.6.1) (2026-07-07)
 
 ### ✨ Features | 新功能
 
@@ -241,7 +241,7 @@
 
 * 使用默认端口 ([5091a4f](https://github.com/baiwumm/better-nav/commit/5091a4fc932eec12e1f85fd04bc0e350bd8cce48))
 
-## [3.6.0](https://github.com/baiwumm/better-nav/compare/3.5.3...3.6.0) (2026-07-06)
+## [3.6.0](https://github.com/baiwumm/better-nav/compare/v3.5.3...v3.6.0) (2026-07-06)
 
 ### ✨ Features | 新功能
 
@@ -257,7 +257,7 @@
 * 去掉 @bprogress/core 包 ([ad8dc4c](https://github.com/baiwumm/better-nav/commit/ad8dc4c3926736bd80faadeeed1875f5067b2254))
 * 去掉 query-string 包 ([a6b89dc](https://github.com/baiwumm/better-nav/commit/a6b89dc7df3a5524990dda25da1ba16140e7ea0b))
 
-## [3.5.3](https://github.com/baiwumm/better-nav/compare/3.5.2...3.5.3) (2026-07-01)
+## [3.5.3](https://github.com/baiwumm/better-nav/compare/v3.5.2...v3.5.3) (2026-07-01)
 
 ### ✨ Features | 新功能
 
@@ -282,7 +282,7 @@
 * 更新 Hero UI 版本 ([9c2ffcb](https://github.com/baiwumm/better-nav/commit/9c2ffcbf5c11e030d786d394e1a654d75df283c2))
 * 降低 eslint 到 v9 版本 ([b354db1](https://github.com/baiwumm/better-nav/commit/b354db12be7494a139fa7d9f96cc443b3cd0e613))
 
-## [3.5.2](https://github.com/baiwumm/better-nav/compare/3.5.1...3.5.2) (2026-03-16)
+## [3.5.2](https://github.com/baiwumm/better-nav/compare/v3.5.1...v3.5.2) (2026-03-16)
 
 ### ⚡ Performance Improvements | 性能优化
 
@@ -293,13 +293,13 @@
 
 * 更新 Hero UI 版本 ([0f442ce](https://github.com/baiwumm/better-nav/commit/0f442ce5f076af0bf9a78b7ba33c48eab3cdb758))
 
-## [3.5.1](https://github.com/baiwumm/better-nav/compare/3.5.0...3.5.1) (2026-03-11)
+## [3.5.1](https://github.com/baiwumm/better-nav/compare/v3.5.0...v3.5.1) (2026-03-11)
 
 ### 💄 Styles | 风格
 
 * **FullLoading:** 样式优化 ([ecb22af](https://github.com/baiwumm/better-nav/commit/ecb22affbf94dbc0aa8c7f9fbae6fdb46cf7b3ff))
 
-## [3.5.0](https://github.com/baiwumm/better-nav/compare/3.4.11...3.5.0) (2026-03-11)
+## [3.5.0](https://github.com/baiwumm/better-nav/compare/v3.4.11...v3.5.0) (2026-03-11)
 
 ### ✨ Features | 新功能
 
@@ -326,7 +326,7 @@
 * 更新 heroui 版本 ([cb47b43](https://github.com/baiwumm/better-nav/commit/cb47b4366656d6884a47ae97131a98604b7a52ad))
 * 移除 zustand 包 ([0951d47](https://github.com/baiwumm/better-nav/commit/0951d4703c2c3c70c5d28b10c6d5911b27219387))
 
-## [3.4.11](https://github.com/baiwumm/better-nav/compare/3.4.10...3.4.11) (2026-02-25)
+## [3.4.11](https://github.com/baiwumm/better-nav/compare/v3.4.10...v3.4.11) (2026-02-25)
 
 ### ✨ Features | 新功能
 
@@ -341,7 +341,7 @@
 
 * **proxy:** 中间件过滤 api 接口 ([761eaec](https://github.com/baiwumm/better-nav/commit/761eaec469080cc445fad32853508b36b02856cc))
 
-## [3.4.10](https://github.com/baiwumm/better-nav/compare/3.4.9...3.4.10) (2026-02-07)
+## [3.4.10](https://github.com/baiwumm/better-nav/compare/v3.4.9...v3.4.10) (2026-02-07)
 
 ### 🐛 Bug Fixes | Bug 修复
 
@@ -350,31 +350,31 @@
 ### 🎫 Chores | 其他更新
 
 * Release v3.4.9 ([2ceeda7](https://github.com/baiwumm/better-nav/commit/2ceeda7a8fddafd332499cde487f03fea8a11fa1))
-## [3.4.8](https://github.com/baiwumm/better-nav/compare/3.4.9...3.4.10) (2026-02-05)
+## [3.4.8](https://github.com/baiwumm/better-nav/compare/v3.4.9...v3.4.10) (2026-02-05)
 
 ### 🎫 Chores | 其他更新
 
 * Release v3.4.8 ([6c61e93](https://github.com/baiwumm/better-nav/commit/6c61e939cdd61e12b4e0d462e38600e202833696))
 
-## [3.4.8](https://github.com/baiwumm/better-nav/compare/3.4.9...3.4.9) (2026-02-05)
+## [3.4.8](https://github.com/baiwumm/better-nav/compare/v3.4.9...v3.4.9) (2026-02-05)
 
 ### 🎫 Chores | 其他更新
 
 * Release v3.4.8 ([6c61e93](https://github.com/baiwumm/better-nav/commit/6c61e939cdd61e12b4e0d462e38600e202833696))
 
-## [3.4.8](https://github.com/baiwumm/better-nav/compare/3.4.7...3.4.8) (2026-02-05)
+## [3.4.8](https://github.com/baiwumm/better-nav/compare/v3.4.7...v3.4.8) (2026-02-05)
 
 ### ✨ Features | 新功能
 
 * **store:** 添加“主题动画”配置开关 ([8df0798](https://github.com/baiwumm/better-nav/commit/8df0798a4984b196e46379bcbfe06f2b63328fa4))
 
-## [3.4.7](https://github.com/baiwumm/better-nav/compare/3.4.6...3.4.7) (2026-02-05)
+## [3.4.7](https://github.com/baiwumm/better-nav/compare/v3.4.6...v3.4.7) (2026-02-05)
 
 ### ✨ Features | 新功能
 
 * 更新 Logo 链接生成方式 ([20d6f81](https://github.com/baiwumm/better-nav/commit/20d6f81bcccb3cee6e9cbdbfa2954fd7a3cf59f9))
 
-## [3.4.6](https://github.com/baiwumm/better-nav/compare/3.4.5...3.4.6) (2026-02-04)
+## [3.4.6](https://github.com/baiwumm/better-nav/compare/v3.4.5...v3.4.6) (2026-02-04)
 
 ### ✨ Features | 新功能
 
@@ -384,39 +384,39 @@
 
 * 细节优化 ([3cfa41d](https://github.com/baiwumm/better-nav/commit/3cfa41d955b51ef20f0957bb4e2e38f382e5308a))
 
-## [3.4.5](https://github.com/baiwumm/better-nav/compare/3.4.4...3.4.5) (2026-02-03)
+## [3.4.5](https://github.com/baiwumm/better-nav/compare/v3.4.4...v3.4.5) (2026-02-03)
 
 ### ✨ Features | 新功能
 
 * **NotFound:** 添加 404 页面 ([7feafa6](https://github.com/baiwumm/better-nav/commit/7feafa6da99ab871a59cc5f5e59d246b1a311fbd))
 
-## [3.4.4](https://github.com/baiwumm/better-nav/compare/3.4.3...3.4.4) (2026-02-03)
+## [3.4.4](https://github.com/baiwumm/better-nav/compare/v3.4.3...v3.4.4) (2026-02-03)
 
 ### ✨ Features | 新功能
 
 * 添加统计代码 ([06f2471](https://github.com/baiwumm/better-nav/commit/06f24712611b721b0089a7159086ba336a310cd6))
 * update README.md ([ec5c534](https://github.com/baiwumm/better-nav/commit/ec5c534564894fabfddb36453fa87b1075e35b13))
 
-## [3.4.3](https://github.com/baiwumm/better-nav/compare/3.4.2...3.4.3) (2026-02-02)
+## [3.4.3](https://github.com/baiwumm/better-nav/compare/v3.4.2...v3.4.3) (2026-02-02)
 
 ### ⚡ Performance Improvements | 性能优化
 
 * **admin:** 优化分类接口请求逻辑 ([6b2a6e9](https://github.com/baiwumm/better-nav/commit/6b2a6e97a67dddb3c8705481d0726f0349cfb383))
 
-## [3.4.2](https://github.com/baiwumm/better-nav/compare/3.4.1...3.4.2) (2026-02-02)
+## [3.4.2](https://github.com/baiwumm/better-nav/compare/v3.4.1...v3.4.2) (2026-02-02)
 
 ### 💄 Styles | 风格
 
 * 调整卡片主题色 ([e1ba5d7](https://github.com/baiwumm/better-nav/commit/e1ba5d7c5cef44926330587f772054dc7a3a46e3))
 
-## [3.4.1](https://github.com/baiwumm/better-nav/compare/3.4.0...3.4.1) (2026-02-02)
+## [3.4.1](https://github.com/baiwumm/better-nav/compare/v3.4.0...v3.4.1) (2026-02-02)
 
 ### ✨ Features | 新功能
 
 * 删除网站的同时，应该也删除该网站下的 logo 文件 ([3ce8f88](https://github.com/baiwumm/better-nav/commit/3ce8f885b080457c1c070264c4b867c6061a59be))
 * 修复中间件没有 过滤 Api 接口的问题 ([9a45213](https://github.com/baiwumm/better-nav/commit/9a45213a9d05294dd0acd0047a93a72e37f3ad1d))
 
-## [3.4.0](https://github.com/baiwumm/better-nav/compare/3.3.0...3.4.0) (2026-01-30)
+## [3.4.0](https://github.com/baiwumm/better-nav/compare/v3.3.0...v3.4.0) (2026-01-30)
 
 ### ✨ Features | 新功能
 
@@ -428,7 +428,7 @@
 
 * **LogoUpload:** 代码逻辑优化 ([47dd197](https://github.com/baiwumm/better-nav/commit/47dd197a1b489bec47c1a6742f60ca95c915a263))
 
-## [3.3.0](https://github.com/baiwumm/better-nav/compare/3.2.0...3.3.0) (2026-01-29)
+## [3.3.0](https://github.com/baiwumm/better-nav/compare/v3.2.0...v3.3.0) (2026-01-29)
 
 ### ✨ Features | 新功能
 
@@ -441,7 +441,7 @@
 
 * 细节调整优化 ([9303b16](https://github.com/baiwumm/better-nav/commit/9303b166758b66c22618a370b60a11b6ce5ef75a))
 
-## [3.2.0](https://github.com/baiwumm/better-nav/compare/3.1.0...3.2.0) (2026-01-28)
+## [3.2.0](https://github.com/baiwumm/better-nav/compare/v3.1.0...v3.2.0) (2026-01-28)
 
 ### ✨ Features | 新功能
 
@@ -453,7 +453,7 @@
 
 * 主题配色调整 ([2b34cfd](https://github.com/baiwumm/better-nav/commit/2b34cfd7e51198d7e86aef88d2b7ad9249d6a68b))
 
-## [3.1.0](https://github.com/baiwumm/better-nav/compare/3.0.0...3.1.0) (2026-01-27)
+## [3.1.0](https://github.com/baiwumm/better-nav/compare/v3.0.0...v3.1.0) (2026-01-27)
 
 ### ✨ Features | 新功能
 
