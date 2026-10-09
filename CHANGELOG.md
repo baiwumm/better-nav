@@ -1,5 +1,22 @@
 # Changelog
 
+## [3.10.5](https://github.com/baiwumm/better-nav/compare/v3.10.4...v3.10.5) (2026-10-09)
+
+### ✨ Features | 新功能
+
+* **assets:** 新增 README 封面图与 OG 预览图 ([1121e3a](https://github.com/baiwumm/better-nav/commit/1121e3ab130e1d65bec2cfca471cb56e66dc3cb9))
+
+### 🎫 Chores | 其他更新
+
+* **deps:** 升级 heroui、next、theme-switch-animation 等依赖 ([8f85965](https://github.com/baiwumm/better-nav/commit/8f85965c91500e35d705467ee587e7a630b7331d))
+* lockfile 记录 packageManager 依赖，修复 CI frozen 安装 ([dbc5925](https://github.com/baiwumm/better-nav/commit/dbc5925f40df8a4c875d3d33d0bada0c645d4001))
+* **release:** 发版 tag 增加 v 前缀并迁移历史 tag 与 Release ([99e1f2a](https://github.com/baiwumm/better-nav/commit/99e1f2a0dc24a437c5f0e01d69f05835ab0cfbd8))
+
+### 🔧 Continuous Integration | CI 配置
+
+* 升级 theme-switch-animation 到 0.4.0 版本 ([89e0b12](https://github.com/baiwumm/better-nav/commit/89e0b12ee29dfefba7a655bfe7c9e3afccf3a045))
+* 新增 GitHub Actions 自动发版工作流 ([7035c0b](https://github.com/baiwumm/better-nav/commit/7035c0b1c0753c3733044679a462f50ff5b1c9a0))
+
 ## [3.10.4](https://github.com/baiwumm/better-nav/compare/v3.10.3...v3.10.4) (2026-09-22)
 
 ### 🐛 Bug Fixes | Bug 修复
