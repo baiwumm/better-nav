@@ -37,7 +37,9 @@ export const fetchHomeData = cache(async (): Promise<Category[]> => {
   const list = data ?? [];
 
   list.forEach((category: Category) => {
-    if (category?.websites) sortWebsites(category.websites);
+    if (category?.websites) {
+      category.websites = sortWebsites(category.websites);
+    }
   });
 
   return list;

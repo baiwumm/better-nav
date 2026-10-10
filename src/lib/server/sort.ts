@@ -1,15 +1,15 @@
 import type { Website } from "@/types";
 
 /**
- * @description: 网站排序（原地排序，与 /api/categorys、首页保持一致）
+ * @description: 网站排序（不修改入参，与 /api/categorys、首页保持一致）
  * 置顶 → sort 降序 → 推荐 → 创建时间降序
  */
 export function sortWebsites(websites: Website[]) {
-  return websites.sort((a, b) => {
-    // 2. 再按 pinned 降序 (true 排在前面)
+  return websites.toSorted((a, b) => {
+    // 1. 先按 pinned 降序 (true 排在前面)
     if (a.pinned !== b.pinned) return b.pinned ? 1 : -1;
 
-    // 1. 先按 sort 降序 (b - a)
+    // 2. 再按 sort 降序 (b - a)
     if (b.sort !== a.sort) return b.sort - a.sort;
 
     // 3. 然后按 recommend 降序 (true 排在前面)

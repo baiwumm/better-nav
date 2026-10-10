@@ -2,7 +2,12 @@ import type { User } from "@supabase/supabase-js";
 import type { FC, Key } from "react";
 
 import { useRouter } from "@bprogress/next/app";
-import { ArrowRightFromSquare, GearDot, Person } from "@gravity-ui/icons";
+import {
+  ArrowRightFromSquare,
+  CircleXmarkFill,
+  GearDot,
+  Person,
+} from "@gravity-ui/icons";
 import {
   AlertDialog,
   Avatar,
@@ -15,18 +20,19 @@ import {
   Spinner,
   Typography,
   useOverlayState,
+  toast,
 } from "@heroui/react";
 import { useState } from "react";
 
+import { useSupabaseClient } from "@/hooks/use-supabase-client";
 import { useSwrQuery } from "@/hooks/use-swr";
-import { getSupabaseBrowserClient } from "@/lib/supabase/client";
 
 interface UserMenuProps {
   user: User;
 }
 
 const UserMenu: FC<UserMenuProps> = ({ user }) => {
-  const supabase = getSupabaseBrowserClient();
+  const supabase = useSupabaseClient();
   const router = useRouter();
   const alertState = useOverlayState();
   const [logoutLoading, setLogoutLoading] = useState(false);
@@ -61,10 +67,16 @@ const UserMenu: FC<UserMenuProps> = ({ user }) => {
     setLogoutLoading(true);
     try {
       // 登出
-      await supabase.auth.signOut().then(() => {
-        alertState.close();
-        // 返回首页
-        router.push("/login");
+      await supabase.auth.signOut();
+      alertState.close();
+      // 返回首页
+      router.push("/login");
+    } catch (err) {
+      // 登出失败时保持弹窗打开并提示，避免用户以为已退出
+      toast.danger("退出登录失败", {
+        description: (err as Error).message,
+        timeout: 2000,
+        indicator: <CircleXmarkFill />,
       });
     } finally {
       setLogoutLoading(false);
@@ -77,7 +89,7 @@ const UserMenu: FC<UserMenuProps> = ({ user }) => {
         <Dropdown.Trigger>
           <Badge.Anchor>
             <Avatar size="sm">
-              <Avatar.Image alt="在线用户" src={avatar} />
+              <Avatar.Image alt={name} src={avatar} />
               <Avatar.Fallback>
                 <Person />
               </Avatar.Fallback>
@@ -93,7 +105,7 @@ const UserMenu: FC<UserMenuProps> = ({ user }) => {
         <Dropdown.Popover>
           <div className="flex items-center gap-3 p-3">
             <Avatar size="sm">
-              <Avatar.Image alt="在线用户" src={avatar} />
+              <Avatar.Image alt={name} src={avatar} />
               <Avatar.Fallback>
                 <Person />
               </Avatar.Fallback>

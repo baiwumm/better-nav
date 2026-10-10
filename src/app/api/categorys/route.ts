@@ -7,6 +7,9 @@ import { sortWebsites } from "@/lib/server/sort";
 import { getSupabaseServerClient, requireAdmin } from "@/lib/supabase/server";
 import { RESPONSE, responseMessage } from "@/lib/utils";
 
+// 可写入字段白名单：id / user_id / email / created_at / updated_at 由数据库生成，不接受客户端传入
+const ALLOWED_INSERT_FIELDS = ["name", "desc", "sort"] as const;
+
 /**
  * @description: 查询分类列表
  * @param {Request} request
@@ -65,7 +68,9 @@ export async function GET(request: NextRequest) {
 
     if (data) {
       data.forEach((category: Category) => {
-        if (category?.websites) sortWebsites(category.websites);
+        if (category?.websites) {
+          category.websites = sortWebsites(category.websites);
+        }
       });
     }
 
@@ -99,13 +104,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 解析请求体
-    const body = await request.json(); // 如果是 JSON 数据
+    // 解析请求体（仅保留可写入字段白名单，防止篡改 id / user_id / email 等受保护字段）
+    const body = (await request.json()) as Record<string, unknown>;
+    const insertBody = Object.fromEntries(
+      ALLOWED_INSERT_FIELDS.filter((key) => key in body).map((key) => [
+        key,
+        body[key],
+      ]),
+    );
 
     // 插入数据
     const { data, error } = await supabase
       .from("ds_categorys")
-      .insert(body)
+      .insert(insertBody)
       .select()
       .single();
 

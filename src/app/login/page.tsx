@@ -35,8 +35,8 @@ import {
 import Image from "next/image";
 import { useState } from "react";
 
+import { useSupabaseClient } from "@/hooks/use-supabase-client";
 import { GithubIcon, GoogleIcon } from "@/lib/icons";
-import { getSupabaseBrowserClient } from "@/lib/supabase/client";
 
 const Providers = [
   { value: "google" as const, label: "使用 Google 登录", icon: <GoogleIcon /> },
@@ -49,7 +49,7 @@ interface EmailForm {
 }
 
 export default function Login() {
-  const supabase = getSupabaseBrowserClient();
+  const supabase = useSupabaseClient();
   const router = useRouter();
   const [emailLoading, setEmailLoading] = useState(false);
   const [oauthLoading, setOauthLoading] = useState(false);
@@ -150,7 +150,8 @@ export default function Login() {
               />
               <Image
                 fill
-                alt="Logo"
+                alt=""
+                aria-hidden="true"
                 className="hidden object-contain dark:block"
                 src="/logo-dark.svg"
               />
