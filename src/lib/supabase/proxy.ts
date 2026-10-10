@@ -5,6 +5,9 @@ import { NextResponse } from "next/server";
 
 import { RESPONSE, responseMessage } from "@/lib/utils";
 
+// 公开可写的 API：错误上报发生在匿名访客的崩溃现场，不能要求登录或管理员白名单
+const PUBLIC_WRITE_API_ROUTES = ["/api/client-errors"];
+
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
@@ -21,6 +24,11 @@ export async function updateSession(request: NextRequest) {
 
   // OG 图片路由直接放行（无扩展名，会被 matcher 拦截导致分享时拿不到图）
   if (path === "/opengraph-image") {
+    return supabaseResponse;
+  }
+
+  // 公开写接口直接放行（不写任何数据，仅接收客户端错误日志）
+  if (PUBLIC_WRITE_API_ROUTES.includes(path)) {
     return supabaseResponse;
   }
 
