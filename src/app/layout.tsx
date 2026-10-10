@@ -10,16 +10,16 @@ import { ThemeProvider } from "next-themes";
 import Provider from "./Provider";
 
 import { GoogleUtilities, MicrosoftClarity } from "@/components/Analytics";
-import FullLoading from "@/components/FullLoading";
 import pkg from "#/package.json";
-
-const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME;
-const APP_TITLE = process.env.NEXT_PUBLIC_APP_TITLE;
-const APP_DESC = process.env.NEXT_PUBLIC_APP_DESC;
-const APP_KEYWORDS = process.env.NEXT_PUBLIC_APP_KEYWORDS;
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://nav.baiwumm.com";
-const OG_IMAGE_URL = `${APP_URL}/opengraph-image`;
-const AUTHOR_NAME = process.env.NEXT_PUBLIC_AUTHOR_NAME;
+import {
+  APP_DESC,
+  APP_KEYWORDS,
+  APP_NAME,
+  APP_TITLE,
+  APP_URL,
+  AUTHOR_NAME,
+  OG_IMAGE_URL,
+} from "@/lib/site";
 
 export const metadata: Metadata = {
   metadataBase: new URL(APP_URL),
@@ -78,9 +78,7 @@ export default function RootLayout({
       <body className="bg-background text-foreground flex min-h-screen flex-col">
         <ThemeProvider attribute="class" enableSystem={false}>
           <MotionConfig reducedMotion="user">
-            <FullLoading>
-              <Provider>{children}</Provider>
-            </FullLoading>
+            <Provider>{children}</Provider>
             <Toast.Provider placement="top" />
           </MotionConfig>
         </ThemeProvider>

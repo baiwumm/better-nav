@@ -55,7 +55,7 @@ export default function HomeContent({ data }: HomeContentProps) {
             <div className="bg-default text-foreground p-4 rounded-full">
               <DatabaseFill className="size-5" />
             </div>
-            <Typography type="h5">一切安静如常 🕊️</Typography>
+            <Typography type="h2">一切安静如常 🕊️</Typography>
             <Typography type="body-sm">
               当前还没有任何分类，请前往后台进行添加。
             </Typography>
@@ -82,13 +82,13 @@ export default function HomeContent({ data }: HomeContentProps) {
             >
               <Typography
                 className="text-lg font-black tracking-normal"
-                type="h1"
+                type="h2"
               >
                 {name}
               </Typography>
               {websites?.length ? (
                 <motion.div
-                  className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(20rem,1fr))]"
+                  className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(20rem,1fr))] [content-visibility:auto] [contain-intrinsic-size:auto_9rem]"
                   variants={cardGridVariants}
                 >
                   {websites.map((item, idx) => (

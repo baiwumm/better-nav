@@ -81,7 +81,8 @@ export default function CategoryIndicator({
   }, [activeId]);
 
   // 刷新 / 带 hash 访问时定位到对应分类：
-  // FullLoading 首屏遮罩导致浏览器原生锚点定位失效（解析时锚点不存在），水合后需手动滚动
+  // 锚点元素在 SSR HTML 中已存在，浏览器会原生定位，这里在水合后复校一次，
+  // 抵消卡片Logo等异步资源加载后的布局偏移
   useEffect(() => {
     const hash = window.location.hash;
 

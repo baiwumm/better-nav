@@ -3,20 +3,22 @@ import { extname, join } from "node:path";
 
 import { ImageResponse } from "next/og";
 
-export const alt = process.env.NEXT_PUBLIC_APP_TITLE;
+import {
+  APP_NAME,
+  APP_TITLE,
+  APP_URL,
+  AUTHOR_NAME,
+  AUTHOR_ROLE,
+} from "@/lib/site";
+
+export const alt = APP_TITLE;
 export const size = {
   width: 1200,
   height: 630,
 };
 export const contentType = "image/png";
 
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://nav.baiwumm.com";
-const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || "Better Nav";
-const APP_TITLE =
-  process.env.NEXT_PUBLIC_APP_TITLE || "一个把常用网址收拾得干干净净的小站";
 const APP_HOST = APP_URL.replace(/^https?:\/\//, "").replace(/\/$/, "");
-const AUTHOR_NAME = process.env.NEXT_PUBLIC_AUTHOR_NAME || "白雾茫茫丶";
-const AUTHOR_ROLE = process.env.NEXT_PUBLIC_AUTHOR_ROLE || "独立开发者";
 const TECH_TAGS = ["React", "Next.js", "HeroUI", "Tailwind CSS"];
 
 // 主题色：取自 globals.css --accent: oklch(14.48% 0 0) → #0a0a0a
