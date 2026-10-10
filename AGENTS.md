@@ -17,22 +17,39 @@ better-nav/
 ├── .heroui-docs/          # HeroUI v3 组件文档（AI 参考用）
 ├── public/                # 静态资源（logo、截图等）
 ├── src/
-│   ├── app/               # Next.js App Router 页面
-│   │   ├── admin/         # 后台管理页面
-│   │   ├── api/           # API 路由
-│   │   ├── login/         # 登录页
+│   ├── app/               # Next.js App Router
+│   │   ├── admin/         # 后台管理页面（局部组件在 admin/components，自带 loading.tsx）
+│   │   ├── api/           # API 路由：auth/me、categorys、websites、client-errors
+│   │   ├── login/         # 登录页（自带 loading.tsx）
 │   │   ├── layout.tsx     # 根布局
 │   │   ├── page.tsx       # 首页
-│   │   └── Provider.tsx   # 客户端 Provider
+│   │   ├── Provider.tsx   # 客户端 Provider
+│   │   ├── loading.tsx    # 根路由 Loading
+│   │   ├── error.tsx      # 路由段错误边界
+│   │   ├── global-error.tsx # 根布局错误边界（自备 html/body）
+│   │   ├── not-found.tsx
+│   │   ├── manifest.json  # PWA 清单
+│   │   ├── robots.ts      # robots.txt（屏蔽 /login、/admin）
+│   │   ├── sitemap.ts
+│   │   └── opengraph-image.tsx
 │   ├── components/        # 通用组件
-│   │   └── ui/            # 跨模块复用的基础组件
+│   │   ├── ui/            # 跨模块复用的基础组件
+│   │   └── Admin*         # 后台共享件：AdminDataTable / AdminDeleteDialog / AdminHeaderContent
 │   ├── hooks/             # 自定义 Hooks
+│   │   ├── use-supabase-client.ts  # 浏览器端 Supabase 客户端，模块级单例
+│   │   ├── use-admin-table-page.ts # 后台列表页状态机（分页/排序/列可见性/行选择）
+│   │   ├── use-supabase-user.ts
+│   │   ├── use-file-upload.tsx
+│   │   └── use-swr.ts
 │   ├── lib/               # 工具库
 │   │   ├── server/        # 服务端工具（首页数据 / Logo / 排序）
-│   │   ├── supabase/      # Supabase 客户端
-│   │   ├── request.ts     # SWR fetcher（统一错误提示）
-│   │   ├── utils.ts       # 通用工具函数
+│   │   ├── supabase/      # Supabase 客户端与 middleware 代理
+│   │   ├── site.ts        # 站点级常量与统一兜底（APP_URL 等）
+│   │   ├── report-error.ts # 客户端错误上报（接 Sentry 只改这里）
+│   │   ├── request.ts     # SWR fetcher（统一错误提示 + 超时）
+│   │   ├── utils.ts       # 通用工具函数（含 formatBytes）
 │   │   ├── crop-image.ts  # 头像裁剪
+│   │   ├── icons.tsx      # 自定义图标
 │   │   └── swr.ts         # SWR 配置
 │   ├── types/             # TypeScript 类型定义
 │   └── proxy.ts           # 代理配置
@@ -40,6 +57,7 @@ better-nav/
 │   ├── schema.sql         # 数据库初始化脚本（建表 / 函数 / 触发器 / RLS / 存储桶）
 │   ├── seed.sql            # 可选演示数据
 │   └── 登录鉴权移植指南.md  # 三层白名单鉴权改动记录
+├── tests/                 # node --test 单元测试，零测试依赖（见下方说明）
 ├── .env.example           # 环境变量示例
 ├── package.json           # 项目配置
 ├── next.config.ts         # Next.js 配置
@@ -82,7 +100,16 @@ NEXT_PUBLIC_APP_DESC=把常用网址放在一起，打开就能用。
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 NEXT_PUBLIC_AUTHOR_NAME=白雾茫茫丶
 NEXT_PUBLIC_AUTHOR_ROLE=独立开发者
+
+# 以下可选，留空则不渲染对应区块
+NEXT_PUBLIC_APP_KEYWORDS=Better Nav,常用网站,网站入口,工具入口
+NEXT_PUBLIC_ICP=
+NEXT_PUBLIC_GUAN_ICP=
+NEXT_PUBLIC_GOOGLE_ID=
+NEXT_PUBLIC_CLARITY_ID=
 ```
+
+站点级常量（`APP_URL`/`APP_NAME`/`APP_TITLE` 等的兜底值）统一在 `src/lib/site.ts`，不要在 metadata / og 图 / sitemap / robots 各处重复写默认值。
 
 ---
 
@@ -93,8 +120,9 @@ NEXT_PUBLIC_AUTHOR_ROLE=独立开发者
 项目使用 ESLint + Prettier 进行代码格式化：
 
 ```bash
-pnpm lint          # 检查代码（ESLint + tsc --noEmit）
+pnpm lint          # 检查代码（ESLint + tsc --noEmit + pnpm test）
 pnpm lint:fix      # 自动修复
+pnpm test          # 仅跑单元测试
 ```
 
 **必须遵守的规则：**
@@ -110,6 +138,20 @@ pnpm lint:fix      # 自动修复
 - 所有组件和工具函数必须使用 TypeScript
 - 未使用的变量以 `_` 前缀命名（如 `_unused`）
 - 优先使用 `AppTableFeatures`、`AppColumnDef` 等项目统一类型
+
+### 单元测试
+
+项目用 **Node 24 自带的 `node --test`**，不引入 jest/vitest。Node 24 可直接执行 `.ts`，
+所以测试文件里 `import ... from "../src/lib/utils.ts"` 这类显式扩展名原生可解析
+（`tsconfig.json` 里对应开了 `allowImportingTsExtensions`）。
+
+因此当前**只能测纯函数**。涉及 React 渲染、hook 的用例需要 router context，
+必须另配渲染器，本项目功能简单、暂不引入。
+
+- `tests/sort.test.ts` — `sortWebsites` 四层排序优先级、非变异语义（防回归到原地 `.sort()`）
+- `tests/utils.test.ts` — `formatBytes`（含越界收敛）、`get`、`responseMessage`、`formatDate`
+
+新增测试放 `tests/*.test.ts`，`pnpm test` 自动发现，`pnpm lint` 会一并执行。
 
 ### Git 提交规范
 
@@ -146,6 +188,9 @@ pnpm start
 pnpm lint
 pnpm lint:fix
 
+# 单元测试（node --test，零测试依赖）
+pnpm test
+
 # 发布版本
 pnpm release
 ```
@@ -158,10 +203,15 @@ pnpm release
 
 ### 禁止修改的文件
 
-- `src/lib/supabase/*.ts` — Supabase 客户端配置，涉及认证安全
-- `src/types/table-types.ts` — TanStack Table v9 统一类型定义
-- `eslint.config.mjs` — ESLint 配置，修改可能导致 CI 失败
-- `next.config.ts` — Next.js 配置，影响构建行为
+以下文件涉及认证安全或全局行为，默认不要动。**破例前必须先向人工确认，不得自行决定。**
+
+- `src/types/table-types.ts` — TanStack Table v9 统一类型定义。无例外。
+- `eslint.config.mjs` — ESLint 配置，修改可能导致 CI 失败。无例外。
+- `src/lib/supabase/*.ts` — 认证安全核心：`getClaims` 验签、`requireAdmin`、白名单比对、未登录重定向逻辑一律不得改动。
+  唯一已知例外是 `proxy.ts` 里的**公开可写路由白名单** `PUBLIC_WRITE_API_ROUTES`（当前为 `/api/client-errors`）。新增此类例外时只能往白名单里加具体路径，并保持「其余写接口仍要求登录 + 管理员」不被削弱，且在提交信息里说明原因。
+- `next.config.ts` — 影响构建行为。
+  例外仅限两类：① 把硬编码值改为环境变量派生；② 收紧构建校验。
+  **不得重新引入 `typescript.ignoreBuildErrors`** —— 类型检查已由 `pnpm lint` 内的 `tsc --noEmit` 与 `next build` 双重覆盖。
 
 ### 必须遵守的约束
 
@@ -188,6 +238,20 @@ pnpm release
 | TanStack Table | 表格 | `src/types/table-types.ts` |
 | Motion | 动画 | 已安装 |
 | react-easy-crop | 图片裁剪 | `src/lib/crop-image.ts` |
+
+---
+
+## 已知技术欠账
+
+记录在案、暂不处理的项，避免下一轮重复评估：
+
+| 欠账 | 说明 |
+|------|------|
+| `use-admin-table-page` 无测试 | 内部走 `useSwrQuery` → `@bprogress/next` 的 `useProgress`，需要 router context。覆盖它必须引入 vitest + testing-library + jsdom，已评估后决定不引（项目功能简单）。它是目前风险最集中的未覆盖代码，改动时需人工回归两个后台页面 |
+| `react-aria` 在 store 中有 4 份副本 | 来源是 devDependency 链（`eslint-plugin-jsx-a11y` → `@adobe/react-spectrum`），与根依赖是否显式声明无关，删掉也减不了副本。不影响生产包 |
+| 首页 `force-dynamic` + 全量数据下推客户端 | 已用 `content-visibility` 缓解渲染成本。当前 8 分类 / 72 站点，数据量未到需要分页的规模 |
+| 13 处匿名函数 props | 违反上方「性能第一」守则，属洁癖项，逐个改性价比低 |
+| `formatBytes` 输出无空格 | 拼接为 `"1KB"` 而非 `"1 KB"`，属既有输出格式，改动会牵动所有引用处文案 |
 
 ---
 
