@@ -8,6 +8,23 @@
 
 Better Nav 是一个基于 Next.js 16 与 Supabase 的个人导航站，专注于把常用网址集中管理，支持亮暗主题、响应式布局、登录后的网站分类与管理。
 
+技术栈：Next.js 16 + React 19 + HeroUI v3 + Tailwind CSS v4 + Supabase + SWR + TanStack Table + Motion。
+
+---
+
+## 文档索引
+
+详细内容拆分在 `docs/`，按需查阅，不要凭印象重复评估已定论的事项：
+
+| 文档 | 内容 | 何时读 |
+|------|------|--------|
+| [docs/tech-stack.md](./docs/tech-stack.md) | 技术栈版本明细、环境变量全表、`site.ts` 兜底规则 | 配置环境变量、新增站点常量时 |
+| [docs/code-standards.md](./docs/code-standards.md) | Lint 规则、TypeScript 规范、单元测试约定、Git 提交规范 | 写代码、补测试、提交前 |
+| [docs/database.md](./docs/database.md) | Supabase 表结构、RLS 入口、存储桶、易踩坑细节 | 涉及数据库 / RLS / 存储桶改动时**必读** |
+| [docs/tech-debt.md](./docs/tech-debt.md) | 已知技术欠账及「暂不处理」的完整理由 | 评估优化、重构、审查代码前**必读** |
+
+项目介绍、环境变量、Supabase 配置与部署见 [README.md](./README.md)。
+
 ---
 
 ## 项目结构说明
@@ -15,6 +32,7 @@ Better Nav 是一个基于 Next.js 16 与 Supabase 的个人导航站，专注�
 ```
 better-nav/
 ├── .heroui-docs/          # HeroUI v3 组件文档（AI 参考用）
+├── docs/                  # 项目文档（技术栈 / 代码规范 / 数据库 / 技术欠账，见上方文档索引）
 ├── public/                # 静态资源（logo、截图等）
 ├── src/
 │   ├── app/               # Next.js App Router
@@ -55,116 +73,14 @@ better-nav/
 │   └── proxy.ts           # 代理配置
 ├── supabase/              # Supabase SQL 脚本
 │   ├── schema.sql         # 数据库初始化脚本（建表 / 函数 / 触发器 / RLS / 存储桶）
-│   ├── seed.sql            # 可选演示数据
+│   ├── seed.sql           # 可选演示数据
 │   └── 登录鉴权移植指南.md  # 三层白名单鉴权改动记录
-├── tests/                 # node --test 单元测试，零测试依赖（见下方说明）
+├── tests/                 # node --test 单元测试，零测试依赖（约定见 docs/code-standards.md）
 ├── .env.example           # 环境变量示例
 ├── package.json           # 项目配置
 ├── next.config.ts         # Next.js 配置
 ├── eslint.config.mjs      # ESLint 配置
 └── tsconfig.json          # TypeScript 配置
-```
-
----
-
-## 技术栈与环境变量
-
-### 核心技术栈
-
-| 技术 | 版本 | 用途 |
-|------|------|------|
-| Next.js | 16.4.0 | 框架 |
-| React | 19.2.8 | UI 库 |
-| HeroUI | 3.2.6 | 组件库 |
-| Tailwind CSS | 4.3.3 | 样式 |
-| Supabase | - | 后端服务 |
-| SWR | 2.5.1 | 数据获取 |
-| TanStack Table | 9.2.4 | 表格组件 |
-| Motion | 13.2.0 | 动画 |
-
-### 必须配置的环境变量
-
-```bash
-# Supabase（必须）
-NEXT_PUBLIC_SUPABASE_URL=          # Supabase 项目 URL
-NEXT_PUBLIC_SUPABASE_ANON_KEY=     # Supabase 匿名密钥
-NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET=logos  # 存储桶名称
-
-# 管理员配置（必须）
-ADMIN_EMAILS=your-admin@example.com  # 管理员邮箱白名单（逗号分隔）
-
-# 应用配置（可选，有默认值）
-NEXT_PUBLIC_APP_NAME=Better Nav
-NEXT_PUBLIC_APP_TITLE=一个把常用网址收拾得干干净净的小站
-NEXT_PUBLIC_APP_DESC=把常用网址放在一起，打开就能用。
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-NEXT_PUBLIC_AUTHOR_NAME=白雾茫茫丶
-NEXT_PUBLIC_AUTHOR_ROLE=独立开发者
-
-# 以下可选，留空则不渲染对应区块
-NEXT_PUBLIC_APP_KEYWORDS=Better Nav,常用网站,网站入口,工具入口
-NEXT_PUBLIC_ICP=
-NEXT_PUBLIC_GUAN_ICP=
-NEXT_PUBLIC_GOOGLE_ID=
-NEXT_PUBLIC_CLARITY_ID=
-```
-
-站点级常量（`APP_URL`/`APP_NAME`/`APP_TITLE` 等的兜底值）统一在 `src/lib/site.ts`，不要在 metadata / og 图 / sitemap / robots 各处重复写默认值。
-
----
-
-## 代码规范与质量门禁
-
-### Lint 规则
-
-项目使用 ESLint + Prettier 进行代码格式化：
-
-```bash
-pnpm lint          # 检查代码（ESLint + tsc --noEmit + pnpm test）
-pnpm lint:fix      # 自动修复
-pnpm test          # 仅跑单元测试
-```
-
-**必须遵守的规则：**
-- 使用 `unused-imports` 插件移除未使用的导入
-- 导入顺序：type > builtin > object > external > internal > parent > sibling > index
-- 组件属性排序：callbacksLast > shorthandFirst > reservedFirst
-- 自闭合组件标签：`<Component />` 而非 `<Component></Component>`
-- `return` 语句前必须空一行
-- 禁止 `console` 输出（warn 级别）
-
-### TypeScript 规范
-
-- 所有组件和工具函数必须使用 TypeScript
-- 未使用的变量以 `_` 前缀命名（如 `_unused`）
-- 优先使用 `AppTableFeatures`、`AppColumnDef` 等项目统一类型
-
-### 单元测试
-
-项目用 **Node 24 自带的 `node --test`**，不引入 jest/vitest。Node 24 可直接执行 `.ts`，
-所以测试文件里 `import ... from "../src/lib/utils.ts"` 这类显式扩展名原生可解析
-（`tsconfig.json` 里对应开了 `allowImportingTsExtensions`）。
-
-因此当前**只能测纯函数**。涉及 React 渲染、hook 的用例需要 router context，
-必须另配渲染器，本项目功能简单、暂不引入。
-
-- `tests/sort.test.ts` — `sortWebsites` 四层排序优先级、非变异语义（防回归到原地 `.sort()`）
-- `tests/utils.test.ts` — `formatBytes`（含越界收敛）、`get`、`responseMessage`、`formatDate`
-
-新增测试放 `tests/*.test.ts`，`pnpm test` 自动发现，`pnpm lint` 会一并执行。
-
-### Git 提交规范
-
-使用 Conventional Commits 格式：
-
-```
-feat: 新功能
-fix: 修复
-docs: 文档更新
-style: 代码格式（不影响逻辑）
-refactor: 重构
-test: 测试
-chore: 构建/工具变动
 ```
 
 ---
@@ -194,6 +110,8 @@ pnpm test
 # 发布版本
 pnpm release
 ```
+
+提交信息使用 Conventional Commits（feat / fix / docs / style / refactor / test / chore），详见 [docs/code-standards.md](./docs/code-standards.md)。
 
 ---
 
@@ -241,52 +159,12 @@ pnpm release
 
 ---
 
-## 已知技术欠账
+## 已知技术欠账（速览）
 
-记录在案、暂不处理的项，避免下一轮重复评估：
+以下各项已评估并决定**暂不处理**，完整理由见 [docs/tech-debt.md](./docs/tech-debt.md)，不要重复评估：
 
-| 欠账 | 说明 |
-|------|------|
-| `use-admin-table-page` 无测试 | 内部走 `useSwrQuery` → `@bprogress/next` 的 `useProgress`，需要 router context。覆盖它必须引入 vitest + testing-library + jsdom，已评估后决定不引（项目功能简单）。它是目前风险最集中的未覆盖代码，改动时需人工回归两个后台页面 |
-| `react-aria` 在 store 中有 4 份副本 | 来源是 devDependency 链（`eslint-plugin-jsx-a11y` → `@adobe/react-spectrum`），与根依赖是否显式声明无关，删掉也减不了副本。不影响生产包 |
-| 首页 `force-dynamic` + 全量数据下推客户端 | 已用 `content-visibility` 缓解渲染成本。当前 8 分类 / 72 站点，数据量未到需要分页的规模 |
-| 13 处匿名函数 props | 违反上方「性能第一」守则，属洁癖项，逐个改性价比低 |
-| `formatBytes` 输出无空格 | 拼接为 `"1KB"` 而非 `"1 KB"`，属既有输出格式，改动会牵动所有引用处文案 |
-
----
-
-## 数据库表结构（参考）
-
-项目依赖以下 Supabase 对象：
-
-- `ds_categorys`：分类表
-- `ds_websites`：网站表
-- `increment_visit_count(row_id uuid)`：访问计数函数，`security definer`（表开启 RLS 后匿名访客靠它才能写入计数）
-- `is_admin()`：管理员邮箱白名单判定，RLS 写权限的唯一入口
-- `logos`：Logo 存储桶，公开读、仅管理员写
-
-完整初始化 SQL 见 `supabase/schema.sql`（幂等，可重复执行），演示数据见 `supabase/seed.sql`。
-
-注意两处易踩坑的细节：
-
-1. `visitCount`、`commonlyUsed` 是带引号的驼峰列名，前端类型与 PostgREST 返回字段直接使用它们，不要在没牵动类型和列定义的情况下改名
-2. `ds_websites.category_id` 外键故意不加 `on delete cascade`，分类下仍有站点时删除分类会被拒绝，避免连带删站点数据
-
----
-
-## 部署说明
-
-推荐部署到 Vercel：
-
-1. Fork 本项目
-2. 在 Vercel 中导入仓库
-3. 配置环境变量
-4. 点击 Deploy
-
----
-
-## 相关链接
-
-- 在线预览：https://dream.baiwumm.com/
-- GitHub：https://github.com/baiwumm/better-nav
-- 作者：https://baiwumm.com
+- `use-admin-table-page` 无测试 —— 改动时需人工回归两个后台页面
+- `react-aria` 在 store 中有 4 份副本 —— 不影响生产包
+- 首页 `force-dynamic` + 全量数据下推客户端 —— 已用 `content-visibility` 缓解
+- 13 处匿名函数 props —— 逐个改性价比低
+- `formatBytes` 输出无空格 —— 既有输出格式，改动牵动所有引用处
