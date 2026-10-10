@@ -25,11 +25,14 @@ better-nav/
 │   │   ├── page.tsx       # 首页
 │   │   └── Provider.tsx   # 客户端 Provider
 │   ├── components/        # 通用组件
+│   │   └── ui/            # 跨模块复用的基础组件
 │   ├── hooks/             # 自定义 Hooks
 │   ├── lib/               # 工具库
-│   │   ├── server/        # 服务端工具
+│   │   ├── server/        # 服务端工具（首页数据 / Logo / 排序）
 │   │   ├── supabase/      # Supabase 客户端
+│   │   ├── request.ts     # SWR fetcher（统一错误提示）
 │   │   ├── utils.ts       # 通用工具函数
+│   │   ├── crop-image.ts  # 头像裁剪
 │   │   └── swr.ts         # SWR 配置
 │   ├── types/             # TypeScript 类型定义
 │   └── proxy.ts           # 代理配置
@@ -52,9 +55,9 @@ better-nav/
 
 | 技术 | 版本 | 用途 |
 |------|------|------|
-| Next.js | 16.3.4 | 框架 |
+| Next.js | 16.4.0 | 框架 |
 | React | 19.2.8 | UI 库 |
-| HeroUI | 3.2.4 | 组件库 |
+| HeroUI | 3.2.6 | 组件库 |
 | Tailwind CSS | 4.3.3 | 样式 |
 | Supabase | - | 后端服务 |
 | SWR | 2.5.1 | 数据获取 |
@@ -90,7 +93,7 @@ NEXT_PUBLIC_AUTHOR_ROLE=独立开发者
 项目使用 ESLint + Prettier 进行代码格式化：
 
 ```bash
-pnpm lint          # 检查代码
+pnpm lint          # 检查代码（ESLint + tsc --noEmit）
 pnpm lint:fix      # 自动修复
 ```
 

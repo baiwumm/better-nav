@@ -54,7 +54,7 @@
 
 ### 🌱 环境要求
 
-- Node.js >= 18.17
+- Node.js >= 20.9（Next.js 16 要求）
 - pnpm
 
 ### 🌵 启动项目
@@ -85,10 +85,17 @@ ADMIN_EMAILS=
 NEXT_PUBLIC_APP_NAME=Better Nav
 NEXT_PUBLIC_APP_TITLE=一个把常用网址收拾得干干净净的小站
 NEXT_PUBLIC_APP_DESC=把常用网址放在一起，打开就能用。
+NEXT_PUBLIC_APP_KEYWORDS=Better Nav,常用网站,网站入口,工具入口
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 
 NEXT_PUBLIC_AUTHOR_NAME=
 NEXT_PUBLIC_AUTHOR_ROLE=
+
+# 备案信息与统计（可选，留空则不渲染对应区块）
+NEXT_PUBLIC_ICP=
+NEXT_PUBLIC_GUAN_ICP=
+NEXT_PUBLIC_GOOGLE_ID=
+NEXT_PUBLIC_CLARITY_ID=
 ```
 
 完整示例见 [`.env.example`](./.env.example)。
