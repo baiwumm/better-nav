@@ -1,9 +1,7 @@
 /*
  * @Author: 白雾茫茫丶<baiwumm.com>
- * @Date: 2026-01-28 14:04:28
- * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2026-08-04 17:05:06
- * @Description: 删除弹窗
+ * @Date: 2026-10-09 10:00:00
+ * @Description: 后台通用删除确认弹窗（单个删除 / 批量删除共用）
  */
 "use client";
 import type { UseOverlayStateReturn } from "@heroui/react";
@@ -12,23 +10,28 @@ import type { FC } from "react";
 import { AlertDialog, Button, Spinner } from "@heroui/react";
 import { useEffect, useRef } from "react";
 
-interface DeleteDialogProps {
+interface AdminDeleteDialogProps {
   state: UseOverlayStateReturn;
-  loading: boolean;
+  loading?: boolean;
   handleDelConfirm: VoidFunction;
-  /** 批量删除的数量：传入时切换为批量文案，不传保持单条删除文案 */
+  /** 批量删除的数量：传入时切换为批量文案，不传为单条删除文案 */
   count?: number;
+  /** 被删对象名称，如「分类」「网站」 */
+  entityName: string;
   onClose?: VoidFunction;
 }
 
-const DeleteDialog: FC<DeleteDialogProps> = ({
+const AdminDeleteDialog: FC<AdminDeleteDialogProps> = ({
   state,
   loading = false,
   handleDelConfirm,
   count,
+  entityName,
   onClose,
 }) => {
+  // 传入 count 即为批量删除
   const isBatch = count != null;
+  const subject = isBatch ? `选中的${entityName}` : `该${entityName}`;
   const wasOpenRef = useRef(false);
 
   useEffect(() => {
@@ -47,13 +50,13 @@ const DeleteDialog: FC<DeleteDialogProps> = ({
             <AlertDialog.Icon status="danger" />
             <AlertDialog.Heading>
               {isBatch
-                ? `确认删除选中的 ${count} 个网站？`
-                : "确认删除该网站？"}
+                ? `确认删除选中的 ${count} 个${entityName}？`
+                : `确认删除${subject}？`}
             </AlertDialog.Heading>
           </AlertDialog.Header>
           <AlertDialog.Body>
             <p>
-              删除后，{isBatch ? "选中的网站" : "该网站"}及其关联的数据将被
+              删除后，{subject}及其关联的数据将被
               <strong>永久移除</strong>
               ，且无法恢复。 请确认当前操作不会影响正在使用的业务或历史数据。
             </p>
@@ -81,4 +84,4 @@ const DeleteDialog: FC<DeleteDialogProps> = ({
   );
 };
 
-export default DeleteDialog;
+export default AdminDeleteDialog;
