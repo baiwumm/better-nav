@@ -17,12 +17,15 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import CropLogoModal from "./crop-logo-modal";
 
-import { formatBytes, useFileUpload } from "@/hooks/use-file-upload";
+import { useFileUpload } from "@/hooks/use-file-upload";
 import { MAX_LOGO_SIZE } from "@/lib/server/logo";
+import { formatBytes } from "@/lib/utils";
 
 interface LogoUploadProps {
   maxSize?: number;
   className?: string;
+  /** 外部 Label 的 id，用于给上传热区提供可访问名称 */
+  labelledBy?: string;
   onFileChange?: (file: FileWithPreview | null) => void;
   defaultAvatar?: string;
 }
@@ -30,6 +33,7 @@ interface LogoUploadProps {
 const LogoUpload: FC<LogoUploadProps> = ({
   maxSize = MAX_LOGO_SIZE, // 2MB，与服务端校验保持一致
   className,
+  labelledBy,
   onFileChange,
   defaultAvatar,
 }) => {
@@ -92,6 +96,7 @@ const LogoUpload: FC<LogoUploadProps> = ({
       <div className={cn("flex flex-col items-center gap-3", className)}>
         <div className="relative">
           <div
+            aria-labelledby={labelledBy}
             className={cn(
               "group/avatar relative h-24 w-24 cursor-pointer overflow-hidden rounded-full border border-dashed transition-colors",
               isDragging
@@ -113,7 +118,10 @@ const LogoUpload: FC<LogoUploadProps> = ({
               }
             }}
           >
-            <input {...getInputProps()} className="sr-only" />
+            <input
+              {...getInputProps({ "aria-label": "上传 Logo" })}
+              className="sr-only"
+            />
 
             {previewUrl ? (
               <Image

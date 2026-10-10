@@ -66,16 +66,21 @@ const TagInputs: FC<TagInputsProps> = ({ value = [], onChange }) => {
               variant="soft"
             >
               <Chip.Label>{tag}</Chip.Label>
-              <CircleXmarkFill
+              <button
+                aria-label={`删除标签 ${tag}`}
                 className="cursor-pointer"
+                type="button"
                 onClick={() => removeTag(tag)}
-              />
+              >
+                <CircleXmarkFill />
+              </button>
             </MotionChip>
           ))}
         </AnimatePresence>
         <Input
           ref={inputRef}
           className="w-25 text-xs py-1"
+          id="tags"
           placeholder="回车添加"
           value={inputValue}
           variant="secondary"

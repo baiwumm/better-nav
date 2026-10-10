@@ -43,6 +43,7 @@ const Footer: FC = () => {
       <div className="flex items-center justify-center gap-3 justify-self-center sm:justify-self-start">
         <div className="flex items-center gap-2">
           <div className="size-5 relative">
+            {/* 明暗两套 Logo 靠 CSS 切换，其中一套对读屏隐藏，避免重复播报 */}
             <Image
               fill
               alt="Logo"
@@ -51,7 +52,8 @@ const Footer: FC = () => {
             />
             <Image
               fill
-              alt="Logo"
+              alt=""
+              aria-hidden="true"
               className="hidden object-contain dark:block"
               src="/logo-dark.svg"
             />

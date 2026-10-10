@@ -41,6 +41,7 @@ const Header: FC = () => {
       <Link href="/">
         <div className="flex gap-2 items-center justify-self-start">
           <div className="size-8 relative">
+            {/* 明暗两套 Logo 靠 CSS 切换，其中一套对读屏隐藏，避免重复播报 */}
             <Image
               fill
               alt="Logo"
@@ -49,7 +50,8 @@ const Header: FC = () => {
             />
             <Image
               fill
-              alt="Logo"
+              alt=""
+              aria-hidden="true"
               className="hidden object-contain dark:block"
               src="/logo-dark.svg"
             />

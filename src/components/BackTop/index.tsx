@@ -208,7 +208,6 @@ const BackTop: FC<BackTopProps> = ({ visibilityHeight = 150 }) => {
           {/* 圆环仅作视觉进度展示，避免与按钮语义重复播报 */}
           <MotionProgressCircle
             aria-hidden="true"
-            aria-label="回到顶部"
             className="pointer-events-none"
             color="default"
             size="lg"

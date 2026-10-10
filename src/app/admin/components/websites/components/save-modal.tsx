@@ -8,6 +8,7 @@ import { Check, CircleCheckFill, Globe, Xmark } from "@gravity-ui/icons";
 import {
   Button,
   FieldError,
+  Fieldset,
   Form,
   Input,
   Label,
@@ -23,7 +24,7 @@ import {
   TextField,
   toast,
 } from "@heroui/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 
 import LogoUpload from "./logo-upload";
 
@@ -61,6 +62,8 @@ const SaveModal: FC<SaveModalProps> = ({
   const formRef = useRef<HTMLFormElement>(null);
   const wasOpenRef = useRef(false);
   const actionText = initialValues ? "编辑" : "新增";
+  // Logo Label 与上传热区的关联 id
+  const logoLabelId = useId();
   // Logo 链接
   const logoUrl = initialValues?.logo
     ? generateLogoUrl(initialValues.logo)
@@ -210,7 +213,7 @@ const SaveModal: FC<SaveModalProps> = ({
                 key={initialValues?.id ?? "create"}
                 ref={formRef}
                 className="flex flex-col gap-4"
-                id="category-form"
+                id="website-form"
                 onSubmit={onSubmit}
               >
                 <Select
@@ -278,11 +281,12 @@ const SaveModal: FC<SaveModalProps> = ({
                   <FieldError />
                 </TextField>
                 <div className="flex flex-col gap-1">
-                  <Label isRequired htmlFor="logo">
+                  <Label isRequired id={logoLabelId}>
                     Logo
                   </Label>
                   <LogoUpload
                     defaultAvatar={logoUrl}
+                    labelledBy={logoLabelId}
                     onFileChange={(value) => setLogoFile(value?.file || null)}
                   />
                 </div>
@@ -301,8 +305,8 @@ const SaveModal: FC<SaveModalProps> = ({
                     variant="secondary"
                   />
                 </TextField>
-                <div className="flex flex-col gap-1">
-                  <Label htmlFor="tags">网站属性</Label>
+                <Fieldset>
+                  <Fieldset.Legend>网站属性</Fieldset.Legend>
                   <SwitchGroup
                     className="overflow-x-auto"
                     orientation="horizontal"
@@ -333,7 +337,7 @@ const SaveModal: FC<SaveModalProps> = ({
                       </Switch>
                     ))}
                   </SwitchGroup>
-                </div>
+                </Fieldset>
                 <NumberField
                   isRequired
                   defaultValue={initialValues?.sort ?? 1}
@@ -363,7 +367,7 @@ const SaveModal: FC<SaveModalProps> = ({
             <Button isDisabled={loading} slot="close" variant="outline">
               取消
             </Button>
-            <Button form="category-form" isPending={loading} type="submit">
+            <Button form="website-form" isPending={loading} type="submit">
               {({ isPending }) => (
                 <>
                   {isPending ? <Spinner color="current" size="sm" /> : null}
