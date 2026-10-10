@@ -5,6 +5,8 @@ import type { ChangeEvent, DragEvent, InputHTMLAttributes } from "react";
 
 import { useCallback, useMemo, useRef, useState } from "react";
 
+import { formatBytes } from "@/lib/utils";
+
 export interface FileMetadata {
   name: string;
   size: number;
@@ -52,19 +54,6 @@ export interface FileWithPreview {
   file: File | FileMetadata;
   id: string;
   preview?: string;
-}
-
-// Helper function to format bytes to human-readable format
-export function formatBytes(bytes: number, decimals = 2): string {
-  if (bytes === 0) return "0 Bytes";
-
-  const k = 1024;
-  const dm = decimals < 0 ? 0 : decimals;
-  const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-
-  return Number.parseFloat((bytes / k ** i).toFixed(dm)) + sizes[i];
 }
 
 export function useFileUpload(
@@ -371,9 +360,9 @@ export function useFileUpload(
       if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
         // In single file mode, only use the first file
         if (!multiple) {
-          const file = e.dataTransfer.files[0];
+          const [file] = e.dataTransfer.files;
 
-          addFiles([file]);
+          if (file) addFiles([file]);
         } else {
           addFiles(e.dataTransfer.files);
         }

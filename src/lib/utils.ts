@@ -9,6 +9,24 @@ export const RESPONSE = {
 } as const;
 
 /**
+ * @description: 把字节数格式化为人类可读的单位（如 2MB）
+ */
+export function formatBytes(bytes: number, decimals = 2): string {
+  if (bytes === 0) return "0 Bytes";
+
+  const k = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+  // bytes 超出 YB 量级时 i 会越界，兜底用最后的单位，否则会算出 "NaN undefined"
+  const unit = sizes[i] ?? sizes.at(-1)!;
+
+  return Number.parseFloat((bytes / k ** i).toFixed(dm)) + unit;
+}
+
+/**
  * Dynamically get a nested value from an array or
  * object with a string.
  *
