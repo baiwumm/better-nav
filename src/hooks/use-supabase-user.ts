@@ -10,10 +10,10 @@ import type { User } from "@supabase/supabase-js";
 
 import { useEffect, useState } from "react";
 
-import { getSupabaseBrowserClient } from "@/lib/supabase/client";
+import { useSupabaseClient } from "@/hooks/use-supabase-client";
 
 export function useSupabaseUser() {
-  const supabase = getSupabaseBrowserClient();
+  const supabase = useSupabaseClient();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 

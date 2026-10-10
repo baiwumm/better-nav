@@ -20,7 +20,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { memo } from "react";
 
-import { getSupabaseBrowserClient } from "@/lib/supabase/client";
+import { useSupabaseClient } from "@/hooks/use-supabase-client";
 import { generateLogoUrl } from "@/lib/utils";
 
 interface WebsiteCardProps {
@@ -30,6 +30,7 @@ interface WebsiteCardProps {
 }
 
 const WebsiteCard: FC<WebsiteCardProps> = memo(({ data, priority = false }) => {
+  const supabase = useSupabaseClient();
   const {
     id,
     name,
@@ -46,7 +47,7 @@ const WebsiteCard: FC<WebsiteCardProps> = memo(({ data, priority = false }) => {
   const handleClick = async () => {
     // 计数失败不影响跳转，且避免产生未处理的 Promise rejection
     try {
-      await getSupabaseBrowserClient().rpc("increment_visit_count", {
+      await supabase.rpc("increment_visit_count", {
         row_id: id,
       });
     } catch {

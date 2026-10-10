@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@bprogress/next": "^3.2.12",
+    "@gravity-ui/icons": "^2.22.0",
     "@heroui/react": "3.2.6",
     "@heroui/styles": "3.2.6",
     "@next/third-parties": "^16.4.0",
@@ -47,7 +48,6 @@
     "@eslint/compat": "^2.1.0",
     "@eslint/eslintrc": "^3.3.7",
     "@eslint/js": "^10.0.1",
-    "@gravity-ui/icons": "^2.22.0",
     "@next/eslint-plugin-next": "^16.4.0",
     "@release-it/conventional-changelog": "^12.0.0",
     "@tailwindcss/postcss": "^4.3.3",
