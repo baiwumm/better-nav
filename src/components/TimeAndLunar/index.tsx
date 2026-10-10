@@ -20,9 +20,8 @@ const TimeAndLunar: FC = memo(() => {
 
   useEffect(() => {
     let lastDate = "";
-    // 记录上一帧的秒值：仅在秒变化时 setState，避免每帧（60fps）触发 React 重渲染
     let lastSecond = -1;
-    let frameId: number;
+    let timer: number;
 
     const tick = () => {
       const current = new Date();
@@ -44,12 +43,13 @@ const TimeAndLunar: FC = memo(() => {
         }
       }
 
-      frameId = requestAnimationFrame(tick);
+      // 对齐到下一个整秒再调度：每次只唤醒一次，避免 rAF 的 60fps 常驻循环
+      timer = window.setTimeout(tick, 1000 - (Date.now() % 1000));
     };
 
-    frameId = requestAnimationFrame(tick);
+    timer = window.setTimeout(tick, 1000 - (Date.now() % 1000));
 
-    return () => cancelAnimationFrame(frameId);
+    return () => window.clearTimeout(timer);
   }, []);
 
   const d = now;

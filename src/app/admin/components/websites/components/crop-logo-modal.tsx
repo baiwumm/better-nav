@@ -10,13 +10,25 @@ import type { FileWithPreview } from "@/hooks/use-file-upload";
 import type { UseOverlayStateReturn } from "@heroui/react";
 import type { Dispatch, FC, SetStateAction } from "react";
 import type { Area, Point } from "react-easy-crop";
+import type CropperComponent from "react-easy-crop";
 
-import { Crop } from "@gravity-ui/icons";
-import { Button, Modal } from "@heroui/react";
+import { CircleXmarkFill, Crop } from "@gravity-ui/icons";
+import { Button, Modal, Spinner, toast } from "@heroui/react";
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import Cropper from "react-easy-crop";
 
 import { getCroppedImg } from "@/lib/crop-image";
+
+// 裁剪器只在弹窗打开且拿到图片尺寸后才渲染，按需加载避免 react-easy-crop 进首屏包。
+// next/dynamic 会把可选 props 推断成必填，这里用类型断言保留原始的 CropperProps 签名
+const Cropper = dynamic(() => import("react-easy-crop"), {
+  loading: () => (
+    <div className="flex size-full items-center justify-center">
+      <Spinner />
+    </div>
+  ),
+  ssr: false,
+}) as typeof CropperComponent;
 
 const MIN_ZOOM = 1;
 const MAX_ZOOM = 5;
@@ -67,16 +79,26 @@ const CropLogoModal: FC<CropLogoModalProps> = ({
    */
   const handleCropConfirm = async () => {
     if (!image || !croppedAreaPixels) return;
-    const file = await getCroppedImg(image, croppedAreaPixels);
-    const preview = URL.createObjectURL(file);
-    const newFile: FileWithPreview = {
-      id: crypto.randomUUID(),
-      file,
-      preview,
-    };
 
-    setInnerFile(newFile);
-    state.close();
+    try {
+      const file = await getCroppedImg(image, croppedAreaPixels);
+      const preview = URL.createObjectURL(file);
+      const newFile: FileWithPreview = {
+        id: crypto.randomUUID(),
+        file,
+        preview,
+      };
+
+      setInnerFile(newFile);
+      state.close();
+    } catch (err) {
+      // canvas 导出失败时保持弹窗打开并提示，避免点了“确认”毫无反应
+      toast.danger("裁剪失败，请重试", {
+        description: (err as Error).message,
+        timeout: 2000,
+        indicator: <CircleXmarkFill />,
+      });
+    }
   };
 
   const onReset = () => {
