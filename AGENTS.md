@@ -165,6 +165,6 @@ pnpm release
 
 - `use-admin-table-page` 无测试 —— 改动时需人工回归两个后台页面
 - `react-aria` 在 store 中有 4 份副本 —— 不影响生产包
-- 首页 `force-dynamic` + 全量数据下推客户端 —— 已用 `content-visibility` 缓解
+- 首页 `force-dynamic` + 全量数据下推客户端 —— `content-visibility` 因裁剪悬停阴影已移除
 - 13 处匿名函数 props —— 逐个改性价比低
 - `formatBytes` 输出无空格 —— 既有输出格式，改动牵动所有引用处

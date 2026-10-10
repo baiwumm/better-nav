@@ -87,8 +87,9 @@ export default function HomeContent({ data }: HomeContentProps) {
                 {name}
               </Typography>
               {websites?.length ? (
+                // 不要加 content-visibility：隐含的绘制遏制会裁掉卡片悬停位移与阴影（见 docs/tech-debt.md）
                 <motion.div
-                  className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(20rem,1fr))] [content-visibility:auto] [contain-intrinsic-size:auto_9rem]"
+                  className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(20rem,1fr))]"
                   variants={cardGridVariants}
                 >
                   {websites.map((item, idx) => (
