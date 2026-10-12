@@ -205,9 +205,11 @@ const BackTop: FC<BackTopProps> = ({ visibilityHeight = 150 }) => {
           whileTap={{ scale: 0.85 }}
           onClick={scrollToTop}
         >
-          {/* 圆环仅作视觉进度展示，避免与按钮语义重复播报 */}
+          {/* 圆环仅作视觉进度展示，避免与按钮语义重复播报；
+              aria-label 仅为消除 react-aria 开发态警告，aria-hidden 下读屏仍完全忽略 */}
           <MotionProgressCircle
             aria-hidden="true"
+            aria-label="滚动进度"
             className="pointer-events-none"
             color="default"
             size="lg"
