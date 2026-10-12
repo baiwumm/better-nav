@@ -138,7 +138,27 @@
     border-radius: 2px;
   }
 
-  * {
+  /*
+   * 滚动条样式统一放在 :root，不要用 `*`：
+   * 1. `*` 会把 scrollbar-color（可动画属性）铺到每个元素上，任何带
+   *    transition-property: all 的元素（如 HeroUI 的 duration-* 工具类）都可能
+   *    为它生成多余的 CSSTransition，参见 https://github.com/adobe/react-spectrum/issues/8802
+   * 2. scrollbar-color 可继承，放 :root 即可覆盖全部后代；scrollbar-width 不可继承，
+   *    内部滚动容器回落到下方 ::-webkit-scrollbar 的 2px 细条（Chromium），
+   *    视口滚动条保持 thin。
+   *
+   * scrollbar-gutter: stable：滚动条出现/消失不再改变视口宽度。Modal 打开时
+   * react-aria 会临时给 html 加内联 scrollbar-gutter: stable，关闭时（退场动画
+   * 期间）立即移除；若无此规则，滚动条中途回归会让 fixed 定位的 backdrop
+   * 宽度跳变，在 HeroUI 退场规则 transition-property: all 之下生成 width
+   * CSSTransition，一旦被后续布局变化 cancel，Animation.finished 会 reject，
+   * react-aria useAnimation 的 Promise.all(...).catch(() => {}) 吞掉后收尾回调
+   * 永不执行，弹窗永久卡在 data-exiting 关不掉（仅在带滚动条的页面出现）。
+   * 常驻 stable 后内联增删全程无感，此类 transition 不再产生。
+   * 副作用：无滚动条的短页面右侧会常驻一条细滚动条槽（thin 宽度）。
+   */
+  :root {
+    scrollbar-gutter: stable;
     scrollbar-width: thin;
     scrollbar-color: var(--scrollbar) transparent;
   }
