@@ -18,6 +18,7 @@ import { ShimmeringText } from "@/components/ShimmeringText";
 import ThemeSwitcher from "@/components/ThemeSwitcher";
 import TimeAndLunar from "@/components/TimeAndLunar";
 import UserAvatar from "@/components/UserAvatar";
+import { APP_NAME } from "@/lib/site";
 import pkg from "#/package.json";
 
 interface Social {
@@ -62,7 +63,7 @@ const Header: FC = () => {
             duration={1.5}
             repeatDelay={1}
             shimmerColor="var(--background)"
-            text={process.env.NEXT_PUBLIC_APP_NAME!}
+            text={APP_NAME}
           />
         </div>
       </Link>

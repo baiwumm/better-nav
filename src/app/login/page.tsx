@@ -37,6 +37,7 @@ import { useState } from "react";
 
 import { useSupabaseClient } from "@/hooks/use-supabase-client";
 import { GithubIcon, GoogleIcon } from "@/lib/icons";
+import { APP_NAME, APP_TITLE } from "@/lib/site";
 
 const Providers = [
   { value: "google" as const, label: "使用 Google 登录", icon: <GoogleIcon /> },
@@ -162,9 +163,9 @@ export default function Login() {
                 type="body"
                 weight="bold"
               >
-                {process.env.NEXT_PUBLIC_APP_NAME}
+                {APP_NAME}
               </Typography>
-              <Description>{process.env.NEXT_PUBLIC_APP_TITLE}</Description>
+              <Description>{APP_TITLE}</Description>
             </div>
           </div>
         </Card.Header>

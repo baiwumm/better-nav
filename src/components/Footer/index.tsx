@@ -12,6 +12,7 @@ import Image from "next/image";
 import { memo } from "react";
 
 import { ShimmeringText } from "@/components/ShimmeringText";
+import { APP_NAME } from "@/lib/site";
 import pkg from "#/package.json";
 
 const CURRENT_YEAR = new Date().getFullYear();
@@ -64,7 +65,7 @@ const Footer: FC = () => {
             duration={1.5}
             repeatDelay={1}
             shimmerColor="var(--background)"
-            text={process.env.NEXT_PUBLIC_APP_NAME!}
+            text={APP_NAME}
           />
         </div>
         <Separator className="h-4 self-center" orientation="vertical" />
