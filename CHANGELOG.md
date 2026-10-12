@@ -1,5 +1,46 @@
 # Changelog
 
+## [3.11.0](https://github.com/baiwumm/better-nav/compare/v3.10.5...v3.11.0) (2026-10-12)
+
+### ✨ Features | 新功能
+
+* 客户端错误上报接入 error 边界，补全路由 loading ([ac0f719](https://github.com/baiwumm/better-nav/commit/ac0f71969cb125445a46709de2e8ce365bfa1f3e))
+
+### 🐛 Bug Fixes | Bug 修复
+
+* BackTop 进度圆环补充 aria-label，消除滚动时 react-aria 告警刷屏 ([d9db4e0](https://github.com/baiwumm/better-nav/commit/d9db4e02afa100a25fc2fd34352899ac8bcb5d90))
+* 修复生产依赖缺失与浏览器端 Supabase 客户端重复创建 ([80cd927](https://github.com/baiwumm/better-nav/commit/80cd92720b89243190a582c0af6cb7b781dd4d97))
+* 接口字段白名单、登出容错与非变异排序 ([373bff4](https://github.com/baiwumm/better-nav/commit/373bff48aa6911283cf77e9f22ca4a0a2a6b2575))
+* 滚动条样式收敛至 :root 并常驻 scrollbar-gutter stable，修复带滚动条页面 Modal 退场卡死 ([52128ec](https://github.com/baiwumm/better-nav/commit/52128ec7d1ed6fcdc0266d9610b5b8773d4e409e))
+* 移除首页分类网格 content-visibility，修复悬停位移与阴影被裁剪 ([c63d337](https://github.com/baiwumm/better-nav/commit/c63d33797aca37ccb60f3423cb81ef910c70a916))
+* 站点名称改走 site.ts 统一兜底，修复缺少 NEXT_PUBLIC_APP_NAME 环境时预渲染崩溃 ([08af7a8](https://github.com/baiwumm/better-nav/commit/08af7a8a7163c12eb5e29dfca9c91aa1eae9f440))
+
+### 🎫 Chores | 其他更新
+
+* 删除已完成使命的 tag 迁移脚本 ([1c15108](https://github.com/baiwumm/better-nav/commit/1c151082b5d76941fafe8040c5e10a8de6298ac6))
+* 移除死代码、修正过期配置并补全 PWA manifest ([2d1cf22](https://github.com/baiwumm/better-nav/commit/2d1cf225ecef852fcba4f00410c971932219033a))
+
+### 📝 Documentation | 文档
+
+* 删除已实施完成的网站批量操作计划文档 ([221696f](https://github.com/baiwumm/better-nav/commit/221696fa494cda8a91c370eb3594f85afb9e6a61))
+* 同步 AGENTS.md 与 README 的技术栈、环境变量与结构说明 ([55db07e](https://github.com/baiwumm/better-nav/commit/55db07e9c19479e23670a6b7c758f1a1f73ab1eb))
+* 拆分 AGENTS.md 详细内容至 docs/ 目录 ([8234443](https://github.com/baiwumm/better-nav/commit/8234443f29826b9b3cca074877359dda0f09ed84))
+* 校正 AGENTS.md 结构图、禁改清单的例外条件，并记录技术欠账 ([d6bab02](https://github.com/baiwumm/better-nav/commit/d6bab029bf1a66f93dd0ac943818698f1e938f72))
+* 补充 CI 一键发版入口说明 ([3a3e9b3](https://github.com/baiwumm/better-nav/commit/3a3e9b3624fa4a58d8b3908726a226aeecdf2a73))
+
+### ♻ Code Refactoring | 代码重构
+
+* 后台列表页抽取共享组件与状态机 ([560e2e9](https://github.com/baiwumm/better-nav/commit/560e2e99d5c17638de4ea527f1c4f0fd6ea63a5b))
+
+### ⚡ Performance Improvements | 性能优化
+
+* 请求超时、定时器优化与裁剪器按需加载 ([2877303](https://github.com/baiwumm/better-nav/commit/28773035c68d3532461f5054859e7cdec9a64f55))
+* 首页改用 SSR 直出，并统一站点级常量兜底 ([3d08469](https://github.com/baiwumm/better-nav/commit/3d084698f79ecff3e07105a85dedffec7d692ec7))
+
+### ✅ Tests | 测试
+
+* 补充纯函数单元测试并收紧类型配置 ([2f50e52](https://github.com/baiwumm/better-nav/commit/2f50e5289bd983e1d413e5f2f77386f9906fe606))
+
 ## [3.10.5](https://github.com/baiwumm/better-nav/compare/v3.10.4...v3.10.5) (2026-10-09)
 
 ### ✨ Features | 新功能
