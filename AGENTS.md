@@ -107,7 +107,7 @@ pnpm lint:fix
 # 单元测试（node --test，零测试依赖）
 pnpm test
 
-# 发布版本
+# 发布版本（本地方式，与 CI 共用 .release-it.json；CI 一键发版见 .github/workflows/release.yml）
 pnpm release
 ```
 
