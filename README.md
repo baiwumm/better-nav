@@ -5,8 +5,8 @@
 </div>
 
 <div align="center">
-  <a href="https://dream.baiwumm.com/" target="_blank">
-    <img alt="Preview" src="https://img.shields.io/badge/在线预览-dream.baiwumm.com-black?style=flat" />
+  <a href="https://nav.baiwumm.com/" target="_blank">
+    <img alt="Preview" src="https://img.shields.io/badge/在线预览-nav.baiwumm.com-black?style=flat" />
   </a>
   <a href="https://nextjs.org/" target="_blank">
     <img alt="Next.js" src="https://img.shields.io/badge/Next.js-16-black?style=flat&logo=next.js" />
