@@ -10,7 +10,11 @@
 - `is_admin()`：管理员邮箱白名单判定，RLS 写权限的唯一入口
 - `logos`：Logo 存储桶，公开读、仅管理员写
 
-完整初始化 SQL 见 [`supabase/schema.sql`](../supabase/schema.sql)（幂等，可重复执行），演示数据见 [`supabase/seed.sql`](../supabase/seed.sql)。
+完整初始化 SQL 见 [`supabase/schema.sql`](../supabase/schema.sql)，演示数据见 [`supabase/seed.sql`](../supabase/seed.sql)。
+
+**schema.sql 只面向全新项目。** 它是幂等的，但幂等不等于可以在已有线上库整跑：脚本会 DROP 并重建两张表上的全部 RLS 策略，并把 `is_admin()` 白名单重置为占位邮箱，整跑后后台增删改会全部 401（完整警示见 README「Supabase 配置」节）。不要对有数据的生产库建议执行整份脚本。
+
+数据库变更的落地方式：本项目没有迁移目录，`schema.sql` 是表结构的唯一权威定义——变更直接改它并保持幂等；已有线上库由人工在 Dashboard 执行，管理员邮箱在 Dashboard 里改，不要把真实邮箱提交进 `schema.sql`。
 
 注意两处易踩坑的细节：
 

@@ -4,45 +4,23 @@
 
 ## 核心技术栈
 
-| 技术 | 版本 | 用途 |
-|------|------|------|
-| Next.js | 16.4.0 | 框架 |
-| React | 19.2.8 | UI 库 |
-| HeroUI | 3.2.6 | 组件库 |
-| Tailwind CSS | 4.3.3 | 样式 |
-| Supabase | - | 后端服务 |
-| SWR | 2.5.1 | 数据获取 |
-| TanStack Table | 9.2.4 | 表格组件 |
-| Motion | 13.2.0 | 动画 |
+Next.js 16 + React 19 + HeroUI v3 + Tailwind CSS v4 + Supabase + SWR + TanStack Table + Motion。
 
-## 必须配置的环境变量
+精确版本以根目录 `package.json` 为准，本文不维护版本号。
 
-```bash
-# Supabase（必须）
-NEXT_PUBLIC_SUPABASE_URL=          # Supabase 项目 URL
-NEXT_PUBLIC_SUPABASE_ANON_KEY=     # Supabase 匿名密钥
-NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET=logos  # 存储桶名称
+## 环境变量
 
-# 管理员配置（必须）
-ADMIN_EMAILS=your-admin@example.com  # 管理员邮箱白名单（逗号分隔）
+必须配置，缺失会导致登录、后台写入或 Logo 上传异常：
 
-# 应用配置（可选，有默认值）
-NEXT_PUBLIC_APP_NAME=Better Nav
-NEXT_PUBLIC_APP_TITLE=一个把常用网址收拾得干干净净的小站
-NEXT_PUBLIC_APP_DESC=把常用网址放在一起，打开就能用。
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-NEXT_PUBLIC_AUTHOR_NAME=白雾茫茫丶
-NEXT_PUBLIC_AUTHOR_ROLE=独立开发者
+| 变量 | 说明 |
+|------|------|
+| `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase 项目连接信息 |
+| `NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET` | Logo 存储桶名，代码中无兜底，必须与实际桶名一致（默认 `logos`） |
+| `ADMIN_EMAILS` | 管理员邮箱白名单，逗号分隔、小写比对，必须与 `schema.sql` 的 `is_admin()` 白名单一致 |
 
-# 以下可选，留空则不渲染对应区块
-NEXT_PUBLIC_APP_KEYWORDS=Better Nav,常用网站,网站入口,工具入口
-NEXT_PUBLIC_ICP=
-NEXT_PUBLIC_GUAN_ICP=
-NEXT_PUBLIC_GOOGLE_ID=
-NEXT_PUBLIC_CLARITY_ID=
-```
+其余变量（站点名 / 描述 / 作者 / ICP / 统计 ID 等）全部可选：留空则不渲染对应区块或从 metadata 中省略。完整清单与示例值见根目录 [`.env.example`](../.env.example)。
 
-完整示例见根目录 [`.env.example`](../.env.example)。
+运行时读取 `.env.local`（已被 gitignore，不提交）。新增环境变量时同步更新 `.env.example` 与 README 的环境变量清单。
 
 ## 站点级常量兜底
 

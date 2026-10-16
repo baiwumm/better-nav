@@ -19,7 +19,7 @@ pnpm test          # 仅跑单元测试
 - 组件属性排序：callbacksLast > shorthandFirst > reservedFirst
 - 自闭合组件标签：`<Component />` 而非 `<Component></Component>`
 - `return` 语句前必须空一行
-- 禁止 `console` 输出（warn 级别）
+- 不写 `console.*` 调试输出（ESLint `no-console` 规则为 warn 级：会告警，但不会让 `pnpm lint` 失败）
 
 ## TypeScript 规范
 

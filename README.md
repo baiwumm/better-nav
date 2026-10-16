@@ -54,8 +54,8 @@
 
 ### 🌱 环境要求
 
-- Node.js >= 20.9（Next.js 16 要求）
-- pnpm
+- Node.js >= 20.9（Next.js 16 最低要求）；本地开发用 Node 24 —— `pnpm lint` 内含的 `pnpm test` 依赖 `node --test` 直接执行 `.ts`
+- pnpm（版本由 package.json 的 `packageManager` 字段锁定）
 
 ### 🌵 启动项目
 
