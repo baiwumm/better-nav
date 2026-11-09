@@ -33,6 +33,7 @@ export function useUserAvatarUrl(user: User | null): string | undefined {
       }
 
       const url = candidates[index];
+
       index += 1;
 
       if (!url) {
@@ -42,6 +43,7 @@ export function useUserAvatarUrl(user: User | null): string | undefined {
       }
 
       const image = new Image();
+
       image.onload = () => {
         if (!cancelled) {
           setResolved(url);

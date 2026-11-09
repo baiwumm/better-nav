@@ -13,9 +13,9 @@ const FALLBACK_AVATAR = "/avatar.jpg";
  * 因此置顶；远程全部失败时降级到本地文件，保证头像始终有图可显
  */
 export function getAvatarCandidates(user: User | null): string[] {
-  const githubAvatar = user?.identities
-    ?.find((identity) => identity.provider === "github")
-    ?.identity_data?.avatar_url;
+  const githubAvatar = user?.identities?.find(
+    (identity) => identity.provider === "github",
+  )?.identity_data?.avatar_url;
   const metaAvatar = user?.user_metadata?.avatar_url;
 
   return [...new Set([githubAvatar, metaAvatar, FALLBACK_AVATAR])].filter(
