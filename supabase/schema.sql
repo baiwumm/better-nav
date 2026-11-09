@@ -106,6 +106,12 @@ create trigger trg_ds_websites_updated_at
 -- 首页卡片点击后调用 increment_visit_count(row_id)。
 -- 必须 security definer：表开了 RLS 之后，匿名访客走 security invoker
 -- 会被 ds_websites 的写策略挡住，计数会静默失效。
+--
+-- 旧版本的返回值是 bigint（并随机 +1~10），还可能带 increment_value 第二参数；
+-- create or replace 不能修改返回类型，先显式 drop 才能收敛到下面的定义。
+drop function if exists public.increment_visit_count(uuid, integer);
+drop function if exists public.increment_visit_count(uuid);
+
 create or replace function public.increment_visit_count(row_id uuid)
 returns void
 language sql
@@ -192,9 +198,22 @@ create policy "logos_authenticated_write"
 -- 写权限实际由上面的 RLS 策略兜底，这里只是放开角色到表的入口。
 grant usage on schema public to anon, authenticated, service_role;
 
+-- 管理员需要完整读写；匿名访客只保留公开列的读权限，
+-- 避免 email / user_id 通过 REST 接口被直接 SELECT 出来。
+-- 列清单必须与 src/lib/server/columns.ts 保持一致。
+revoke all on public.ds_categorys, public.ds_websites from anon;
+
 grant select, insert, update, delete
   on public.ds_categorys, public.ds_websites
-  to anon, authenticated, service_role;
+  to authenticated, service_role;
+
+grant select (id, name, sort, created_at, updated_at)
+  on public.ds_categorys to anon;
+
+grant select (
+  id, name, "desc", logo, url, tags, sort, pinned, vpn, recommend,
+  "commonlyUsed", "visitCount", category_id, created_at, updated_at
+) on public.ds_websites to anon;
 
 revoke execute on function public.increment_visit_count(uuid) from public;
 grant execute on function public.increment_visit_count(uuid)
