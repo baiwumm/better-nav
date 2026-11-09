@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.0.2](https://github.com/baiwumm/better-nav/compare/v4.0.1...v4.0.2) (2026-11-09)
+
+### 🐛 Bug Fixes | Bug 修复
+
+* **routing:** 未知路径返回 404，仅 /admin 跳登录页 ([28fc14e](https://github.com/baiwumm/better-nav/commit/28fc14e96a22932131b950434e015b2b8dd0238a))
+
 ## [4.0.1](https://github.com/baiwumm/better-nav/compare/v4.0.0...v4.0.1) (2026-11-09)
 
 ### ✨ Features | 新功能
