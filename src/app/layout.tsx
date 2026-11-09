@@ -10,6 +10,7 @@ import { ThemeProvider } from "next-themes";
 import Provider from "./Provider";
 
 import { GoogleUtilities, MicrosoftClarity } from "@/components/Analytics";
+import { AUTHOR_HANDLE } from "@/lib/author";
 import pkg from "#/package.json";
 import {
   APP_DESC,
@@ -17,7 +18,6 @@ import {
   APP_NAME,
   APP_TITLE,
   APP_URL,
-  AUTHOR_NAME,
   OG_IMAGE_URL,
 } from "@/lib/site";
 
@@ -26,9 +26,9 @@ export const metadata: Metadata = {
   title: `${APP_TITLE} | ${APP_NAME}`,
   description: APP_DESC,
   keywords: APP_KEYWORDS,
-  authors: [{ name: AUTHOR_NAME, url: pkg.author.url }],
-  creator: AUTHOR_NAME,
-  publisher: AUTHOR_NAME,
+  authors: [{ name: AUTHOR_HANDLE, url: pkg.author.url }],
+  creator: AUTHOR_HANDLE,
+  publisher: AUTHOR_HANDLE,
   icons: {
     icon: "/favicon.ico",
     apple: "/apple-icon.png",

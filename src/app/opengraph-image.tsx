@@ -3,13 +3,8 @@ import { extname, join } from "node:path";
 
 import { ImageResponse } from "next/og";
 
-import {
-  APP_NAME,
-  APP_TITLE,
-  APP_URL,
-  AUTHOR_NAME,
-  AUTHOR_ROLE,
-} from "@/lib/site";
+import { getGithubAuthor } from "@/lib/author";
+import { APP_NAME, APP_TITLE, APP_URL } from "@/lib/site";
 
 export const alt = APP_TITLE;
 export const size = {
@@ -37,12 +32,31 @@ const logoAsset = publicAssetToDataUrl("logo.png");
 const previewAsset = publicAssetToDataUrl("og-preview.png");
 const avatarAsset = publicAssetToDataUrl("avatar.jpg");
 
+// 作者头像：优先 GitHub 账户头像（revalidate 缓存），抓取失败回退本地 avatar.jpg
+async function resolveAuthorAvatar(avatarUrl: string) {
+  try {
+    const res = await fetch(avatarUrl, { next: { revalidate: 86400 } });
+
+    if (res.ok) {
+      const buffer = await res.arrayBuffer();
+
+      return `data:image/png;base64,${Buffer.from(buffer).toString("base64")}`;
+    }
+  } catch {
+    // 网络失败走本地兜底
+  }
+
+  return avatarAsset;
+}
+
 export default async function OpenGraphImage() {
-  const [logoUrl, previewUrl, avatarUrl] = await Promise.all([
+  const [logoUrl, previewUrl, avatarFallback, author] = await Promise.all([
     logoAsset,
     previewAsset,
     avatarAsset,
+    getGithubAuthor(),
   ]);
+  const avatarUrl = await resolveAuthorAvatar(author.avatarUrl);
 
   return new ImageResponse(
     <div
@@ -196,7 +210,7 @@ export default async function OpenGraphImage() {
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                alt={AUTHOR_NAME}
+                alt={author.name}
                 height={48}
                 src={avatarUrl}
                 style={{
@@ -222,16 +236,18 @@ export default async function OpenGraphImage() {
                   color: "#1A1A1A",
                 }}
               >
-                {AUTHOR_NAME}
+                {author.name}
               </span>
-              <span
-                style={{
-                  fontSize: 14,
-                  color: "#666666",
-                }}
-              >
-                {AUTHOR_ROLE}
-              </span>
+              {author.bio ? (
+                <span
+                  style={{
+                    fontSize: 14,
+                    color: "#666666",
+                  }}
+                >
+                  {author.bio}
+                </span>
+              ) : null}
             </div>
           </div>
         </div>

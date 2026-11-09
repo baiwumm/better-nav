@@ -85,9 +85,6 @@ NEXT_PUBLIC_APP_DESC=把常用网址放在一起，打开就能用。
 NEXT_PUBLIC_APP_KEYWORDS=Better Nav,常用网站,网站入口,工具入口
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 
-NEXT_PUBLIC_AUTHOR_NAME=
-NEXT_PUBLIC_AUTHOR_ROLE=
-
 # 备案信息与统计（可选，留空则不渲染对应区块）
 NEXT_PUBLIC_ICP=
 NEXT_PUBLIC_GUAN_ICP=

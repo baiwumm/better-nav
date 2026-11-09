@@ -5,13 +5,13 @@
  * @LastEditTime: 2026-08-05 15:25:26
  * @Description: 底部版权
  */
-import type { FC, ReactNode } from "react";
+import type { ReactNode } from "react";
 
 import { Chip, cn, Description, Link, Separator } from "@heroui/react";
 import Image from "next/image";
-import { memo } from "react";
 
 import { ShimmeringText } from "@/components/ShimmeringText";
+import { getGithubAuthor } from "@/lib/author";
 import { APP_NAME } from "@/lib/site";
 import pkg from "#/package.json";
 
@@ -38,7 +38,11 @@ const IcpLinks: Social[] = [
   },
 ];
 
-const Footer: FC = () => {
+// 异步服务端组件：版权名自动跟随 GitHub 账户昵称（fetch 缓存一天），
+// 失败回退 package.json 的 author.name
+async function Footer() {
+  const { name: authorName } = await getGithubAuthor();
+
   return (
     <footer className="shrink-0 mx-auto w-full container! px-6 py-4 grid grid-cols-1 sm:grid-cols-3 items-center gap-2">
       <div className="flex items-center justify-center gap-3 justify-self-center sm:justify-self-start">
@@ -94,7 +98,7 @@ const Footer: FC = () => {
           rel="noopener noreferrer"
           target="_blank"
         >
-          {process.env.NEXT_PUBLIC_AUTHOR_NAME}
+          {authorName}
         </a>
         . All rights reserved.
       </Description>
@@ -115,6 +119,6 @@ const Footer: FC = () => {
       </div>
     </footer>
   );
-};
+}
 
-export default memo(Footer);
+export default Footer;

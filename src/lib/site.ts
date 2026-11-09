@@ -23,9 +23,5 @@ export const APP_DESC =
 /** 无兜底：未配置时从 metadata 中省略，避免强塞营销词 */
 export const APP_KEYWORDS = process.env.NEXT_PUBLIC_APP_KEYWORDS;
 
-export const AUTHOR_NAME = process.env.NEXT_PUBLIC_AUTHOR_NAME || "白雾茫茫丶";
-
-export const AUTHOR_ROLE = process.env.NEXT_PUBLIC_AUTHOR_ROLE || "独立开发者";
-
 /** OG 图片地址：交给 Next.js 的 /opengraph-image 路由动态生成 */
 export const OG_IMAGE_URL = `${APP_URL}/opengraph-image`;
