@@ -1,5 +1,47 @@
 # Changelog
 
+## [4.0.0](https://github.com/baiwumm/better-nav/compare/v3.11.0...v4.0.0) (2026-11-09)
+
+### ⚠ BREAKING CHANGES
+
+* **auth:** 部署需配置 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY，
+  并从 Vercel 移除已废弃的 ADMIN_EMAILS 与 ANON_KEY
+
+### ✨ Features | 新功能
+
+* **auth:** OAuth 回调路由与登录失败提示 ([efab1fc](https://github.com/baiwumm/better-nav/commit/efab1fc46627da0b740fc03fba336ad5f3e53e35))
+* **og:** 作者信息自动取自 GitHub 账户，移除作者环境变量 ([83a5fa8](https://github.com/baiwumm/better-nav/commit/83a5fa870ade4f6d2122f01a98e193b7ce609c5d))
+
+### 🐛 Bug Fixes | Bug 修复
+
+* **auth:** 用户头像改候选链解析，header 与 dropdown 共用同一地址 ([c47d70a](https://github.com/baiwumm/better-nav/commit/c47d70a9da350b690d545d58245325ba9c8609eb))
+* **auth:** 登录按钮 pending 状态互斥，点击哪个只有哪个转圈 ([57726b1](https://github.com/baiwumm/better-nav/commit/57726b12ae39c7c17752116908e0febfabcbdc2d))
+* **og:** Footer 移出客户端包，GitHub 请求回归服务端 ([f5026e5](https://github.com/baiwumm/better-nav/commit/f5026e5c5eb41c7997d27502f91c5608c7572fa5))
+* **og:** 移除未使用的 avatarFallback 解构 ([b1c784e](https://github.com/baiwumm/better-nav/commit/b1c784eb7505c0ad2600f4afe9da353cbf8524e9))
+* **ui:** footer 三列布局推迟到 lg，窄屏改单列堆叠并禁断行 ([366165a](https://github.com/baiwumm/better-nav/commit/366165aaf199721fe2897331ec69218e5bd9feb7))
+* **ui:** footer 三行堆叠时备案行与其他两行对齐居中 ([045de66](https://github.com/baiwumm/better-nav/commit/045de662933c073b0201e9614891b6e33eaf140e))
+
+### 🎫 Chores | 其他更新
+
+* **deps:** 升级 Next 16.4.5 安全版与全量范围内依赖 ([3277de2](https://github.com/baiwumm/better-nav/commit/3277de29b490158d6a95589cc6c8ed89cc0d77bf))
+* 清理无引用静态资源与冗余依赖声明 ([9742366](https://github.com/baiwumm/better-nav/commit/974236638c32f861463571d0b4340e6f91eb0652))
+* 移除 release.yml 中已删除的 migrate-tags 脚本引用 ([0e39e4f](https://github.com/baiwumm/better-nav/commit/0e39e4ff3001384870bb684dc8af0407a2c52f45))
+
+### 📝 Documentation | 文档
+
+* 修正 README 在线预览域名为 nav.baiwumm.com ([d8fa205](https://github.com/baiwumm/better-nav/commit/d8fa205534ebacfb0c18440b586c9ce6a647b5c2))
+* 按 agent 文档标准收敛 AGENTS.md，同步修正 README 与 docs ([25c7b0e](https://github.com/baiwumm/better-nav/commit/25c7b0ef3e8bde104ca6d84b0403f970f8b8217e))
+* 新增 Supabase 部署与 Agent 操作手册，精简 README ([9f164a9](https://github.com/baiwumm/better-nav/commit/9f164a974dc473c49d9614d949e33c171f458933))
+* 更换 README 封面为瑞士国际·克莱因蓝浅色风格 ([75a8087](https://github.com/baiwumm/better-nav/commit/75a80872ae67e3c8ae43eb9700df5305da13d372))
+
+### ♻ Code Refactoring | 代码重构
+
+* **auth:** 登录鉴权改为「已登录即可写」，切换 publishable key ([209f585](https://github.com/baiwumm/better-nav/commit/209f585268ae83ba03103b69b93092269eed0551))
+
+### 🔧 Continuous Integration | CI 配置
+
+* Actions 运行时升级到 Node 24，消除 Node 20 弃用警告 ([5733484](https://github.com/baiwumm/better-nav/commit/5733484a9db1a6686cea5b00787e4a9cd7af711f))
+
 ## [3.11.0](https://github.com/baiwumm/better-nav/compare/v3.10.5...v3.11.0) (2026-10-12)
 
 ### ✨ Features | 新功能
