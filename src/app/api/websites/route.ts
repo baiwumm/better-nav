@@ -4,6 +4,7 @@ import type { WebsiteSaveParams } from "@/types";
 import { NextResponse } from "next/server";
 
 import { getSupabaseServerClient, requireUser } from "@/lib/supabase/server";
+import { PUBLIC_WEBSITE_SELECT } from "@/lib/server/columns";
 import { buildLogoPath, validateLogoFile } from "@/lib/server/logo";
 import { RESPONSE, responseMessage } from "@/lib/utils";
 
@@ -40,7 +41,7 @@ export async function GET(request: NextRequest) {
     // 查询 sql
     let sqlQuery = supabase
       .from("ds_websites")
-      .select("*,category:ds_categorys(*)", { count: "exact" })
+      .select(PUBLIC_WEBSITE_SELECT, { count: "exact" })
       .range(start, end)
       .order("pinned", {
         ascending: false,

@@ -141,7 +141,7 @@ export function getColumns({
       header: "所属分类",
       cell: ({ row }) => (
         <Chip color="success" variant="soft">
-          {row.original.category.name}
+          {row.original.category?.name}
         </Chip>
       ),
     }),

@@ -3,7 +3,7 @@ import type { PaginationState } from "@tanstack/react-table";
 /** @description: 网站分类 */
 export type Category = Columns & {
   name: string; // 分类名称
-  websites: Website[]; // 网站列表
+  websites?: Website[]; // 网站列表（只有分类查询会带，站点查询里的 category 不含）
 };
 
 /** @description: 网站分类表单 */
@@ -14,8 +14,8 @@ export type CategorySaveParams = Pick<Category, "name" | "sort"> & {
 /** @description: 公共列 */
 export interface Columns {
   id: string; // 主键
-  user_id: string; // 登录用户 id
-  email: string; // 邮箱
+  user_id?: string; // 登录用户 id（仅后台读写返回，公开接口不下发）
+  email?: string; // 邮箱（仅后台读写返回，公开接口不下发）
   sort: number; // 排序
   created_at: string; // 创建时间
   updated_at: string; // 更新时间
@@ -50,7 +50,7 @@ export type Website = Columns & {
   visitCount: number; // 访问次数
   commonlyUsed: boolean; // 是否常用
   category_id: string; // 分类 id
-  category: Category;
+  category?: Category; // 所属分类（只有站点查询会带）
 };
 
 /** @description: 网站列表表单 */

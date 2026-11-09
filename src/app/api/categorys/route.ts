@@ -3,6 +3,7 @@ import type { NextRequest } from "next/server";
 
 import { NextResponse } from "next/server";
 
+import { PUBLIC_CATEGORY_SELECT } from "@/lib/server/columns";
 import { sortWebsites } from "@/lib/server/sort";
 import { getSupabaseServerClient, requireUser } from "@/lib/supabase/server";
 import { RESPONSE, responseMessage } from "@/lib/utils";
@@ -42,7 +43,7 @@ export async function GET(request: NextRequest) {
     // 查询 sql
     let sqlQuery = supabase
       .from("ds_categorys")
-      .select("*,websites:ds_websites(*)", { count: "exact" })
+      .select(PUBLIC_CATEGORY_SELECT, { count: "exact" })
       .range(start, end)
       .order("sort", {
         ascending: false,

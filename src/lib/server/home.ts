@@ -2,6 +2,7 @@ import type { Category } from "@/types";
 
 import { cache } from "react";
 
+import { PUBLIC_CATEGORY_SELECT } from "@/lib/server/columns";
 import { sortWebsites } from "@/lib/server/sort";
 /*
  * @Author: 白雾茫茫丶<baiwumm.com>
@@ -21,7 +22,7 @@ export const fetchHomeData = cache(async (): Promise<Category[]> => {
   // 查询 sql
   const { data, error } = await supabase
     .from("ds_categorys")
-    .select("*,websites:ds_websites(*)")
+    .select(PUBLIC_CATEGORY_SELECT)
     .order("sort", {
       ascending: false,
     })
