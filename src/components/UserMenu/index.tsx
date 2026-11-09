@@ -25,6 +25,8 @@ import {
 import { useState } from "react";
 
 import { useSupabaseClient } from "@/hooks/use-supabase-client";
+import { useUserAvatarUrl } from "@/hooks/use-user-avatar";
+import { getUserDisplayName } from "@/lib/user-profile";
 
 interface UserMenuProps {
   user: User;
@@ -35,13 +37,10 @@ const UserMenu: FC<UserMenuProps> = ({ user }) => {
   const router = useRouter();
   const alertState = useOverlayState();
   const [logoutLoading, setLogoutLoading] = useState(false);
-  // 用户名称
-  const name =
-    user?.user_metadata.name ||
-    user?.user_metadata.user_name ||
-    user?.email?.slice(0, 1);
-  // 用户头像
-  const avatar = user?.user_metadata.avatar_url as string;
+  // 展示名：GitHub 用户名优先，不展示真名
+  const name = getUserDisplayName(user);
+  // 头像：候选链解析出的地址，header 与 dropdown 共用，保证两处永远一致
+  const avatarUrl = useUserAvatarUrl(user);
 
   // 点击菜单回调
   const onClickMenu = (key: Key) => {
@@ -82,7 +81,7 @@ const UserMenu: FC<UserMenuProps> = ({ user }) => {
         <Dropdown.Trigger>
           <Badge.Anchor>
             <Avatar size="sm">
-              <Avatar.Image alt={name} src={avatar} />
+              <Avatar.Image alt={name} src={avatarUrl} />
               <Avatar.Fallback>
                 <Person />
               </Avatar.Fallback>
@@ -98,7 +97,7 @@ const UserMenu: FC<UserMenuProps> = ({ user }) => {
         <Dropdown.Popover>
           <div className="flex items-center gap-3 p-3">
             <Avatar size="sm">
-              <Avatar.Image alt={name} src={avatar} />
+              <Avatar.Image alt={name} src={avatarUrl} />
               <Avatar.Fallback>
                 <Person />
               </Avatar.Fallback>
