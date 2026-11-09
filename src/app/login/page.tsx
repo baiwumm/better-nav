@@ -19,6 +19,7 @@ import {
   Lock,
 } from "@gravity-ui/icons";
 import {
+  Alert,
   Button,
   Card,
   Description,
@@ -33,9 +34,11 @@ import {
   Typography,
 } from "@heroui/react";
 import Image from "next/image";
-import { useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { Suspense, useState } from "react";
 
 import { useSupabaseClient } from "@/hooks/use-supabase-client";
+import { getLoginErrorMessage } from "@/lib/auth-redirect";
 import { GithubIcon, GoogleIcon } from "@/lib/icons";
 import { APP_NAME, APP_TITLE } from "@/lib/site";
 
@@ -49,11 +52,28 @@ interface EmailForm {
   password: string;
 }
 
+// OAuth 回调失败的提示。useSearchParams 单独包在 Suspense 里，登录页其余部分仍可静态预渲染
+function CallbackError() {
+  const message = getLoginErrorMessage(useSearchParams().get("error"));
+
+  return message ? (
+    <Alert className="mb-4" status="danger">
+      <Alert.Indicator />
+      <Alert.Content>
+        <Alert.Title>登录失败</Alert.Title>
+        <Alert.Description>{message}</Alert.Description>
+      </Alert.Content>
+    </Alert>
+  ) : null;
+}
+
 export default function Login() {
   const supabase = useSupabaseClient();
   const router = useRouter();
   const [emailLoading, setEmailLoading] = useState(false);
   const [oauthLoading, setOauthLoading] = useState(false);
+  // 重新发起登录后隐藏上一次的回调错误
+  const [attempted, setAttempted] = useState(false);
   // 是否显示密码
   const [showPassword, setShowPassword] = useState(false);
 
@@ -68,9 +88,10 @@ export default function Login() {
       data[key as keyof EmailForm] = value.toString();
     });
 
+    setAttempted(true);
     setEmailLoading(true);
 
-    // ✅ 直接走邮箱密码登录（注册入口已移除，仅白名单管理员可进后台）
+    // ✅ 直接走邮箱密码登录（注册入口已移除，账号只能在 Supabase Dashboard 添加）
     const authPromise = supabase.auth
       .signInWithPassword(data as EmailForm)
       .then((result) => {
@@ -103,6 +124,7 @@ export default function Login() {
 
   // 谷歌或者 Github 登录
   const handleOAuthLogin = async (provider: "google" | "github") => {
+    setAttempted(true);
     setOauthLoading(true);
     // 加一个短提示，避免跳转等待时间过长无反馈
     toast("登录中...", {
@@ -123,7 +145,7 @@ export default function Login() {
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: process.env.NEXT_PUBLIC_APP_URL,
+          redirectTo: `${window.location.origin}/auth/callback`,
         },
       });
 
@@ -171,6 +193,11 @@ export default function Login() {
         </Card.Header>
         <Separator />
         <Card.Content>
+          {attempted ? null : (
+            <Suspense fallback={null}>
+              <CallbackError />
+            </Suspense>
+          )}
           <Form className="flex flex-col gap-4" onSubmit={onSubmit}>
             <TextField
               isRequired
