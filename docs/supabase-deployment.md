@@ -130,6 +130,7 @@ Authentication → Users → **Add user**（邮箱 + 密码）。登录页没有
 - 脚本结尾带 `notify pgrst, 'reload schema';`，漏了会报 `Could not find the table 'public.ds_websites' in the schema cache`
 - 中途失败会让表停在「无任何策略」状态，连公开读都会被拒；重跑全文即可恢复
 - 策略是 OR 合并语义：残留的旧宽松策略会让新限制失效，所以脚本先清空再重建（不要手工跳步）
+- 从旧版本升级的线上库：单独执行 `schema.sql` 第 3 段（访问计数函数，已内置 `drop`，可覆盖旧的随机计数与双参重载）和第 6 段（匿名列级授权），再执行 `notify pgrst, 'reload schema';`
 
 ## 6. 部署到 Vercel
 
@@ -152,7 +153,7 @@ Authentication → Users → **Add user**（邮箱 + 密码）。登录页没有
 | OAuth 登录提示「本站注册已关闭」 | 这个第三方账号的邮箱没有先在 Dashboard 的 Users 里建号 |
 | 登录按钮提交不了、密码标红 | 登录页表单要求 6–12 位且含大小写字母和数字 |
 | 上传 Logo 报 `new row violates row-level security policy`（storage.objects） | 第 5 段桶策略没执行完，或 `NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET` 与桶名 `logos` 不一致 |
-| 点卡片访问计数不涨 | `increment_visit_count` 不是 `security definer`，被 RLS 挡了。重跑 `schema.sql` 第 3 段 |
+| 点卡片访问计数不涨 | `increment_visit_count` 不是 `security definer`，被 RLS 挡了。单独重跑 `schema.sql` 第 3 段（已内置 `drop`，可覆盖旧版随机计数 / 双参重载） |
 | 生产环境 OG 图 / sitemap 指向旧域名 | `NEXT_PUBLIC_APP_URL` 没改，或改完没重新部署 |
 
 ## 8. 相关文档
