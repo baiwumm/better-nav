@@ -1,6 +1,16 @@
-import type { NextRequest } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 
 import { updateSession } from "@/lib/supabase/proxy";
+
+// 受保护路由：匿名访问这些路径才该跳登录页，其余交回 Next 返回 404。
+// 需与 src/lib/supabase/proxy.ts 里的 /admin 判断保持一致（该文件禁改）。
+const PROTECTED_PATH_PREFIXES = ["/admin"];
+
+function isProtectedPath(pathname: string) {
+  return PROTECTED_PATH_PREFIXES.some(
+    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
+  );
+}
 
 /* --------------------------------------------------
  * 安全响应头
@@ -39,7 +49,24 @@ const contentSecurityPolicy = [
 ].join("; ");
 
 export default async function proxy(request: NextRequest) {
-  const response = await updateSession(request);
+  let response = await updateSession(request);
+
+  // updateSession 对「未登录 + 非 API + 非 /login」一律 307 到 /login，
+  // 未知路径因此拿不到 404；只保留受保护路由的跳转。
+  const location = response.headers.get("location");
+
+  if (
+    response.status === 307 &&
+    location &&
+    new URL(location, request.url).pathname === "/login" &&
+    !isProtectedPath(request.nextUrl.pathname)
+  ) {
+    const next = NextResponse.next({ request });
+
+    // 保留 getClaims() 写回的会话刷新 cookie
+    response.cookies.getAll().forEach((cookie) => next.cookies.set(cookie));
+    response = next;
+  }
 
   response.headers.set("X-Content-Type-Options", "nosniff");
   response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
