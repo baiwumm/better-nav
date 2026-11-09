@@ -70,8 +70,10 @@ function CallbackError() {
 export default function Login() {
   const supabase = useSupabaseClient();
   const router = useRouter();
-  const [emailLoading, setEmailLoading] = useState(false);
-  const [oauthLoading, setOauthLoading] = useState(false);
+  // 当前进行中的登录方式：被点击的按钮转圈，其余按钮（含邮箱提交键）禁用
+  const [pending, setPending] = useState<null | "email" | "google" | "github">(
+    null,
+  );
   // 重新发起登录后隐藏上一次的回调错误
   const [attempted, setAttempted] = useState(false);
   // 是否显示密码
@@ -89,7 +91,7 @@ export default function Login() {
     });
 
     setAttempted(true);
-    setEmailLoading(true);
+    setPending("email");
 
     // ✅ 直接走邮箱密码登录（注册入口已移除，账号只能在 Supabase Dashboard 添加）
     const authPromise = supabase.auth
@@ -105,13 +107,13 @@ export default function Login() {
     toast.promise(authPromise, {
       loading: "登录中...",
       success: () => {
-        setEmailLoading(false);
+        setPending(null);
         router.refresh();
 
         return "登录成功，欢迎回来！";
       },
       error: (err: { message: string }) => {
-        setEmailLoading(false);
+        setPending(null);
 
         return `登录失败，请稍后重试：${err.message}`;
       },
@@ -124,8 +126,12 @@ export default function Login() {
 
   // 谷歌或者 Github 登录
   const handleOAuthLogin = async (provider: "google" | "github") => {
+    if (pending) {
+      return;
+    }
+
     setAttempted(true);
-    setOauthLoading(true);
+    setPending(provider);
     // 加一个短提示，避免跳转等待时间过长无反馈
     toast("登录中...", {
       timeout: 2000,
@@ -142,20 +148,29 @@ export default function Login() {
     };
 
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
+      // skipBrowserRedirect：先拿到授权地址，手动跳转。自动跳转会在同一
+      // 次更新里抢在绘制之前离开页面，按钮的 pending 状态根本不会上屏
+      const { data, error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
           redirectTo: `${window.location.origin}/auth/callback`,
+          skipBrowserRedirect: true,
         },
       });
 
-      if (error) {
-        errorToast(error.message);
-        setOauthLoading(false);
+      if (error || !data.url) {
+        errorToast(error?.message ?? "未获取到登录地址");
+        setPending(null);
+
+        return;
       }
+
+      // 留出一帧让 pending 状态完成绘制再跳转
+      await new Promise((resolve) => setTimeout(resolve, 150));
+      window.location.assign(data.url);
     } catch (err) {
       errorToast((err as Error).message);
-      setOauthLoading(false);
+      setPending(null);
     }
   };
 
@@ -271,8 +286,8 @@ export default function Login() {
             </TextField>
             <Button
               className="w-full"
-              isDisabled={oauthLoading || emailLoading}
-              isPending={emailLoading}
+              isDisabled={pending !== null}
+              isPending={pending === "email"}
               type="submit"
             >
               {({ isPending }) => (
@@ -295,8 +310,8 @@ export default function Login() {
               <Button
                 key={value}
                 className="w-full"
-                isDisabled={oauthLoading || emailLoading}
-                isPending={oauthLoading}
+                isDisabled={pending !== null}
+                isPending={pending === value}
                 variant="outline"
                 onPress={() => handleOAuthLogin(value)}
               >
