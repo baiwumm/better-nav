@@ -37,6 +37,6 @@ dev-server.err.log
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts
+# next-env.d.ts 纳入版本控制：全新 clone 未跑 dev/build 时也需要 Next 的全局类型增强
 # heroui-agents-md
 .heroui-docs/
