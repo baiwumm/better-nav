@@ -6,21 +6,24 @@
  * @Description: 上下文提供者
  */
 "use client";
-import type { FC, PropsWithChildren } from "react";
+import type { FC, PropsWithChildren, ReactNode } from "react";
 
 import { AppProgressProvider as ProgressProvider } from "@bprogress/next";
 import { useEffect, ViewTransition } from "react";
 import { SWRConfig } from "swr";
 
 import BackTop from "@/components/BackTop";
-import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { swrConfig } from "@/lib/swr";
 
 /** 后退方向标记保留时间，动画结束后清除，避免影响后续前进导航 */
 const NAV_DIR_RESET_DELAY = 1000;
 
-const Providers: FC<PropsWithChildren> = ({ children }) => {
+// footer 由服务端布局渲染后传入（异步服务端组件不能进客户端包）
+const Providers: FC<PropsWithChildren<{ footer: ReactNode }>> = ({
+  children,
+  footer,
+}) => {
   // 浏览器前进/后退会触发 popstate，此时标记「后退」让路由转场反向滑动；
   // 普通链接跳转（pushState）不触发 popstate，默认按「前进」处理
   useEffect(() => {
@@ -59,7 +62,7 @@ const Providers: FC<PropsWithChildren> = ({ children }) => {
           </main>
         </ViewTransition>
         {/* 底部版权 */}
-        <Footer />
+        {footer}
         <BackTop />
       </SWRConfig>
     </ProgressProvider>

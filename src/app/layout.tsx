@@ -10,6 +10,7 @@ import { ThemeProvider } from "next-themes";
 import Provider from "./Provider";
 
 import { GoogleUtilities, MicrosoftClarity } from "@/components/Analytics";
+import Footer from "@/components/Footer";
 import { AUTHOR_HANDLE } from "@/lib/author";
 import pkg from "#/package.json";
 import {
@@ -78,7 +79,9 @@ export default function RootLayout({
       <body className="bg-background text-foreground flex min-h-screen flex-col">
         <ThemeProvider attribute="class" enableSystem={false}>
           <MotionConfig reducedMotion="user">
-            <Provider>{children}</Provider>
+            {/* Footer 是异步服务端组件，在服务端渲染后作为 slot 传入客户端 Provider，
+                避免 GitHub 请求落到浏览器（会触发 CORS 且暴露调用侧） */}
+            <Provider footer={<Footer />}>{children}</Provider>
             <Toast.Provider placement="top" />
           </MotionConfig>
         </ThemeProvider>
