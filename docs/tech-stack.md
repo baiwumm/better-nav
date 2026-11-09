@@ -14,11 +14,12 @@ Next.js 16 + React 19 + HeroUI v3 + Tailwind CSS v4 + Supabase + SWR + TanStack 
 
 | 变量 | 说明 |
 |------|------|
-| `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase 项目连接信息 |
+| `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Supabase 项目连接信息 |
 | `NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET` | Logo 存储桶名，代码中无兜底，必须与实际桶名一致（默认 `logos`） |
-| `ADMIN_EMAILS` | 管理员邮箱白名单，逗号分隔、小写比对，必须与 `schema.sql` 的 `is_admin()` 白名单一致 |
 
 其余变量（站点名 / 描述 / 作者 / ICP / 统计 ID 等）全部可选：留空则不渲染对应区块或从 metadata 中省略。完整清单与示例值见根目录 [`.env.example`](../.env.example)。
+
+另有 `DATABASE_URL`（数据库直连串）与 `SUPABASE_SECRET_KEY`（`sb_secret_` 密钥，可调 Auth Admin API）两个**本地运维变量**：应用运行时不读取，仅本地 `.env` 里供管理脚本（直连改库、批量管理用户）使用。因此它们不进 `.env.example`、不配到 Vercel；都是机密，不得加 `NEXT_PUBLIC_` 前缀。
 
 运行时读取 `.env.local`（已被 gitignore，不提交）。新增环境变量时同步更新 `.env.example` 与 README 的环境变量清单。
 

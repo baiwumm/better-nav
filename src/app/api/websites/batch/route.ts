@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 
 import { NextResponse } from "next/server";
 
-import { getSupabaseServerClient, requireAdmin } from "@/lib/supabase/server";
+import { getSupabaseServerClient, requireUser } from "@/lib/supabase/server";
 import { RESPONSE, responseMessage } from "@/lib/utils";
 
 /** 单次批量操作的 id 数量上限，防止超大请求拖垮 Logo 清理 */
@@ -42,8 +42,8 @@ function normalizeIds(ids: unknown): string[] | null {
 export async function POST(request: NextRequest) {
   try {
     const supabase = await getSupabaseServerClient();
-    // 校验管理员（登录 + 邮箱白名单，middleware 的 getClaims 仅解码 JWT，此处 getUser 验签兜底）
-    const user = await requireAdmin();
+    // 校验登录（middleware 的 getClaims 仅解码 JWT，此处 getUser 验签兜底）
+    const user = await requireUser();
 
     if (!user) {
       return NextResponse.json(

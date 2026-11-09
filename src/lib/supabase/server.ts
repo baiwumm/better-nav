@@ -6,7 +6,7 @@ export async function getSupabaseServerClient() {
 
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
     {
       cookies: {
         getAll() {
@@ -28,29 +28,9 @@ export async function getSupabaseServerClient() {
 }
 
 /**
- * @description: 校验管理员：登录 + 邮箱白名单（ADMIN_EMAILS，逗号分隔），
- * 不满足任一条件返回 null（后台写操作接口鉴权用）
- */
-export async function requireAdmin() {
-  const user = await requireUser();
-
-  if (!user?.email) {
-    return null;
-  }
-  const adminEmails = (process.env.ADMIN_EMAILS || "")
-    .split(",")
-    .map((email) => email.trim().toLowerCase())
-    .filter(Boolean);
-
-  if (!adminEmails.includes(user.email.toLowerCase())) {
-    return null;
-  }
-
-  return user;
-}
-
-/**
- * @description: 校验登录用户（会请求 Supabase Auth 验签，确认 JWT 有效）
+ * @description: 校验登录用户（会请求 Supabase Auth 验签，确认 JWT 有效）。
+ * 注册入口已在 Supabase 关闭，账号仅能由管理员在 Dashboard 中添加，
+ * 因此「已登录」即代表受信任，后台写操作直接复用本校验。
  */
 export async function requireUser() {
   const supabase = await getSupabaseServerClient();

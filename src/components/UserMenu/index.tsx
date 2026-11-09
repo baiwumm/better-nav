@@ -25,7 +25,6 @@ import {
 import { useState } from "react";
 
 import { useSupabaseClient } from "@/hooks/use-supabase-client";
-import { useSwrQuery } from "@/hooks/use-swr";
 
 interface UserMenuProps {
   user: User;
@@ -36,12 +35,6 @@ const UserMenu: FC<UserMenuProps> = ({ user }) => {
   const router = useRouter();
   const alertState = useOverlayState();
   const [logoutLoading, setLogoutLoading] = useState(false);
-  // 查询当前用户是否为管理员（登录 + 邮箱白名单），非管理员不显示后台入口
-  const { data: adminInfo } = useSwrQuery<{
-    isAdmin: boolean;
-    email: string | null;
-  }>("/auth/me");
-  const isAdmin = adminInfo?.isAdmin === true;
   // 用户名称
   const name =
     user?.user_metadata.name ||
@@ -122,12 +115,10 @@ const UserMenu: FC<UserMenuProps> = ({ user }) => {
           </div>
           <Separator />
           <Dropdown.Menu className="font-normal" onAction={onClickMenu}>
-            {isAdmin ? (
-              <Dropdown.Item id="admin" textValue="Admin">
-                <GearDot className="size-4 shrink-0 text-muted" />
-                <Label>管理后台</Label>
-              </Dropdown.Item>
-            ) : null}
+            <Dropdown.Item id="admin" textValue="Admin">
+              <GearDot className="size-4 shrink-0 text-muted" />
+              <Label>管理后台</Label>
+            </Dropdown.Item>
             <Dropdown.Item id="logout" textValue="Logout" variant="danger">
               <ArrowRightFromSquare className="size-4 shrink-0 text-danger" />
               <Label>退出登录</Label>

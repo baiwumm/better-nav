@@ -5,40 +5,23 @@
 --       表 / 函数 / 触发器 / 行级安全（RLS）/ 存储桶与桶策略。
 --
 -- 用法：
---   1. 到 Supabase Dashboard → SQL Editor，整段粘贴本文件内容
---   2. 先改「第 1 步」is_admin() 里的管理员邮箱，再点 Run
---      （建议在 Dashboard 里改，别改仓库文件，避免把真实邮箱提交进 git）
---   3. 需要演示数据的话，再单独执行 supabase/seed.sql
+--   1. 到 Supabase Dashboard → SQL Editor，整段粘贴本文件内容，点 Run
+--   2. 需要演示数据的话，再单独执行 supabase/seed.sql
 --
 --   也可以用本地 psql：psql "$DATABASE_URL" -f supabase/schema.sql
 --
+-- ⚠️ 写权限模型是「已登录即可写」，前提是 Authentication 里关闭
+--    Allow new users to sign up，账号只通过 Dashboard 的 Add user 添加。
+--    开着注册跑这个脚本，任何人注册后都能改库。
+--
 -- ⚠️ 本脚本面向「新库」，不要在已有线上库整跑：
---    第 5 步会 DROP 并重建两张表上的全部 RLS 策略；
---    邮箱若还是占位符，跑完后台增删改会全部 401。
+--    第 4 步会 DROP 并重建两张表上的全部 RLS 策略。
 --
 -- 幂等：可重复执行，不会破坏已有数据。
 -- ============================================================
 
 
--- ---------- 1. 管理员判定（唯一需要修改的地方） ----------
--- 收敛成一个函数：以后换管理员只改这一处，不必逐条重写 RLS 策略。
-create or replace function public.is_admin()
-returns boolean
-language sql
-stable
-as $$
-  select lower(coalesce(auth.jwt() ->> 'email', '')) = any (array[
-    'your-admin@example.com'
-  ]::text[]);
-  -- ↑ 只改这一行。多个邮箱写成 'a@example.com', 'b@example.com'，请一律用小写
-  --   （应用层 ADMIN_EMAILS 也是小写比对，两边保持一致）
-$$;
-
-comment on function public.is_admin() is
-  '当前请求者邮箱是否在管理员白名单内，供 RLS 写权限判定使用';
-
-
--- ---------- 2. 建表 ----------
+-- ---------- 1. 建表 ----------
 -- gen_random_uuid() 在 PG13+ 为核心内置函数，此处显式启用只是兜底
 create extension if not exists pgcrypto with schema extensions;
 
@@ -87,7 +70,7 @@ create index if not exists idx_ds_websites_category_id
 -- PostgREST 返回字段都直接用它，改名会牵连一整条链路，故沿用。
 
 
--- ---------- 3. updated_at 触发器 ----------
+-- ---------- 2. updated_at 触发器 ----------
 create or replace function public.set_updated_at()
 returns trigger
 language plpgsql
@@ -119,7 +102,7 @@ create trigger trg_ds_websites_updated_at
   for each row execute function public.set_updated_at();
 
 
--- ---------- 4. 访问计数 RPC ----------
+-- ---------- 3. 访问计数 RPC ----------
 -- 首页卡片点击后调用 increment_visit_count(row_id)。
 -- 必须 security definer：表开了 RLS 之后，匿名访客走 security invoker
 -- 会被 ds_websites 的写策略挡住，计数会静默失效。
@@ -138,7 +121,7 @@ comment on function public.increment_visit_count(uuid) is
   '站点访问计数 +1，供首页卡片点击埋点使用';
 
 
--- ---------- 5. 行级安全（RLS） ----------
+-- ---------- 4. 行级安全（RLS） ----------
 -- 作用：即使有人拿到浏览器里公开的 anon key 直连 Supabase REST API，
 -- 也无法绕过应用层增删改数据。
 alter table public.ds_categorys enable row level security;
@@ -169,19 +152,21 @@ create policy "ds_websites_public_read"
   on public.ds_websites for select
   using (true);
 
--- 仅管理员可写
-create policy "ds_categorys_admin_write"
+-- 仅已登录用户可写（注册已关闭，账号都由 Dashboard 添加，登录即受信任）
+create policy "ds_categorys_authenticated_write"
   on public.ds_categorys for all
-  using (public.is_admin())
-  with check (public.is_admin());
+  to authenticated
+  using (true)
+  with check (true);
 
-create policy "ds_websites_admin_write"
+create policy "ds_websites_authenticated_write"
   on public.ds_websites for all
-  using (public.is_admin())
-  with check (public.is_admin());
+  to authenticated
+  using (true)
+  with check (true);
 
 
--- ---------- 6. 存储桶与桶策略 ----------
+-- ---------- 5. 存储桶与桶策略 ----------
 -- 桶名需与 NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET 一致（默认 logos）
 insert into storage.buckets (id, name, public)
 values ('logos', 'logos', true)
@@ -193,25 +178,16 @@ create policy "logos_public_read"
   on storage.objects for select
   using (bucket_id = 'logos');
 
--- 上传 / 替换 / 删除仅管理员（应用侧用登录用户的 JWT 调用 Storage API）
-drop policy if exists "logos_admin_insert" on storage.objects;
-create policy "logos_admin_insert"
-  on storage.objects for insert
-  with check (bucket_id = 'logos' and public.is_admin());
-
-drop policy if exists "logos_admin_update" on storage.objects;
-create policy "logos_admin_update"
-  on storage.objects for update
-  using (bucket_id = 'logos' and public.is_admin())
-  with check (bucket_id = 'logos' and public.is_admin());
-
-drop policy if exists "logos_admin_delete" on storage.objects;
-create policy "logos_admin_delete"
-  on storage.objects for delete
-  using (bucket_id = 'logos' and public.is_admin());
+-- 上传 / 替换 / 删除仅已登录用户（应用侧用登录用户的 JWT 调用 Storage API）
+drop policy if exists "logos_authenticated_write" on storage.objects;
+create policy "logos_authenticated_write"
+  on storage.objects for all
+  to authenticated
+  using (bucket_id = 'logos')
+  with check (bucket_id = 'logos');
 
 
--- ---------- 7. 授权与收尾 ----------
+-- ---------- 6. 授权与收尾 ----------
 -- 显式授权，不依赖 Supabase 的 default privileges 配置。
 -- 写权限实际由上面的 RLS 策略兜底，这里只是放开角色到表的入口。
 grant usage on schema public to anon, authenticated, service_role;
@@ -219,8 +195,6 @@ grant usage on schema public to anon, authenticated, service_role;
 grant select, insert, update, delete
   on public.ds_categorys, public.ds_websites
   to anon, authenticated, service_role;
-
-grant execute on function public.is_admin() to anon, authenticated, service_role;
 
 revoke execute on function public.increment_visit_count(uuid) from public;
 grant execute on function public.increment_visit_count(uuid)
@@ -252,7 +226,7 @@ notify pgrst, 'reload schema';
 --    select p.proname, p.prosecdef
 --    from pg_proc p join pg_namespace n on n.oid = p.pronamespace
 --    where n.nspname = 'public'
---      and p.proname in ('is_admin', 'increment_visit_count', 'set_updated_at');
+--      and p.proname in ('increment_visit_count', 'set_updated_at');
 --
 -- 4) 存储桶
 --    select id, public from storage.buckets where id = 'logos';

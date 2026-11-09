@@ -33,10 +33,10 @@ Better Nav：基于 Next.js 16 + React 19 + HeroUI v3 + Tailwind CSS v4 + Supaba
 
 - `src/types/table-types.ts` — TanStack Table v9 统一类型定义，无例外
 - `eslint.config.mjs` — 改动可能导致 CI 失败，无例外
-- `src/lib/supabase/*.ts` — 认证安全核心：`getClaims` 验签、`requireAdmin`、白名单比对、未登录重定向
+- `src/lib/supabase/*.ts` — 认证安全核心：`getClaims` 验签、`requireUser`、未登录重定向
 - `next.config.ts` — 仅限两类改动：硬编码值改为环境变量派生、收紧构建校验；不得重新引入 `typescript.ignoreBuildErrors`
 
-`src/lib/supabase/proxy.ts` 中的公开可写路由白名单 `PUBLIC_WRITE_API_ROUTES` 是 `src/lib/supabase` 禁令的唯一豁免口：只允许追加具体路径，不得削弱「其余写接口要求登录 + 管理员」，并在提交信息里说明原因。
+`src/lib/supabase/proxy.ts` 中的公开可写路由白名单 `PUBLIC_WRITE_API_ROUTES` 是 `src/lib/supabase` 禁令的唯一豁免口：只允许追加具体路径，不得削弱「其余写接口要求登录」，并在提交信息里说明原因。
 
 ## 代码约定
 

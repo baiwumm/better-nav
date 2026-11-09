@@ -12,13 +12,13 @@ import { redirect } from "next/navigation";
 import Categorys from "./components/categorys";
 import Websites from "./components/websites";
 
-import { requireAdmin } from "@/lib/supabase/server";
+import { requireUser } from "@/lib/supabase/server";
 
 async function Admin() {
-  // 服务端校验管理员（登录 + 邮箱白名单），未通过跳转登录页
-  const admin = await requireAdmin();
+  // 服务端校验登录（注册已关闭，登录用户即受信任），未通过跳转登录页
+  const user = await requireUser();
 
-  if (!admin) {
+  if (!user) {
     redirect("/login");
   }
 

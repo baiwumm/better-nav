@@ -8,7 +8,7 @@ name: Release
 #   · gh workflow run release.yml -f bump=minor（自定义版本号用 -f version=v3.10.5）。
 #
 # 与 daily-trending 同源方案的差异点：
-#   · .env 已被 gitignore，build 所需的 NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY
+#   · .env 已被 gitignore，build 所需的 NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
 #     通过仓库 Secrets 注入（仅 Build 步骤需要，lint 不加载 Supabase 客户端）；
 #   · tag 自 v3.10.5 起带 v 前缀（.release-it.json 的 git.tagName 显式锁定；历史裸版本 tag 已统一迁移为
 #     v 前缀，GitHub Release 一并改绑）；
@@ -71,7 +71,7 @@ jobs:
         run: pnpm build
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY }}
 
       - name: Configure git author
         run: |

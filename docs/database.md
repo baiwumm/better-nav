@@ -7,14 +7,15 @@
 - `ds_categorys`：分类表
 - `ds_websites`：网站表
 - `increment_visit_count(row_id uuid)`：访问计数函数，`security definer`（表开启 RLS 后匿名访客靠它才能写入计数）
-- `is_admin()`：管理员邮箱白名单判定，RLS 写权限的唯一入口
-- `logos`：Logo 存储桶，公开读、仅管理员写
+- `logos`：Logo 存储桶，公开读、仅已登录用户写
 
 完整初始化 SQL 见 [`supabase/schema.sql`](../supabase/schema.sql)，演示数据见 [`supabase/seed.sql`](../supabase/seed.sql)。
 
-**schema.sql 只面向全新项目。** 它是幂等的，但幂等不等于可以在已有线上库整跑：脚本会 DROP 并重建两张表上的全部 RLS 策略，并把 `is_admin()` 白名单重置为占位邮箱，整跑后后台增删改会全部 401（完整警示见 README「Supabase 配置」节）。不要对有数据的生产库建议执行整份脚本。
+写权限模型是「已登录即可写」：两张表和 `logos` 桶的写策略都是 `to authenticated`，不做邮箱或角色判定。它成立的前提是 Supabase 关闭注册（Allow new users to sign up），账号只通过 Dashboard 的 Add user 添加。**不要打开注册**，否则任何人注册后都能改库。
 
-数据库变更的落地方式：本项目没有迁移目录，`schema.sql` 是表结构的唯一权威定义——变更直接改它并保持幂等；已有线上库由人工在 Dashboard 执行，管理员邮箱在 Dashboard 里改，不要把真实邮箱提交进 `schema.sql`。
+**schema.sql 只面向全新项目。** 它是幂等的，但幂等不等于可以在已有线上库整跑：脚本会 DROP 并重建两张表上的全部 RLS 策略（完整警示见 README「Supabase 配置」节）。不要对有数据的生产库建议执行整份脚本。
+
+数据库变更的落地方式：本项目没有迁移目录，`schema.sql` 是表结构的唯一权威定义——变更直接改它并保持幂等；已有线上库由人工在 Dashboard 执行。
 
 注意两处易踩坑的细节：
 
@@ -24,4 +25,4 @@
 ## 相关文档
 
 - Supabase 控制台配置步骤与常见问题见 [README.md](../README.md)
-- 三层白名单鉴权的完整改动点见 [`supabase/登录鉴权移植指南.md`](../supabase/登录鉴权移植指南.md)
+- 已废弃的邮箱白名单鉴权方案（历史记录）见 [`supabase/登录鉴权移植指南.md`](../supabase/登录鉴权移植指南.md)

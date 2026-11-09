@@ -76,11 +76,8 @@ pnpm dev
 
 ```bash
 NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_ANON_KEY=
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
 NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET=logos
-
-# 后台管理员邮箱白名单，逗号分隔多个。不进这个列表的账号登不上后台
-ADMIN_EMAILS=
 
 NEXT_PUBLIC_APP_NAME=Better Nav
 NEXT_PUBLIC_APP_TITLE=一个把常用网址收拾得干干净净的小站
@@ -104,7 +101,7 @@ NEXT_PUBLIC_CLARITY_ID=
 
 ### 1. 创建项目
 
-新建一个 Supabase 项目，拿到 `NEXT_PUBLIC_SUPABASE_URL` 与 `NEXT_PUBLIC_SUPABASE_ANON_KEY`。
+新建一个 Supabase 项目，拿到 `NEXT_PUBLIC_SUPABASE_URL` 与 `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`。
 
 ### 2. 初始化数据结构
 
@@ -113,39 +110,33 @@ NEXT_PUBLIC_CLARITY_ID=
 - 表 `ds_categorys`、`ds_websites`（含名称唯一约束与外键）
 - `updated_at` 触发器
 - 访问计数函数 `increment_visit_count`
-- 行级安全（RLS）：匿名只读，仅管理员可写
+- 行级安全（RLS）：匿名只读，仅已登录用户可写
 - `logos` 存储桶及桶级读写策略
 
 执行方式，推荐第一种：
 
-1. Dashboard → SQL Editor 粘贴全文，**先把脚本内第 1 段 `is_admin()` 里的邮箱换成你自己的**，再点 Run
+1. Dashboard → SQL Editor 粘贴全文，点 Run
 2. 或本地 `psql "$DATABASE_URL" -f supabase/schema.sql`
 
-> ⚠️ 脚本面向全新项目。已有线上库不要整段跑：第 5 段会 DROP 并重建两张表上的全部 RLS 策略，第 1 段的 `create or replace function is_admin()` 也会把手工维护的白名单换成占位邮箱，跑完后台增删改会全部返回 401。
->
-> 建议在 Dashboard 里改邮箱，不要改仓库里的文件，避免把真实邮箱提交进 git。
-
-邮箱需要在两处保持一致，第 4 步会一起讲到。
+> ⚠️ 脚本面向全新项目。已有线上库不要整段跑：第 4 段会 DROP 并重建两张表上的全部 RLS 策略。
 
 ### 3. 配置登录方式
 
-后台白名单按邮箱判定，所以至少要启用一种登录方式：
+至少要启用一种登录方式，并且**必须关闭公开注册**——写权限是「已登录即可写」，注册开着等于谁都能改库：
 
 - Dashboard → Authentication → Providers → 开启 **Email**（需要 OAuth 的话再开 GitHub / Google）
-- 建议关掉公开注册：Authentication → Providers → Email，取消勾选 *Allow new users to sign up*。登录页本身已移除注册入口，这一步是彻底堵掉注册接口
+- 在 Authentication 设置里关闭 *Allow new users to sign up*
+- Dashboard → Authentication → URL Configuration → **Redirect URLs** 加入 `https://你的域名/auth/callback` 和 `http://localhost:3000/auth/callback`，OAuth 登录回跳到这里
 
-### 4. 创建管理员账号
+关闭后，没有账号的人用 GitHub / Google 登录会被拒绝，不会写入 `auth.users`，登录页会提示「本站注册已关闭」。
 
-登录页没有注册入口，第一个账号要在控制台建：
+### 4. 创建账号
+
+登录页没有注册入口，账号只能在控制台建：
 
 Dashboard → Authentication → **Users** → **Add user**，填邮箱和密码。
 
-这里的邮箱必须与两处白名单完全一致（大小写不敏感，但建议统一小写）：
-
-| 位置 | 作用 |
-| --- | --- |
-| `supabase/schema.sql` 的 `is_admin()` | 数据库层 RLS 兜底，决定能不能写库 |
-| `.env.local` 的 `ADMIN_EMAILS` | 应用层接口与页面鉴权，决定能不能进 `/admin` |
+想用 GitHub / Google 登录这个账号，第三方账号的已验证邮箱要与这里填的一致，首次登录时 Supabase 会自动关联。
 
 ### 5. 灌演示数据（可选）
 
@@ -154,7 +145,7 @@ Dashboard → Authentication → **Users** → **Add user**，填邮箱和密码
 ### 6. 验证跑通
 
 ```bash
-cp .env.example .env.local   # 填入 URL、ANON_KEY、ADMIN_EMAILS
+cp .env.example .env.local   # 填入 URL、PUBLISHABLE_KEY
 pnpm install && pnpm dev
 ```
 
@@ -170,12 +161,11 @@ pnpm install && pnpm dev
 | 现象 | 原因与解法 |
 | --- | --- |
 | 报 `Could not find the table 'public.ds_websites' in the schema cache` | PostgREST 缓存没刷新。再执行一次 `notify pgrst, 'reload schema';`，或到 Dashboard 的 API 文档页等它自动重载 |
-| 登录后进 `/admin` 被弹回登录页 | `.env.local` 的 `ADMIN_EMAILS` 与账号邮箱不一致，或改了 `.env` 没重启 dev server |
-| 能进后台但保存报 401 / 列表全空 | `schema.sql` 里 `is_admin()` 的邮箱还是占位符，数据库层把写操作挡了 |
-| 上传 Logo 报 `new row violates row-level security policy`（storage.objects） | 第 6 段桶策略没执行完，或 `NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET` 与桶名 `logos` 不一致 |
-| 点卡片访问计数一直不涨 | `increment_visit_count` 不是 `security definer`，被 RLS 挡了。重跑 `schema.sql` 第 4 段 |
-
-三层白名单鉴权的完整改动点，记录在 [`supabase/登录鉴权移植指南.md`](./supabase/登录鉴权移植指南.md)。
+| 登录后进 `/admin` 被弹回登录页 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` 填错，或改了 `.env` 没重启 dev server |
+| 能进后台但保存报 401 | `schema.sql` 第 4 段 RLS 策略没执行完，数据库层把写操作挡了 |
+| 未开通的账号 OAuth 登录后回到首页、没有「注册已关闭」提示 | `/auth/callback` 没加到 Redirect URLs，Supabase 回退到了 Site URL |
+| 上传 Logo 报 `new row violates row-level security policy`（storage.objects） | 第 5 段桶策略没执行完，或 `NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET` 与桶名 `logos` 不一致 |
+| 点卡片访问计数一直不涨 | `increment_visit_count` 不是 `security definer`，被 RLS 挡了。重跑 `schema.sql` 第 3 段 |
 
 
 ## 🌲 部署
