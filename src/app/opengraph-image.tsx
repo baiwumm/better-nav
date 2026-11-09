@@ -50,10 +50,9 @@ async function resolveAuthorAvatar(avatarUrl: string) {
 }
 
 export default async function OpenGraphImage() {
-  const [logoUrl, previewUrl, avatarFallback, author] = await Promise.all([
+  const [logoUrl, previewUrl, author] = await Promise.all([
     logoAsset,
     previewAsset,
-    avatarAsset,
     getGithubAuthor(),
   ]);
   const avatarUrl = await resolveAuthorAvatar(author.avatarUrl);
