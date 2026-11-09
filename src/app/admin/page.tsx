@@ -5,6 +5,8 @@
  * @LastEditTime: 2026-08-04 09:38:51
  * @Description: 管理后台
  */
+import type { Metadata } from "next";
+
 import { Folder, Globe } from "@gravity-ui/icons";
 import { Tabs } from "@heroui/react";
 import { redirect } from "next/navigation";
@@ -13,6 +15,10 @@ import Categorys from "./components/categorys";
 import Websites from "./components/websites";
 
 import { requireUser } from "@/lib/supabase/server";
+
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
 
 async function Admin() {
   // 服务端校验登录（注册已关闭，登录用户即受信任），未通过跳转登录页

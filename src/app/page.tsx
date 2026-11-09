@@ -5,9 +5,16 @@
  * @LastEditTime: 2026-10-09 10:00:00
  * @Description: 首页
  */
+import type { Metadata } from "next";
+
 import HomeContent from "@/components/HomeContent";
 import { fetchHomeData } from "@/lib/server/home";
 import { APP_NAME } from "@/lib/site";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+  robots: { index: true, follow: true },
+};
 
 // 每次访问拉取最新数据，保证后台变更即时生效（后续可优化为 ISR/tag 缓存）
 export const dynamic = "force-dynamic";
