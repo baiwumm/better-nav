@@ -104,7 +104,8 @@ async function Footer() {
         </a>
         . All rights reserved.
       </Description>
-      <div className="flex gap-2 items-center flex-col sm:flex-row justify-self-center sm:justify-self-end whitespace-nowrap">
+      {/* 单列堆叠时三行全部居中；lg 起三列布局，备案行回到右对齐 */}
+      <div className="flex gap-2 items-center flex-col sm:flex-row justify-self-center lg:justify-self-end whitespace-nowrap">
         {IcpLinks.map(({ image, url, label }) => (
           <Link
             key={url}
