@@ -1,5 +1,29 @@
 # Changelog
 
+## [4.0.1](https://github.com/baiwumm/better-nav/compare/v4.0.0...v4.0.1) (2026-11-09)
+
+### ✨ Features | 新功能
+
+* **security:** 补安全响应头与生产环境 CSP ([1a0251b](https://github.com/baiwumm/better-nav/commit/1a0251b65d65e6f393069b8cfda9a0eec1a6988f))
+* **seo:** 首页补 canonical，后台与登录页 noindex ([23b8143](https://github.com/baiwumm/better-nav/commit/23b81431bf25d340ff54163b07e6a2b9d7f888a1))
+
+### 🐛 Bug Fixes | Bug 修复
+
+* **api:** 公开接口只返回字段白名单，隐藏 email 与 user_id ([f992144](https://github.com/baiwumm/better-nav/commit/f992144aee81ca7d64d4ab91b9a5304ea12a371e))
+* **db:** 访问计数固定 +1，匿名改为列级授权 ([25e1712](https://github.com/baiwumm/better-nav/commit/25e1712d0587ddd195f540558da4b0fd40f5f29d))
+
+### 🎫 Chores | 其他更新
+
+* **types:** 提交 next-env.d.ts，避免全新 clone 缺少 Next 类型增强 ([855d11b](https://github.com/baiwumm/better-nav/commit/855d11bb4a009a33a429f226165c1af236bab496))
+
+### 📝 Documentation | 文档
+
+* 同步访问计数与匿名列权限说明 ([fbd16f0](https://github.com/baiwumm/better-nav/commit/fbd16f027cf90052db115eecc96ca927e7495ad2))
+
+### 💄 Styles | 风格
+
+* 统一 prettier 行尾策略并修复遗留格式告警 ([15ad331](https://github.com/baiwumm/better-nav/commit/15ad3312edbae21cfb411ebf745d5d375de56072))
+
 ## [4.0.0](https://github.com/baiwumm/better-nav/compare/v3.11.0...v4.0.0) (2026-11-09)
 
 ### ⚠ BREAKING CHANGES
