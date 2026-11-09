@@ -44,8 +44,10 @@ async function Footer() {
   const { name: authorName } = await getGithubAuthor();
 
   return (
-    <footer className="shrink-0 mx-auto w-full container! px-6 py-4 grid grid-cols-1 sm:grid-cols-3 items-center gap-2">
-      <div className="flex items-center justify-center gap-3 justify-self-center sm:justify-self-start">
+    // 三列布局只在 lg（≥1024px）启用：sm~lg 档三等分每列仅约 197px，
+    // 品牌、版权、备案号都会被挤断行
+    <footer className="shrink-0 mx-auto w-full container! px-6 py-4 grid grid-cols-1 lg:grid-cols-3 items-center gap-3 lg:gap-4">
+      <div className="flex items-center justify-center gap-3 justify-self-center lg:justify-self-start whitespace-nowrap">
         <div className="flex items-center gap-2">
           <div className="size-5 relative">
             {/* 明暗两套 Logo 靠 CSS 切换，其中一套对读屏隐藏，避免重复播报 */}
@@ -90,7 +92,7 @@ async function Footer() {
           <Chip.Label>服务状态正常</Chip.Label>
         </Chip>
       </div>
-      <Description className="justify-self-center">
+      <Description className="justify-self-center text-center whitespace-nowrap">
         &copy; {CURRENT_YEAR}{" "}
         <a
           className="hover:text-accent transition-colors"
@@ -102,11 +104,11 @@ async function Footer() {
         </a>
         . All rights reserved.
       </Description>
-      <div className="flex gap-2 items-center flex-col sm:flex-row justify-self-center sm:justify-self-end">
+      <div className="flex gap-2 items-center flex-col sm:flex-row justify-self-center sm:justify-self-end whitespace-nowrap">
         {IcpLinks.map(({ image, url, label }) => (
           <Link
             key={url}
-            className="flex gap-1 items-center no-underline"
+            className="flex gap-1 items-center no-underline whitespace-nowrap"
             href={url}
             target="_blank"
           >
