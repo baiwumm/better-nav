@@ -38,6 +38,8 @@ pnpm test          # 仅跑单元测试
 
 - `tests/sort.test.ts` — `sortWebsites` 四层排序优先级、非变异语义（防回归到原地 `.sort()`）
 - `tests/utils.test.ts` — `formatBytes`（含越界收敛）、`get`、`responseMessage`、`formatDate`
+- `tests/user-profile.test.ts` — 头像候选链（GitHub 身份 > 登录资料 > 本地兜底）与展示名回退链
+- `tests/auth-redirect.test.ts` — OAuth 失败码归一化（`error_code=signup_disabled` 优先）与提示文案
 
 新增测试放 `tests/*.test.ts`，`pnpm test` 自动发现，`pnpm lint` 会一并执行。
 

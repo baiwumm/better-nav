@@ -15,7 +15,7 @@ Better Nav：基于 Next.js 16 + React 19 + HeroUI v3 + Tailwind CSS v4 + Supaba
 | 写代码、补测试、提交前 | [docs/code-standards.md](./docs/code-standards.md) |
 | 数据库 / RLS / 存储桶改动（必读） | [docs/database.md](./docs/database.md) |
 | 优化 / 重构 / 代码审查前（必读，已定论勿重复评估） | [docs/tech-debt.md](./docs/tech-debt.md) |
-| Supabase 控制台配置、部署 | [README.md](./README.md) |
+| Supabase 控制台配置、SQL 初始化、部署（含交给 Agent 的提示词） | [docs/supabase-deployment.md](./docs/supabase-deployment.md) |
 
 ## 命令
 

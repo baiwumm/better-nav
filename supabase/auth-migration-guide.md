@@ -160,7 +160,7 @@ ADMIN_EMAILS = 'you@example.com'
 
 ### 7. 数据库层兜底:RLS 策略
 
-> 📌 本节记录的是当初手工加固的过程。现在 RLS 策略已并入初始化脚本 `supabase/schema.sql`(第 5、6 段),新项目直接跑那个脚本即可;下面的写法保留作原理参考。
+> 📌 本节记录的是当初手工加固的过程。现在 RLS 策略已并入初始化脚本 `supabase/schema.sql`(第 4 段表策略、第 5 段桶策略),新项目直接跑那个脚本即可;下面的写法保留作原理参考。现行部署步骤见 [docs/supabase-deployment.md](../docs/supabase-deployment.md)。
 
 新建 `supabase/rls.sql`,在 Supabase Dashboard → SQL Editor 整段执行(先把 `you@example.com` 换成自己的邮箱):
 

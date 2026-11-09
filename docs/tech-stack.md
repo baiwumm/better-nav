@@ -19,7 +19,9 @@ Next.js 16 + React 19 + HeroUI v3 + Tailwind CSS v4 + Supabase + SWR + TanStack 
 
 其余变量（站点名 / 描述 / ICP / 统计 ID 等）全部可选：留空则不渲染对应区块或从 metadata 中省略。完整清单与示例值见根目录 [`.env.example`](../.env.example)。
 
-作者信息（昵称 / bio / 头像）不走环境变量：统一从 GitHub 账户自动拉取（用户名取自 `package.json` 的 git 地址 owner，显示信息带一天缓存），见 `src/lib/author.ts`。
+作者信息（昵称 / bio / 头像）不走环境变量：统一从 GitHub 账户自动拉取（用户名取自 `package.json` 的 git 地址 owner，显示信息带一天缓存），见 `src/lib/author.ts`。用户菜单的头像按「GitHub 身份头像 → 登录资料头像 → 本地 `public/avatar.jpg`」兜底，见 `src/lib/user-profile.ts`。
+
+配置步骤、初始化 SQL 的执行方式与部署验证见 [supabase-deployment.md](./supabase-deployment.md)。
 
 另有 `DATABASE_URL`（数据库直连串）与 `SUPABASE_SECRET_KEY`（`sb_secret_` 密钥，可调 Auth Admin API）两个**本地运维变量**：应用运行时不读取，仅本地 `.env` 里供管理脚本（直连改库、批量管理用户）使用。因此它们不进 `.env.example`、不配到 Vercel；都是机密，不得加 `NEXT_PUBLIC_` 前缀。
 

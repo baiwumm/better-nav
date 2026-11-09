@@ -13,9 +13,9 @@
 
 写权限模型是「已登录即可写」：两张表和 `logos` 桶的写策略都是 `to authenticated`，不做邮箱或角色判定。它成立的前提是 Supabase 关闭注册（Allow new users to sign up），账号只通过 Dashboard 的 Add user 添加。**不要打开注册**，否则任何人注册后都能改库。
 
-**schema.sql 只面向全新项目。** 它是幂等的，但幂等不等于可以在已有线上库整跑：脚本会 DROP 并重建两张表上的全部 RLS 策略（完整警示见 README「Supabase 配置」节）。不要对有数据的生产库建议执行整份脚本。
+**schema.sql 只面向全新项目。** 它是幂等的，但幂等不等于可以在已有线上库整跑：脚本会 DROP 并重建两张表上的全部 RLS 策略（完整警示与执行方式见 [supabase-deployment.md](./supabase-deployment.md) 第 5 节）。不要对有数据的生产库建议执行整份脚本。
 
-数据库变更的落地方式：本项目没有迁移目录，`schema.sql` 是表结构的唯一权威定义——变更直接改它并保持幂等；已有线上库由人工在 Dashboard 执行。
+数据库变更的落地方式：本项目没有迁移目录，`schema.sql` 是表结构的唯一权威定义——变更直接改它并保持幂等；已有线上库由人工在 Dashboard 执行（增量 SQL 可先让 Agent 生成，流程见 [supabase-deployment.md](./supabase-deployment.md) 3.2）。
 
 注意两处易踩坑的细节：
 
@@ -24,5 +24,5 @@
 
 ## 相关文档
 
-- Supabase 控制台配置步骤与常见问题见 [README.md](../README.md)
-- 已废弃的邮箱白名单鉴权方案（历史记录）见 [`supabase/登录鉴权移植指南.md`](../supabase/登录鉴权移植指南.md)
+- Supabase 控制台配置步骤与常见问题见 [supabase-deployment.md](./supabase-deployment.md)
+- 已废弃的邮箱白名单鉴权方案（历史记录）见 [`supabase/auth-migration-guide.md`](../supabase/auth-migration-guide.md)
