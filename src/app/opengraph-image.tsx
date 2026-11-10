@@ -30,9 +30,9 @@ const ASSET_MIME_TYPES: Record<string, string> = {
 // Vercel 最佳实践：静态 I/O 提升到模块级，只读一次，避免每次请求重复 readFile
 const logoAsset = publicAssetToDataUrl("logo.png");
 const previewAsset = publicAssetToDataUrl("og-preview.png");
-const avatarAsset = publicAssetToDataUrl("avatar.jpg");
+const avatarAsset = publicAssetToDataUrl("avatar.png");
 
-// 作者头像：优先 GitHub 账户头像（revalidate 缓存），抓取失败回退本地 avatar.jpg
+// 作者头像：优先 GitHub 账户头像（revalidate 缓存），抓取失败回退本地 avatar.png
 async function resolveAuthorAvatar(avatarUrl: string) {
   try {
     const res = await fetch(avatarUrl, { next: { revalidate: 86400 } });

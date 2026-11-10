@@ -35,7 +35,7 @@ test("GitHub 身份头像优先于登录资料头像", () => {
   assert.deepEqual(getAvatarCandidates(user), [
     GITHUB_AVATAR,
     GOOGLE_AVATAR,
-    "/avatar.jpg",
+    "/avatar.png",
   ]);
 });
 
@@ -49,14 +49,14 @@ test("无 GitHub 身份时回退登录资料头像", () => {
 
   assert.deepEqual(getAvatarCandidates(user), [
     GOOGLE_AVATAR,
-    "/avatar.jpg",
+    "/avatar.png",
   ]);
 });
 
 test("远程头像都没有时只留本地兜底", () => {
   const user = makeUser({ user_metadata: {}, identities: [] });
 
-  assert.deepEqual(getAvatarCandidates(user), ["/avatar.jpg"]);
+  assert.deepEqual(getAvatarCandidates(user), ["/avatar.png"]);
 });
 
 test("候选去重：GitHub 头像与资料头像相同时只出现一次", () => {
@@ -65,7 +65,7 @@ test("候选去重：GitHub 头像与资料头像相同时只出现一次", () =
     identities: [{ provider: "github", identity_data: { avatar_url: GITHUB_AVATAR } }],
   });
 
-  assert.deepEqual(getAvatarCandidates(user), [GITHUB_AVATAR, "/avatar.jpg"]);
+  assert.deepEqual(getAvatarCandidates(user), [GITHUB_AVATAR, "/avatar.png"]);
 });
 
 test("展示名优先 GitHub 用户名，不取真名", () => {

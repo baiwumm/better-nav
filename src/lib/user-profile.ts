@@ -3,8 +3,8 @@
  */
 import type { User } from "@supabase/supabase-js";
 
-/** 远程头像全部不可达时的本地兜底（public/avatar.jpg，与 OG 图共用同一文件） */
-const FALLBACK_AVATAR = "/avatar.jpg";
+/** 远程头像全部不可达时的本地兜底（public/avatar.png，与 OG 图共用同一文件） */
+const FALLBACK_AVATAR = "/avatar.png";
 
 /**
  * @description: 头像候选地址，按优先级排列：GitHub 身份头像 > 登录资料头像 > 本地兜底。
