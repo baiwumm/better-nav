@@ -1,5 +1,45 @@
 # Changelog
 
+## [4.0.3](https://github.com/baiwumm/better-nav/compare/v4.0.2...v4.0.3) (2026-11-23)
+
+### ✨ Features | 新功能
+
+* **seo:** 公开页改 ISR 并抽出不带 cookie 的只读客户端 ([36b5cc6](https://github.com/baiwumm/better-nav/commit/36b5cc63be79726e036eea9a42365c91bc2b1717))
+* **seo:** 首页元信息前置主词并补结构化数据 ([917dd73](https://github.com/baiwumm/better-nav/commit/917dd73aaafcf5dd0ad901a98b337423cb8c433f))
+* **seo:** 新增分类落地页与 llms.txt ([4b75631](https://github.com/baiwumm/better-nav/commit/4b75631a81b6ff0062d6ed51fa967762698223e3))
+
+### 🐛 Bug Fixes | Bug 修复
+
+* **seo:** 修正 sitemap lastmod 与 robots 屏蔽范围 ([657a7ab](https://github.com/baiwumm/better-nav/commit/657a7ab1bed21ca017d67e4eadb00d1a3ff9a80e))
+* **structured-data:** 移除未使用的导入 ([8bb6c06](https://github.com/baiwumm/better-nav/commit/8bb6c0672321065170c62a079afb5059ea7e761d))
+
+### 🎫 Chores | 其他更新
+
+* 统一行尾为 LF 并标记二进制资源 ([201bb42](https://github.com/baiwumm/better-nav/commit/201bb42b36f78c37425b3aee74aad226e92bfcb4))
+* **assets:** 兜底头像替换为 avatar.png（512x512） ([cf91e17](https://github.com/baiwumm/better-nav/commit/cf91e175b627f37ff60f50359af621d621fc06b0))
+* **deps:** 升级 release-it 以修复 basic-ftp 告警 ([bbf24dc](https://github.com/baiwumm/better-nav/commit/bbf24dc9bcd05c736826e9caad1477a87a526b17)), references [#7](https://github.com/baiwumm/better-nav/issues/7) [#7](https://github.com/baiwumm/better-nav/issues/7)
+* **deps:** bump motion from 13.5.1 to 14.14.0 ([#8](https://github.com/baiwumm/better-nav/issues/8)) ([190f7ff](https://github.com/baiwumm/better-nav/commit/190f7ff30f28941530c0b13301b732e446719c8f))
+* **deps:** bump the npm-minor-patch group across 1 directory with 12 updates ([#7](https://github.com/baiwumm/better-nav/issues/7)) ([9c9aec3](https://github.com/baiwumm/better-nav/commit/9c9aec377dfa12285b02be46eb9f4d880bcd24ea))
+
+### 📝 Documentation | 文档
+
+* 同步 ISR、分类页与提交规范 ([f2057a6](https://github.com/baiwumm/better-nav/commit/f2057a66921620d3fb6aa677c8ca1a1623cb4cf0))
+* **agents:** 明确 AI 参与提交的 trailer 写法 ([b7cbb60](https://github.com/baiwumm/better-nav/commit/b7cbb6053e4b2d58ff0175dc5bc4056496f32645))
+* **github:** 补齐社区健康文件与 issue/PR/讨论模板 ([03506be](https://github.com/baiwumm/better-nav/commit/03506be36efe1f0f2d89ad268c9f0bcda1112ef2))
+
+### 💄 Styles | 风格
+
+* **home:** 移除首页可见的标题与导语 ([a4983a1](https://github.com/baiwumm/better-nav/commit/a4983a1bef39d643f91854c85982c2131e0fb5c1))
+
+### ⚡ Performance Improvements | 性能优化
+
+* **seo:** 首屏图标即时加载并补齐外链 rel ([962434e](https://github.com/baiwumm/better-nav/commit/962434e7184976890ba6db2e6eada0ed0c2cb7fb))
+
+### 🔧 Continuous Integration | CI 配置
+
+* **dependabot:** 仅对 minor/patch 开启自动合并 ([d0d4c35](https://github.com/baiwumm/better-nav/commit/d0d4c356380a4ac9075953596bd20f2d78cef003))
+* **github:** 新增 CI 与 Dependabot 配置 ([2b63dc6](https://github.com/baiwumm/better-nav/commit/2b63dc681d1aee7afb5f21ac6102421f62f42e09))
+
 ## [4.0.2](https://github.com/baiwumm/better-nav/compare/v4.0.1...v4.0.2) (2026-11-09)
 
 ### 🐛 Bug Fixes | Bug 修复
