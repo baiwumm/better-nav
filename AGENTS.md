@@ -29,6 +29,26 @@ Better Nav：基于 Next.js 16 + React 19 + HeroUI v3 + Tailwind CSS v4 + Supaba
 
 提交信息用 Conventional Commits（类型清单见 docs/code-standards.md）。
 
+### AI 参与的提交
+
+会话中有 AI 参与时，正文后空一行追加连续的 trailer 块。写法以 `ai-commit-trailer` skill 为唯一规范，本文只记要点：
+
+- `Co-authored-by` 只写产品名 + registry 邮箱，模型名不得写进姓名（GitHub 会把括号里的模型当成字面显示名）
+- `Assisted-by` 仅作披露（GitHub 不解析），格式为 `host:model`
+- 身份按**实际运行本次会话的产品**匹配该 skill 的 `references/agents.json`，不得照抄其它产品
+- 纯人工改动不加任何 AI trailer
+
+```text
+Co-authored-by: Codebuff <noreply@codebuff.com>
+Assisted-by: Codebuff:DeepSeek V4.1 Flash Fast
+```
+
+提交前用该 skill 自检，exit 0 才算通过（`fix --write` 可自动归位 trailer）：
+
+```bash
+node "<ai-commit-trailer skill 目录>/scripts/normalize.mjs" check --message .git/COMMIT_TRAILER_MSG
+```
+
 ## 禁改文件（破例必须先征得人工同意）
 
 - `src/types/table-types.ts` — TanStack Table v9 统一类型定义，无例外
