@@ -74,7 +74,12 @@ const Header: FC = () => {
         {socials.map(({ name, url, icon }) => (
           <Tooltip key={name} delay={0}>
             <Tooltip.Trigger>
-              <Link aria-label={name} href={url} target="_blank">
+              <Link
+                aria-label={name}
+                href={url}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
                 <Button isIconOnly size="sm" variant="ghost">
                   {icon}
                 </Button>
@@ -88,7 +93,12 @@ const Header: FC = () => {
         ))}
         <Tooltip delay={0}>
           <Tooltip.Trigger>
-            <Link aria-label="主页" href={pkg.author.url} target="_blank">
+            <Link
+              aria-label="主页"
+              href={pkg.author.url}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
               <Button isIconOnly size="sm" variant="ghost">
                 <HouseFill />
               </Button>

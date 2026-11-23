@@ -25,7 +25,7 @@ import { generateLogoUrl } from "@/lib/utils";
 
 interface WebsiteCardProps {
   data: Website;
-  /** 首屏图片预加载：首页视口内的卡片传 true */
+  /** 首屏图片即时加载：首页视口内的卡片传 true */
   priority?: boolean;
 }
 
@@ -56,7 +56,7 @@ const WebsiteCard: FC<WebsiteCardProps> = memo(({ data, priority = false }) => {
   };
 
   return (
-    <Link href={url} target="_blank">
+    <Link href={url} rel="noopener noreferrer" target="_blank">
       <Card
         className={cn(
           "h-full transition-transform duration-300 hover:-translate-y-1.5 justify-between",
@@ -71,7 +71,10 @@ const WebsiteCard: FC<WebsiteCardProps> = memo(({ data, priority = false }) => {
                   fill
                   alt={name}
                   className="object-contain rounded-lg"
-                  priority={priority}
+                  // Next 16 起 priority 已弃用，改用 loading + fetchPriority 表达同一意图
+                  fetchPriority={priority ? "high" : "auto"}
+                  loading={priority ? "eager" : "lazy"}
+                  sizes="40px"
                   src={generateLogoUrl(logo)}
                 />
               </div>
