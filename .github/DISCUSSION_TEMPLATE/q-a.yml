@@ -1,0 +1,68 @@
+title: "[Q&A] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢提问。请先搜索现有 discussion 与 [docs](https://github.com/baiwumm/better-nav/tree/main/docs)。
+
+        **永远不要粘贴密钥** —— Supabase key、`.env` 内容、登录凭据。日志与截图请先脱敏。
+  - type: input
+    id: version
+    attributes:
+      label: 版本
+      description: package.json 里的版本号，或出问题的提交 SHA。
+      placeholder: v4.0.2
+  - type: dropdown
+    id: area
+    attributes:
+      label: 出现在哪里
+      options:
+        - 首页展示
+        - 分类页
+        - 后台管理
+        - 登录与权限
+        - 部署与环境变量
+        - SEO / 元信息
+        - 其他
+    validations:
+      required: true
+  - type: dropdown
+    id: deployment
+    attributes:
+      label: 你运行在哪
+      options:
+        - 官方站点（nav.baiwumm.com）
+        - 自建部署（Vercel + 自己的 Supabase）
+        - 本地开发（pnpm dev）
+    validations:
+      required: true
+  - type: textarea
+    id: question
+    attributes:
+      label: 你想做什么
+      description: 期望结果、实际结果，以及原始报错。
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤（如适用）
+      placeholder: |
+        1. ...
+        2. ...
+        3. ...
+  - type: textarea
+    id: logs
+    attributes:
+      label: 相关日志或截图
+      description: 只贴关键行。先删掉密钥、绝对路径与账号信息。
+      render: shell
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: 发布前确认
+      options:
+        - label: 我已搜索过现有 discussion 与 docs。
+          required: true
+        - label: 我已移除全部密钥（Supabase key、.env 内容、登录凭据）。
+          required: true

@@ -1,0 +1,37 @@
+title: "[Show & tell] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        分享你的部署与用法：分类怎么划、站点怎么筛、主题怎么调。截图欢迎，但要确认画面里没有密钥、邮箱或私有路径。
+  - type: input
+    id: what
+    attributes:
+      label: 分享什么
+      placeholder: 我自建 Better Nav 一个月的分类结构
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: 详情
+      description: 你怎么组织分类、用了哪些站点、遇到过什么问题。
+    validations:
+      required: true
+  - type: textarea
+    id: media
+    attributes:
+      label: 截图或链接
+      description: 直接粘贴图片，或给出公开地址。
+  - type: input
+    id: stack
+    attributes:
+      label: 部署方式
+      placeholder: Vercel + Supabase，自定义域名
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: 发布前确认
+      options:
+        - label: 截图里没有密钥、token、邮箱或私有路径。
+          required: true

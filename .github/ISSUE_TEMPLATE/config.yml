@@ -1,0 +1,15 @@
+blank_issues_enabled: false
+
+contact_links:
+  - name: 💬 使用与部署提问 / Ask a question
+    url: https://github.com/baiwumm/better-nav/discussions/categories/q-a
+    about: 环境变量、Supabase 配置、部署失败请先到 Discussions 的 Q&A。
+  - name: 💡 想法与建议 / Share an idea
+    url: https://github.com/baiwumm/better-nav/discussions/categories/ideas
+    about: 还在讨论阶段的想法放 Ideas；已成型的诉求再开 issue。
+  - name: 📚 文档 / Documentation
+    url: https://github.com/baiwumm/better-nav/tree/main/docs
+    about: 技术栈、数据库与 RLS、部署手册、代码规范与已知技术欠账。
+  - name: 🔒 私密报告安全问题 / Report a security issue
+    url: https://github.com/baiwumm/better-nav/security/advisories/new
+    about: 请勿在公开 issue 中披露漏洞细节。
