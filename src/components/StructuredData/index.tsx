@@ -1,7 +1,3 @@
-import type { Category } from "@/types";
-
-import { buildHomeJsonLd } from "@/lib/structured-data";
-
 interface StructuredDataProps {
   /** 由 structured-data 里的构建函数生成的 JSON-LD 对象 */
   data: unknown;
