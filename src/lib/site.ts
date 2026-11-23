@@ -23,5 +23,20 @@ export const APP_DESC =
 /** 无兜底：未配置时从 metadata 中省略，避免强塞营销词 */
 export const APP_KEYWORDS = process.env.NEXT_PUBLIC_APP_KEYWORDS;
 
+/**
+ * 首页 SEO 主词：title / h1 前置用。
+ * 与 APP_TITLE（调性文案）分开维护，避免调性文案把主词挤出 SERP 的可见区。
+ */
+export const APP_SEO_KEYWORD = "常用网址导航";
+
+/** 首页 SEO 标题：主词前置 + 品牌 + 点击理由，控制在 30 个汉字宽以内 */
+export const APP_SEO_TITLE = `${APP_SEO_KEYWORD}｜${APP_NAME}·精选开发者与设计资源`;
+
+/**
+ * 首页 SEO 描述：以 APP_DESC 打底再补足收录范围，中文 60–120 字。
+ * 过短的描述会被 Google 用正文改写，等于放弃对首屏文案的控制权。
+ */
+export const APP_SEO_DESC = `${APP_NAME}：${APP_DESC}精选 AI 工具、UI 组件库、交互动画与实用工具，按分类整理，持续更新。`;
+
 /** OG 图片地址：交给 Next.js 的 /opengraph-image 路由动态生成 */
 export const OG_IMAGE_URL = `${APP_URL}/opengraph-image`;
