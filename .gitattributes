@@ -1,0 +1,17 @@
+# 行尾统一：仓库与工作区都用 LF（eol=lf 覆盖 core.autocrlf 的 CRLF 检出，
+# 否则 Windows 上会持续出现「内容没变但文件被标记为已修改」）
+* text=auto eol=lf
+
+# 二进制资源不参与行尾转换与文本 diff
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.svg text eol=lf
+*.mp4 binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
