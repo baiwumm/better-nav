@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-// 登录页不参与索引（robots.txt 之外再加一层 meta noindex）
+// 登录页对搜索引擎无价值：由 noindex 排除，robots.txt 不屏蔽它（屏蔽后 noindex 读不到）
 export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
