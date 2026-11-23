@@ -1,7 +1,7 @@
 name: Dependabot auto-merge
 
-# 只负责打开 GitHub 原生 auto-merge，真正合并时机交给 main ruleset 的 required status checks：
-# CI 不过就不会合，major 升级同样走这条路径。
+# 只对 patch / minor 打开 GitHub 原生 auto-merge，major 留给人工评审。
+# 真正合并时机仍由 main ruleset 的 required status checks 决定：CI 不过就不会合。
 on:
   pull_request:
     types: [opened, reopened]
@@ -22,7 +22,14 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
+      - name: 读取 Dependabot 更新类型
+        id: metadata
+        uses: dependabot/fetch-metadata@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Enable auto-merge (squash)
+        if: steps.metadata.outputs.update-type != 'version-update:semver-major'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_URL: ${{ github.event.pull_request.html_url }}
