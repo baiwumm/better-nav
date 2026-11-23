@@ -111,6 +111,10 @@ Authentication → Users → **Add user**（邮箱 + 密码）。登录页没有
 | 7 | 匿名写表 | 带 publishable key（`apikey` + `Authorization: Bearer`）`POST {URL}/rest/v1/ds_websites` | 401 |
 | 8 | 未受邀 OAuth | 用没在 Users 里建过的 GitHub / Google 账号登录 | 登录页提示「本站注册已关闭，仅限受邀账号登录。」 |
 | 9 | OG 图 | 打开 `/opengraph-image` | 返回 PNG，含站点信息与 GitHub 头像 |
+| 10 | sitemap | 打开 `/sitemap.xml` | 1 条首页 + 每个分类 1 条；`lastmod` 是数据库时间，不是当前时刻 |
+| 11 | 分类页 | 打开 `/c/<分类 id>` | 200，h1 是分类名；换成不存在的 id 返回 404 |
+| 12 | 收录信号 | 打开 `/llms.txt`，查看 `/login` 源码 | llms.txt 返回 text/plain 清单；登录页带 `noindex` |
+| 13 | 缓存失效 | 后台改一个分类名，刷新首页与分类页 | 立刻看到新名称（靠 `revalidatePath`；没变化说明写操作绕过了 `/api`） |
 
 > 不要用「不存在的 id」测 UPDATE / DELETE 判断 RLS：PostgreSQL 对不存在的行一律返回 0 行成功，RLS 根本不会被评估。可靠信号是匿名 INSERT 返回 401、对真实行 UPDATE 返回 0 行。
 >
@@ -142,6 +146,10 @@ Authentication → Users → **Add user**（邮箱 + 密码）。登录页没有
 
 发版流水线 `.github/workflows/release.yml`（GitHub Actions，Node 24）先跑 `pnpm lint` 与 `pnpm build`，再交给 release-it 打 tag。它需要仓库 Secrets：`NEXT_PUBLIC_SUPABASE_URL`、`NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`（仅 Build 步骤使用）。
 
+`.github/workflows/ci.yml` 使用同两个 Secrets：`verify` job 只跑 `pnpm lint`，不需要密钥，fork 的 PR 也能出结果；`build` job 只在 main 上跑，因为公开页在构建期要读库。
+
+仓库还启用了 `main` ruleset：禁止删除分支与强推，PR 需要 `verify` 检查通过，owner 有 bypass 可直推。fork 后重新建仓时这些设置不会跟过来，需要在新仓库的 Settings → Rules 里重建。
+
 ## 7. 故障排查
 
 | 现象 | 原因与解法 |
@@ -155,6 +163,9 @@ Authentication → Users → **Add user**（邮箱 + 密码）。登录页没有
 | 上传 Logo 报 `new row violates row-level security policy`（storage.objects） | 第 5 段桶策略没执行完，或 `NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET` 与桶名 `logos` 不一致 |
 | 点卡片访问计数不涨 | `increment_visit_count` 不是 `security definer`，被 RLS 挡了。单独重跑 `schema.sql` 第 3 段（已内置 `drop`，可覆盖旧版随机计数 / 双参重载） |
 | 生产环境 OG 图 / sitemap 指向旧域名 | `NEXT_PUBLIC_APP_URL` 没改，或改完没重新部署 |
+| 首页 / 分类页改了不更新 | 写操作绕过了 `/api`，或成功分支没调 `revalidatePublicPages()`；ISR 自身要 60s 后才会刷新 |
+| `pnpm build` 报缺少 Supabase 环境变量 | 首页与分类页在构建期预渲染，需要 `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`；CI 的 `build` job 靠 Secrets 注入 |
+| `/c/<id>` 返回 404 | id 取自 `ds_categorys.id`；新增分类首次访问时按需生成，先确认分类确实存在、id 没抄错 |
 
 ## 8. 相关文档
 

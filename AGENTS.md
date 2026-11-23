@@ -11,7 +11,7 @@ Better Nav：基于 Next.js 16 + React 19 + HeroUI v3 + Tailwind CSS v4 + Supaba
 
 | 场景 | 文档 |
 |------|------|
-| 配置环境变量、新增站点常量 | [docs/tech-stack.md](./docs/tech-stack.md) |
+| 配置环境变量、新增站点常量、调整公开页缓存 | [docs/tech-stack.md](./docs/tech-stack.md) |
 | 写代码、补测试、提交前 | [docs/code-standards.md](./docs/code-standards.md) |
 | 数据库 / RLS / 存储桶改动（必读） | [docs/database.md](./docs/database.md) |
 | 优化 / 重构 / 代码审查前（必读，已定论勿重复评估） | [docs/tech-debt.md](./docs/tech-debt.md) |

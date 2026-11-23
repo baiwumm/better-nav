@@ -11,3 +11,6 @@
 | 首页全量数据下推客户端 | 首页已改为 ISR（`revalidate` + 写接口 `revalidatePath`），渲染成本仍在：8 分类 / 72 站点全量下发到客户端，数据量未到需要分页的规模。曾用 `content-visibility` 缓解渲染成本，但其隐含的绘制遏制（`contain: paint`）会裁掉卡片悬停位移与阴影，已移除 |
 | 13 处匿名函数 props | 违反 `vercel-react-best-practices` 性能守则（存量代码，新代码仍须遵守），属洁癖项，逐个改性价比低 |
 | `formatBytes` 输出无空格 | 拼接为 `"1KB"` 而非 `"1 KB"`，属既有输出格式，改动会牵动所有引用处文案 |
+| 分类页使用 UUID 路径 | `/c/<id>` 直接复用 `ds_categorys.id`，可被收录但 URL 不可读。换 slug 需要给线上库加列 + 唯一索引 + anon 列授权，还要同步 `PUBLIC_CATEGORY_FIELDS` 与后台表单，暂缓 |
+| 分类页缺独有导语 | `ds_categorys.desc` 是半接通状态：表里有列、`/api` 的 INSERT 白名单也有，但 anon 列授权、`PUBLIC_CATEGORY_FIELDS` 与后台表单都没接。不补的话 8 个分类页只是首页子集，内容偏薄 |
+| `llms.txt` 收益不可验证 | 只对会解析机器可读清单的引擎有意义，Google 官方明确说不需要。保持输出正确即可，不要围绕它做优化 |

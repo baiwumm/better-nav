@@ -45,14 +45,20 @@ pnpm test          # 仅跑单元测试
 
 ## Git 提交规范
 
-使用 Conventional Commits 格式：
+使用 Conventional Commits 格式，类型与 `.release-it.json` 的 CHANGELOG 分组保持一致：
 
 ```
 feat: 新功能
 fix: 修复
-docs: 文档更新
-style: 代码格式（不影响逻辑）
+perf: 性能优化
 refactor: 重构
+style: 代码格式（不影响逻辑）
+docs: 文档更新
 test: 测试
+ci: CI / 工作流
+build: 构建配置
 chore: 构建/工具变动
+revert: 回退
 ```
+
+会话中有 AI 参与时，必须按 `ai-commit-trailer` skill 追加 trailer：`Co-authored-by` 只写产品名与 registry 邮箱，模型名只进 `Assisted-by`。完整规则见 [AGENTS.md](../AGENTS.md) 的「AI 参与的提交」，提交前用该 skill 的 `check` 自检。
