@@ -63,5 +63,6 @@ node "<ai-commit-trailer skill 目录>/scripts/normalize.mjs" check --message .g
 - UI 基于 HeroUI 组件搭建，样式用 Tailwind CSS utility；HeroUI 覆盖不到的需求先查文档，确认无解再询问人工
 - 客户端数据获取走 SWR：hook 在 `src/hooks/use-swr.ts`，fetcher 与全局配置在 `src/lib/swr.ts`
 - 任何数据库操作必须经过 RLS 策略（表结构与易踩坑细节见 docs/database.md）
+- 公开页（首页、`/c/[id]`）是 ISR 预渲染的：内容写操作必须走 `/api`，并在写库成功后调用 `revalidatePublicPages()`，否则页面会静默停在旧缓存
 - 组件目录入口统一命名 `index.tsx`
 - 项目规范之间冲突时（如 HeroUI 用法与 Vercel 建议相悖），停下询问人工，不自行取舍

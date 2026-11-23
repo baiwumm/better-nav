@@ -3,6 +3,7 @@ import type { NextRequest } from "next/server";
 
 import { NextResponse } from "next/server";
 
+import { revalidatePublicPages } from "@/lib/server/revalidate";
 import { getSupabaseServerClient, requireUser } from "@/lib/supabase/server";
 import { RESPONSE, responseMessage } from "@/lib/utils";
 
@@ -87,6 +88,8 @@ export async function POST(request: NextRequest) {
 
       const result: WebsiteBatchResult = { count: data?.length ?? 0 };
 
+      revalidatePublicPages();
+
       return NextResponse.json(responseMessage(result));
     }
 
@@ -157,6 +160,8 @@ export async function POST(request: NextRequest) {
       }
 
       const result: WebsiteBatchResult = { count: data?.length ?? 0 };
+
+      revalidatePublicPages();
 
       return NextResponse.json(responseMessage(result));
     }

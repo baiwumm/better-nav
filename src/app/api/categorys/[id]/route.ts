@@ -2,6 +2,7 @@ import type { NextRequest } from "next/server";
 
 import { NextResponse } from "next/server";
 
+import { revalidatePublicPages } from "@/lib/server/revalidate";
 import { getSupabaseServerClient, requireUser } from "@/lib/supabase/server";
 import { RESPONSE, responseMessage } from "@/lib/utils";
 
@@ -42,6 +43,8 @@ export async function DELETE(
     }
 
     // 返回成功响应
+    revalidatePublicPages();
+
     return NextResponse.json(responseMessage(data));
   } catch (err) {
     return NextResponse.json(responseMessage(null, (err as Error).message, -1));
@@ -100,6 +103,8 @@ export async function PUT(
     }
 
     // 返回更新后的菜单数据
+    revalidatePublicPages();
+
     return NextResponse.json(responseMessage(data));
   } catch (err) {
     return NextResponse.json(responseMessage(null, (err as Error).message, -1));

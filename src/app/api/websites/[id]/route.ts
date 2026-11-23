@@ -5,6 +5,7 @@ import { NextResponse } from "next/server";
 
 import { getSupabaseServerClient, requireUser } from "@/lib/supabase/server";
 import { buildLogoPath, validateLogoFile } from "@/lib/server/logo";
+import { revalidatePublicPages } from "@/lib/server/revalidate";
 import { RESPONSE, responseMessage } from "@/lib/utils";
 
 // 可更新字段白名单：防止客户端篡改 id / user_id / visitCount 等受保护字段
@@ -99,6 +100,8 @@ export async function DELETE(
         responseMessage(null, error.message, RESPONSE.ERROR),
       );
     }
+
+    revalidatePublicPages();
 
     return NextResponse.json(responseMessage(data));
   } catch (err) {
@@ -214,6 +217,8 @@ export async function PUT(
         .from(process.env.NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET!)
         .remove([oldLogo]);
     }
+
+    revalidatePublicPages();
 
     // 返回更新后的网站数据
     return NextResponse.json(responseMessage(website));

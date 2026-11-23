@@ -6,6 +6,7 @@ import { NextResponse } from "next/server";
 import { getSupabaseServerClient, requireUser } from "@/lib/supabase/server";
 import { PUBLIC_WEBSITE_SELECT } from "@/lib/server/columns";
 import { buildLogoPath, validateLogoFile } from "@/lib/server/logo";
+import { revalidatePublicPages } from "@/lib/server/revalidate";
 import { RESPONSE, responseMessage } from "@/lib/utils";
 
 /**
@@ -171,6 +172,8 @@ export async function POST(request: NextRequest) {
         responseMessage(null, error.message, RESPONSE.ERROR),
       );
     }
+
+    revalidatePublicPages();
 
     return NextResponse.json(responseMessage(website));
   } catch (err) {

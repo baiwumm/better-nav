@@ -4,6 +4,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 import { PUBLIC_CATEGORY_SELECT } from "@/lib/server/columns";
+import { revalidatePublicPages } from "@/lib/server/revalidate";
 import { sortWebsites } from "@/lib/server/sort";
 import { getSupabaseServerClient, requireUser } from "@/lib/supabase/server";
 import { RESPONSE, responseMessage } from "@/lib/utils";
@@ -133,6 +134,8 @@ export async function POST(request: NextRequest) {
         responseMessage(null, error.message, RESPONSE.ERROR),
       );
     }
+
+    revalidatePublicPages();
 
     return NextResponse.json(responseMessage(data));
   } catch (err) {

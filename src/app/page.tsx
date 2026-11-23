@@ -2,7 +2,7 @@
  * @Author: 白雾茫茫丶<baiwumm.com>
  * @Date: 2026-01-21 16:33:59
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2026-11-23 10:00:00
+ * @LastEditTime: 2026-11-23 11:00:00
  * @Description: 首页
  */
 import type { Metadata } from "next";
@@ -13,14 +13,15 @@ import HomeContent from "@/components/HomeContent";
 import StructuredData from "@/components/StructuredData";
 import { fetchHomeData } from "@/lib/server/home";
 import { APP_NAME, APP_SEO_KEYWORD } from "@/lib/site";
+import { buildHomeJsonLd } from "@/lib/structured-data";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
   robots: { index: true, follow: true },
 };
 
-// 每次访问拉取最新数据，保证后台变更即时生效（后续可优化为 ISR/tag 缓存）
-export const dynamic = "force-dynamic";
+// ISR：后台写操作会通过 revalidatePath 主动失效，其余时间直接返回缓存，避免每次请求都打库
+export const revalidate = 60;
 
 export default async function Home() {
   const data = await fetchHomeData();
@@ -43,7 +44,7 @@ export default async function Home() {
         </Typography>
       </div>
       <HomeContent data={data} />
-      <StructuredData categories={data} />
+      <StructuredData data={buildHomeJsonLd(data)} />
     </>
   );
 }
