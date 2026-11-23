@@ -14,6 +14,9 @@ const PERSON_ID = `${APP_URL}/#person`;
 const PAGE_ID = `${APP_URL}/#webpage`;
 const LIST_ID = `${APP_URL}/#itemlist`;
 
+/** 分类页路径：内链、canonical、sitemap 与结构化数据共用同一处定义 */
+export const categoryPath = (id: string) => `/c/${id}`;
+
 /**
  * @description: 首页 JSON-LD。
  *
@@ -57,12 +60,67 @@ export function buildHomeJsonLd(categories: Category[]) {
         "@id": LIST_ID,
         name: "常用网址分类",
         numberOfItems: categories.length,
-        // 目前分类没有独立页面，只能指向首页锚点；拆出 /c/[slug] 后改为分类页 URL
         itemListElement: categories.map((category, index) => ({
           "@type": "ListItem",
           position: index + 1,
           name: category.name,
-          url: `${APP_URL}/#cat-${category.id}`,
+          url: `${APP_URL}${categoryPath(category.id)}`,
+        })),
+      },
+    ],
+  };
+}
+
+/**
+ * @description: 分类页 JSON-LD：目录页 + 面包屑 + 站点清单。
+ * 与页面可见内容一一对应，不声明页面上不存在的条目。
+ */
+export function buildCategoryJsonLd(category: Category) {
+  const url = `${APP_URL}${categoryPath(category.id)}`;
+  const websites = category.websites ?? [];
+  const description = `收录 ${websites.length} 个「${category.name}」相关网站，由 ${APP_NAME} 人工整理分类。`;
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        "@id": `${url}/#webpage`,
+        url,
+        name: `${category.name}：${APP_SEO_KEYWORD}`,
+        description,
+        inLanguage: "zh-CN",
+        isPartOf: { "@id": SITE_ID },
+        mainEntity: { "@id": `${url}/#itemlist` },
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${url}/#breadcrumb`,
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "首页",
+            item: `${APP_URL}/`,
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: category.name,
+            item: url,
+          },
+        ],
+      },
+      {
+        "@type": "ItemList",
+        "@id": `${url}/#itemlist`,
+        name: `${category.name} 网站清单`,
+        numberOfItems: websites.length,
+        itemListElement: websites.map((website, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          name: website.name,
+          url: website.url,
         })),
       },
     ],

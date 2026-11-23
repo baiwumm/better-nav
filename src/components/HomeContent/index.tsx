@@ -10,6 +10,7 @@ import type { Variants } from "motion/react";
 import { DatabaseFill, Plus } from "@gravity-ui/icons";
 import { Button, Typography } from "@heroui/react";
 import { motion } from "motion/react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 
@@ -84,7 +85,12 @@ export default function HomeContent({ data }: HomeContentProps) {
                 className="text-lg font-black tracking-normal"
                 type="h2"
               >
-                {name}
+                <Link
+                  className="hover:text-accent transition-colors"
+                  href={`/c/${id}`}
+                >
+                  {name}
+                </Link>
               </Typography>
               {websites?.length ? (
                 // 不要加 content-visibility：隐含的绘制遏制会裁掉卡片悬停位移与阴影（见 docs/tech-debt.md）
