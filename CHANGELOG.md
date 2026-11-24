@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.0.4](https://github.com/baiwumm/better-nav/compare/v4.0.3...v4.0.4) (2026-11-24)
+
+### 🔧 Continuous Integration | CI 配置
+
+* **release:** 发版改为 tag 触发，复检后由 workflow 建 Release ([d0816e1](https://github.com/baiwumm/better-nav/commit/d0816e17c138d82552f401a8b2a0af4e0eded556))
+
 ## [4.0.3](https://github.com/baiwumm/better-nav/compare/v4.0.2...v4.0.3) (2026-11-23)
 
 ### ✨ Features | 新功能
