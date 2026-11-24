@@ -40,3 +40,9 @@ export const APP_SEO_DESC = `${APP_NAME}：${APP_DESC}精选 AI 工具、UI 组�
 
 /** OG 图片地址：交给 Next.js 的 /opengraph-image 路由动态生成 */
 export const OG_IMAGE_URL = `${APP_URL}/opengraph-image`;
+
+/** 搜索引擎站点所有权验证码：集中维护，避免散落在 layout 里 */
+export const GOOGLE_SITE_VERIFICATION =
+  "4YBtBTmg5H9MGoyvCmvEeJx8viyBPjLnK4INCHT9SQs";
+
+export const BING_SITE_VERIFICATION = "6DEA985B20CA4A215DAC4EA659011A8A";

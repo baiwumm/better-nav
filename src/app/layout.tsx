@@ -19,6 +19,8 @@ import {
   APP_SEO_DESC,
   APP_SEO_TITLE,
   APP_URL,
+  BING_SITE_VERIFICATION,
+  GOOGLE_SITE_VERIFICATION,
   OG_IMAGE_URL,
 } from "@/lib/site";
 
@@ -68,6 +70,12 @@ export const metadata: Metadata = {
     images: [OG_IMAGE_URL],
   },
   manifest: `${APP_URL}/manifest.json`,
+  verification: {
+    google: GOOGLE_SITE_VERIFICATION,
+    other: {
+      "msvalidate.01": BING_SITE_VERIFICATION,
+    },
+  },
 };
 
 export const viewport: Viewport = {
