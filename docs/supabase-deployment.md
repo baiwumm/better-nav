@@ -144,7 +144,7 @@ Authentication → Users → **Add user**（邮箱 + 密码）。登录页没有
 4. 绑定域名后把 `NEXT_PUBLIC_APP_URL` 改成生产域名并**重新部署**（`NEXT_PUBLIC_*` 构建期内联，改完不重新部署不生效；它决定 sitemap / robots / OG 图里的绝对地址）
 5. 回 Supabase 补上生产域名的 Redirect URL
 
-发版流水线 `.github/workflows/release.yml`（GitHub Actions，Node 24）先跑 `pnpm lint` 与 `pnpm build`，再交给 release-it 打 tag。它需要仓库 Secrets：`NEXT_PUBLIC_SUPABASE_URL`、`NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`（仅 Build 步骤使用）。
+发版链路：本地 `pnpm release`（release-it，无需任何 token）一次性完成 版本号 → CHANGELOG.md → Release 提交 → tag v* → 推送 main；tag 触发 `.github/workflows/release.yml`（GitHub Actions，Node 24）校验 tag 落点与版本一致后复跑 `pnpm lint` 与 `pnpm build`，再用 CHANGELOG 对应段落创建 GitHub Release。发版推送必须在本地完成：main ruleset 要求 `verify` 检查，GITHUB_TOKEN 的推送触发不了任何 workflow，该检查永远出不来（owner 有 bypass，本地推送不受限）。工作流需要仓库 Secrets：`NEXT_PUBLIC_SUPABASE_URL`、`NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`（仅 Build 步骤使用）。
 
 `.github/workflows/ci.yml` 使用同两个 Secrets：`verify` job 只跑 `pnpm lint`，不需要密钥，fork 的 PR 也能出结果；`build` job 只在 main 上跑，因为公开页在构建期要读库。
 
